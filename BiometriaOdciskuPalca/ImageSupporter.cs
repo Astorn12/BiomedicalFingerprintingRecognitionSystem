@@ -560,7 +560,7 @@ namespace BiometriaOdciskuPalca
                     x0 += sx;
                 }
                 else if (e2 < dx)
-                { // <--- this "else" makes the difference
+                { // <--- this "else" mxzcczxakes the difference
                     err += dx;
                     y0 += sy;
                 }
