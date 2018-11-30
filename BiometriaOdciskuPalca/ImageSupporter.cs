@@ -578,6 +578,15 @@ namespace BiometriaOdciskuPalca
         {
             //sprawdzam githuba
         }
+        
+        private static void aTerazSprawdzanieWDrugaStrone()
+        {
+            //witaj Visual studio Pozdrowienia od GitHuba
+        }
+        
+
+            
+       
     }
    
     
