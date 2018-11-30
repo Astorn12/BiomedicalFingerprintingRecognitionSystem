@@ -574,6 +574,10 @@ namespace BiometriaOdciskuPalca
             }
             return angle;
         }
+        private static void changesTestchacking()
+        {
+            //sprawdzam githuba
+        }
     }
    
     
