@@ -5,8 +5,80 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BiometriaOdciskuPalca"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="MainWindow" Height="750" Width="1000">
+    <Grid Margin="0,0,-0.4,-309.2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="148"/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer HorizontalAlignment="Left" Width="818" Margin="10,0,0,0" Height="711" VerticalAlignment="Top">
+            <Grid HorizontalAlignment="Left"  VerticalAlignment="Top" Height="1027" Width="792">
+
+                <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,28,0,0" VerticalAlignment="Top" Width="344" Name="original"  >
+                    <Button Click="ExpandImage" >
+                        <Image Source="images/szaretlo.jpg" Height="630" Name="originalImage" Width="788"/>
+                    </Button>
+                </Viewbox>
+
+
+                <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,28,0,0" VerticalAlignment="Top" Width="344" >
+                    <Button Click="ExpandImage" >
+                        <Image Source="images/szaretlo.jpg" Height="350" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="mapakierunkow" />
+                    </Button>
+                </Viewbox>
+
+                <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,330,0,0" VerticalAlignment="Top" Width="344" >
+                    <Button Click="ExpandImage" >
+                        <Image Source="images/szaretlo.jpg" Height="1062" Width="1302" Name="randomCell"/>
+                    </Button>
+                </Viewbox>
+
+                <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,330,0,0" VerticalAlignment="Top" Width="344" Name="wynik" >
+                    <Button Click="ExpandImage" >
+                        <Image Source="images/szaretlo.jpg" Height="1351" Width="1710" Name="pojedynczyKierunek" RenderTransformOrigin="0.495,0.58" />
+                    </Button>
+                </Viewbox>
+                <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,649,0,0" VerticalAlignment="Top" Width="344" >
+                    <Button Click="ExpandImage" >
+                        <Image Source="images/szaretlo.jpg" Height="1351" Width="1710"  RenderTransformOrigin="0.495,0.58" Name="threetothreeImage"/>
+                    </Button>
+                </Viewbox>
+
+                <Viewbox HorizontalAlignment="Left" Height="279" Margin="391,649,0,0" VerticalAlignment="Top" Width="344" >
+                    <Button Click="ExpandImage" >
+                        <Image Source="images/szaretlo.jpg" Height="1520" Width="1877"  RenderTransformOrigin="0.495,0.58" Name="gradientImage" />
+                    </Button>
+                </Viewbox>
+                
+                <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,330,0,0" VerticalAlignment="Top" Width="344" Name="prezentacjaseckjiArea"  >
+                    <Button Click="ExpandImage" >
+                        <Image Source="images/szaretlo.jpg" Height="630" Name="prezentacjasekcjiImage" Width="788"/>
+                    </Button>
+                </Viewbox>
+                    <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,330,0,0" VerticalAlignment="Top" Width="344" Name="punktySekcjiImageArea"  >
+                        <Button Click="ExpandImage" >
+                            <Image Source="images/szaretlo.jpg" Height="630" Name="punktySekcjiImage" Width="788"/>
+                        </Button>
+                    </Viewbox>
+
+            </Grid>
+        </ScrollViewer>
+        <Button Content="Mapa kierunków" HorizontalAlignment="Left" Margin="47.8,33,0,0" VerticalAlignment="Top" Width="75" Name="Scentruj" Click="mapaKierunkow" Grid.Column="1" />
+        <Button Content="Zapisz" HorizontalAlignment="Left" Margin="47.4,330,0,0" VerticalAlignment="Top" Width="75" Name="Zapisz" Click="zapisz" Grid.Column="1"/>
+        <Button Content="Losowa kom." Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,69,0,0" VerticalAlignment="Top" Width="75" Click="losowyObszar"/>
+        <Button Content="Q" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,114,0,0" VerticalAlignment="Top" Width="75" Click="Q"/>
+        <Button Content="16x16" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,160,0,0" VerticalAlignment="Top" Width="75" Click="threetothree"/>
+        <Button Content="Wektor" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,224,0,0" VerticalAlignment="Top" Width="75" Click="gradient"/>
+        <Button Content="Wybierz obszar" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,379,0,0" VerticalAlignment="Top" Width="75" Name="choosenArea" Click="choosenArea_Click"/>
+        <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="47.4,420,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="75" Name="X"/>
+        <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="47.4,468,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="75" Name="Y"/>
+        <Button Content="Punkty sekcji" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,513,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+
+
+
+
+
     </Grid>
 </Window>
+    
+    
