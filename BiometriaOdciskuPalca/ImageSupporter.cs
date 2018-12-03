@@ -15,7 +15,7 @@ namespace BiometriaOdciskuPalca
 
     static class ImageSupporter
     {
-        
+
 
         static public Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
         {
@@ -34,26 +34,26 @@ namespace BiometriaOdciskuPalca
 
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
         public static extern bool DeleteObject(IntPtr hObject);
-       /* static public BitmapImage Bitmap2BitmapImage2(Bitmap bitmap)
-        {
-            IntPtr hBitmap = bitmap.GetHbitmap();
-            BitmapImage retval;
+        /* static public BitmapImage Bitmap2BitmapImage2(Bitmap bitmap)
+         {
+             IntPtr hBitmap = bitmap.GetHbitmap();
+             BitmapImage retval;
 
-            try
-            {
-                retval = (BitmapImage)Imaging.CreateBitmapSourceFromHBitmap(
-                             hBitmap,
-                             IntPtr.Zero,
-                             Int32Rect.Empty,
-                             BitmapSizeOptions.FromEmptyOptions());
-            }
-            finally
-            {
-                DeleteObject(hBitmap);
-            }
+             try
+             {
+                 retval = (BitmapImage)Imaging.CreateBitmapSourceFromHBitmap(
+                              hBitmap,
+                              IntPtr.Zero,
+                              Int32Rect.Empty,
+                             
+             }
+             finally
+             {
+                 DeleteObject(hBitmap);
+             }
 
-            return retval;
-        }*/
+             return retval;
+         }*/
 
         public static BitmapImage Bitmap2BitmapImage(this Bitmap bitmap)
         {
@@ -63,15 +63,15 @@ namespace BiometriaOdciskuPalca
                 memory.Position = 0;
 
                 var bitmapImage = new BitmapImage();
-                
+
                 bitmapImage.BeginInit();
                 bitmapImage.StreamSource = memory;
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-               // bitmapImage.DecodePixelHeight = bitmap.Height;
+                // bitmapImage.DecodePixelHeight = bitmap.Height;
                 //bitmapImage.DecodePixelWidth = bitmap.Width;
                 bitmapImage.EndInit();
                 bitmapImage.Freeze();
-                
+
 
                 return bitmapImage;
             }
@@ -97,22 +97,22 @@ namespace BiometriaOdciskuPalca
             return imageEncoders.FirstOrDefault(t => t.MimeType == mimeType);
         }
 
-        public static Bitmap convertToModuloBitmap(Bitmap bitmap,int modulo)
+        public static Bitmap convertToModuloBitmap(Bitmap bitmap, int modulo)
         {
             Bitmap newMap = new Bitmap(bitmap.Width - (bitmap.Width % modulo), bitmap.Height - (bitmap.Height % modulo));
 
-            for(int i=0;i<newMap.Width;i++)
+            for (int i = 0; i < newMap.Width; i++)
             {
-                for(int j=0;j<newMap.Height;j++)
+                for (int j = 0; j < newMap.Height; j++)
                 {
                     Color color;
-                    if(bitmap.GetPixel(i,j)!=null)
+                    if (bitmap.GetPixel(i, j) != null)
                     {
                         color = bitmap.GetPixel(i, j);
                     }
                     else
                     {
-                        color = Color.White; 
+                        color = Color.White;
                     }
                     newMap.SetPixel(i, j, color);
                 }
@@ -215,11 +215,11 @@ namespace BiometriaOdciskuPalca
 
         public static void WriteBitmap(Bitmap bitmap)
         {
-            for(int y=0;y<bitmap.Height;y++)
+            for (int y = 0; y < bitmap.Height; y++)
             {
-                for(int x = 0;x<bitmap.Width;x++)
+                for (int x = 0; x < bitmap.Width; x++)
                 {
-                    Console.Write(bitmap.GetPixel(x,y).R+" ");
+                    Console.Write(bitmap.GetPixel(x, y).R + " ");
                 }
                 Console.WriteLine("");
             }
@@ -235,7 +235,7 @@ namespace BiometriaOdciskuPalca
             {
                 for (int b = 0; b < height; b++)
                 {
-                    byte bit = bitmap.GetPixel(a+xStart, b +yStart).R;
+                    byte bit = bitmap.GetPixel(a + xStart, b + yStart).R;
                     if (bit + 122 < 255)
                         bitmap.SetPixel(a + xStart, b + yStart, Color.FromArgb(bit + 122, bit, bit));
                     else
@@ -255,7 +255,7 @@ namespace BiometriaOdciskuPalca
             return angle * (180.0 / Math.PI);
         }
 
-       
+
 
         public static void Save(this BitmapImage image, string filePath)
         {
@@ -279,12 +279,12 @@ namespace BiometriaOdciskuPalca
         {
             matchLine(canvas, s, e, Color.Blue, 1);
         }
-        public static void matchLine(Bitmap canvas, Point s, Point e,int thickness)
+        public static void matchLine(Bitmap canvas, Point s, Point e, int thickness)
         {
             matchLine(canvas, s, e, Color.Blue, thickness);
         }
-        public static void matchLine(Bitmap canvas, Point s, Point e,Color color,int thickness)//canvas->bitmapa na której zaznaczamy prostą; s->punkt startowy; e-punkt końcowy; nazewnictwo s i e jes tbez znaczenia
-        { 
+        public static void matchLine(Bitmap canvas, Point s, Point e, Color color, int thickness)//canvas->bitmapa na której zaznaczamy prostą; s->punkt startowy; e-punkt końcowy; nazewnictwo s i e jes tbez znaczenia
+        {
             Point p = s;
             Point k = e;
             double angle;
@@ -293,7 +293,7 @@ namespace BiometriaOdciskuPalca
                 angle = 0;
             }
             else
-             angle = Math.Atan(Math.Abs(p.Y-k.Y)/Math.Abs(p.X-k.X));
+                angle = Math.Atan(Math.Abs(p.Y - k.Y) / Math.Abs(p.X - k.X));
             angle += DegreeToRadian(90);
             Dictionary<Point, int> section = new Dictionary<Point, int>();
             List<Point> sectionOne = new List<Point>();
@@ -380,7 +380,7 @@ namespace BiometriaOdciskuPalca
 
             foreach (Point n in sectionOne)
             {
-                if (n.Y + yprzesuniecie < canvas.Height &&n.Y + yprzesuniecie >0&& n.X + xprzesuniecie < canvas.Width&&n.X + xprzesuniecie>0)
+                if (n.Y + yprzesuniecie < canvas.Height && n.Y + yprzesuniecie > 0 && n.X + xprzesuniecie < canvas.Width && n.X + xprzesuniecie > 0)
                 {
                     canvas.SetPixel(n.X + xprzesuniecie, n.Y + yprzesuniecie, color);
                 }
@@ -488,16 +488,16 @@ namespace BiometriaOdciskuPalca
                     canvas.SetPixel(n.X + xprzesuniecie, n.Y + yprzesuniecie, color);
                 }
             }
-            
+
         }
 
-        public static void matchLine1(Bitmap canvas, Point s, Point e,Color color,int thickness)
+        public static void matchLine1(Bitmap canvas, Point s, Point e, Color color, int thickness)
         {
-            for(int i= s.X<e.X ? s.X:e.X;i< (s.X>e.X ? s.X:e.X);i++)
+            for (int i = s.X < e.X ? s.X : e.X; i < (s.X > e.X ? s.X : e.X); i++)
             {
                 for (int j = s.Y < e.Y ? s.Y : e.Y; j < (s.Y > e.Y ? s.Y : e.Y); j++)
                 {
-                    if(Math.Abs((s.X-i)/(s.Y-j)-(s.X-e.X)/(s.Y-e.Y))<0.1)
+                    if (Math.Abs((s.X - i) / (s.Y - j) - (s.X - e.X) / (s.Y - e.Y)) < 0.1)
                     {
                         canvas.SetPixel(i, j, Color.Blue);
                     }
@@ -509,36 +509,29 @@ namespace BiometriaOdciskuPalca
         }
         public static void matchLine2(Bitmap canvas, Point s, Point e, Color color, int thickness)
         {
-            foreach(var item in EnumerateLineNoDiagonalSteps(s.X,s.Y,e.X,e.Y))
+            foreach (var item in EnumerateLineNoDiagonalSteps(s.X, s.Y, e.X, e.Y))
             {
                 try
                 {
                     canvas.SetPixel(item.Item1, item.Item2, color);
-                    for (int i = -(thickness / 2); i< (int)((float)thickness / 2 + 0.5) ;i++)
+                    for (int i = -(thickness / 2); i < (int)((float)thickness / 2 + 0.5); i++)
                     {
                         for (int j = -(thickness / 2); j < (int)((float)thickness / 2 + 0.5); j++)
                         {
-                            canvas.SetPixel(item.Item1+i, item.Item2+j, color);
+                            //color = Color.FromArgb(0, 0, 128);
+                            canvas.SetPixel(item.Item1 + i, item.Item2 + j, color);
 
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
 
                 }
             }
-            try
-            {
-                canvas.SetPixel(s.X, s.Y, Color.Green);
-            canvas.SetPixel(e.X, e.Y, Color.Green);
+
+
         }
-                catch(Exception ex)
-                {
-
-                }
-
-}
         public static IEnumerable<Tuple<int, int>> EnumerateLineNoDiagonalSteps(int x0, int y0, int x1, int y1)
         {
             int dx = Math.Abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
@@ -574,19 +567,36 @@ namespace BiometriaOdciskuPalca
             }
             return angle;
         }
-        private static void changesTestchacking()
-        {
-            //sprawdzam githuba
-        }
-        
-        private static void aTerazSprawdzanieWDrugaStrone()
-        {
-            //witaj Visual studio Pozdrowienia od GitHuba
-        }
-        
 
-            
-       
+        public static Color getRandomColor()
+        {
+            Random random = new Random();
+
+            return Color.FromArgb(random.Next(255), random.Next(255), random.Next(255));
+        }
+
+        public static List<Point> GetLine(Point s, Point e)
+        {
+            List<Point> line = new List<Point>();
+            foreach (var item in EnumerateLineNoDiagonalSteps(s.X, s.Y, e.X, e.Y))
+            {
+                try
+                {
+                    line.Add(new Point(item.Item1, item.Item2));
+                    
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+           // line.Reverse();
+           
+            return line;
+
+
+        }
     }
    
     

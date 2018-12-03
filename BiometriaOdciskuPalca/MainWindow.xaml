@@ -23,39 +23,39 @@
 
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,28,0,0" VerticalAlignment="Top" Width="344" >
                     <Button Click="ExpandImage" >
-                        <Image Source="images/szaretlo.jpg" Height="350" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="mapakierunkow" />
+                        <Image Source="images/szaretlo.jpg" Height="350" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="odszumionyObraz" />
                     </Button>
                 </Viewbox>
 
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,330,0,0" VerticalAlignment="Top" Width="344" >
                     <Button Click="ExpandImage" >
-                        <Image Source="images/szaretlo.jpg" Height="1062" Width="1302" Name="randomCell"/>
+                        <Image Source="images/szaretlo.jpg" Height="1062" Width="1302" Name="mapakierunkow"/>
                     </Button>
                 </Viewbox>
 
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,330,0,0" VerticalAlignment="Top" Width="344" Name="wynik" >
                     <Button Click="ExpandImage" >
-                        <Image Source="images/szaretlo.jpg" Height="1351" Width="1710" Name="pojedynczyKierunek" RenderTransformOrigin="0.495,0.58" />
+                        <Image Source="images/szaretlo.jpg" Height="1351" Width="1710" Name="randomCell" RenderTransformOrigin="0.495,0.58" />
                     </Button>
                 </Viewbox>
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,649,0,0" VerticalAlignment="Top" Width="344" >
                     <Button Click="ExpandImage" >
-                        <Image Source="images/szaretlo.jpg" Height="1351" Width="1710"  RenderTransformOrigin="0.495,0.58" Name="threetothreeImage"/>
+                        <Image Source="images/szaretlo.jpg" Height="1351" Width="1710"  RenderTransformOrigin="0.495,0.58" Name="pojedynczyKierunek"/>
                     </Button>
                 </Viewbox>
 
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="391,649,0,0" VerticalAlignment="Top" Width="344" >
                     <Button Click="ExpandImage" >
-                        <Image Source="images/szaretlo.jpg" Height="1520" Width="1877"  RenderTransformOrigin="0.495,0.58" Name="gradientImage" />
+                        <Image Source="images/szaretlo.jpg" Height="1520" Width="1877"  RenderTransformOrigin="0.495,0.58" Name="threetothreeImage" />
                     </Button>
                 </Viewbox>
                 
-                <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,330,0,0" VerticalAlignment="Top" Width="344" Name="prezentacjaseckjiArea"  >
+                <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,649,0,0" VerticalAlignment="Top" Width="344" Name="prezentacjaseckjiArea"  >
                     <Button Click="ExpandImage" >
                         <Image Source="images/szaretlo.jpg" Height="630" Name="prezentacjasekcjiImage" Width="788"/>
                     </Button>
                 </Viewbox>
-                    <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,330,0,0" VerticalAlignment="Top" Width="344" Name="punktySekcjiImageArea"  >
+                    <Viewbox HorizontalAlignment="Left" Height="279" Margin="391,649,0,0" VerticalAlignment="Top" Width="344" Name="punktySekcjiImageArea"  >
                         <Button Click="ExpandImage" >
                             <Image Source="images/szaretlo.jpg" Height="630" Name="punktySekcjiImage" Width="788"/>
                         </Button>
@@ -73,6 +73,7 @@
         <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="47.4,420,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="75" Name="X"/>
         <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="47.4,468,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="75" Name="Y"/>
         <Button Content="Punkty sekcji" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,513,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button Content="Next&#xD;&#xA;" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,555,0,0" VerticalAlignment="Top" Width="75" Height="20"/>
 
 
 

@@ -246,6 +246,7 @@ namespace BiometriaOdciskuPalca
             var source = ((sender as Button).Content as System.Windows.Controls.Image).Source;
             var okno = new ImageWindow(source);
             okno.Show();
+            Console.WriteLine(Color.Blue.ToArgb());
         }
 
 
@@ -266,8 +267,15 @@ namespace BiometriaOdciskuPalca
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            punktySekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(actualFingerprint.getSectionPoints());
-            prezentacjasekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(actualFingerprint.getAlreadyPassed());
+            try
+            {
+                punktySekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(actualFingerprint.getSectionPoints());
+                prezentacjasekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(actualFingerprint.getAlreadyPassed());
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("NI emasz mapy kierunków");
+            }
         }
     }
 
