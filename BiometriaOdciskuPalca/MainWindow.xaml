@@ -5,14 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BiometriaOdciskuPalca"
         mc:Ignorable="d"
-        Title="MainWindow" Height="750" Width="1000">
-    <Grid Margin="0,0,-0.4,-309.2">
+        Title="MainWindow" Height="750" Width="1117.6">
+    <Grid Margin="0,0,-0.4,-633.2">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="148"/>
+            <ColumnDefinition Width="4"/>
+            <ColumnDefinition Width="261.6"/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer HorizontalAlignment="Left" Width="818" Margin="10,0,0,0" Height="711" VerticalAlignment="Top">
-            <Grid HorizontalAlignment="Left"  VerticalAlignment="Top" Height="1027" Width="792">
+        <ScrollViewer HorizontalAlignment="Left" Width="818" Margin="11,0,0,0" Height="670" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+            <ScrollViewer.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="0.318"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="2.794"/>
+                </TransformGroup>
+            </ScrollViewer.RenderTransform>
+            <Grid HorizontalAlignment="Left"  VerticalAlignment="Top" Height="1221" Width="792">
 
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,28,0,0" VerticalAlignment="Top" Width="344" Name="original"  >
                     <Button Click="ExpandImage" >
@@ -35,7 +44,7 @@
 
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,330,0,0" VerticalAlignment="Top" Width="344" Name="wynik" >
                     <Button Click="ExpandImage" >
-                        <Image Source="images/szaretlo.jpg" Height="1351" Width="1710" Name="randomCell" RenderTransformOrigin="0.495,0.58" />
+                        <Image Source="images/szaretlo.jpg" Height="1351" Width="1710" Name="QUATRE" RenderTransformOrigin="0.495,0.58" />
                     </Button>
                 </Viewbox>
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,649,0,0" VerticalAlignment="Top" Width="344" >
@@ -49,31 +58,107 @@
                         <Image Source="images/szaretlo.jpg" Height="1520" Width="1877"  RenderTransformOrigin="0.495,0.58" Name="threetothreeImage" />
                     </Button>
                 </Viewbox>
-                
-                <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,649,0,0" VerticalAlignment="Top" Width="344" Name="prezentacjaseckjiArea"  >
+
+                <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,950,0,-202" VerticalAlignment="Top" Width="344" Name="prezentacjaseckjiArea"  >
                     <Button Click="ExpandImage" >
                         <Image Source="images/szaretlo.jpg" Height="630" Name="prezentacjasekcjiImage" Width="788"/>
                     </Button>
                 </Viewbox>
-                    <Viewbox HorizontalAlignment="Left" Height="279" Margin="391,649,0,0" VerticalAlignment="Top" Width="344" Name="punktySekcjiImageArea"  >
-                        <Button Click="ExpandImage" >
-                            <Image Source="images/szaretlo.jpg" Height="630" Name="punktySekcjiImage" Width="788"/>
-                        </Button>
-                    </Viewbox>
+                <Viewbox HorizontalAlignment="Left" Height="279" Margin="391,950,0,-202" VerticalAlignment="Top" Width="344" Name="punktySekcjiImageArea"  >
+                    <Button Click="ExpandImage" >
+                        <Image Source="images/szaretlo.jpg" Height="630" Name="punktySekcjiImage" Width="788"/>
+                    </Button>
+                </Viewbox>
 
             </Grid>
         </ScrollViewer>
-        <Button Content="Mapa kierunków" HorizontalAlignment="Left" Margin="47.8,33,0,0" VerticalAlignment="Top" Width="75" Name="Scentruj" Click="mapaKierunkow" Grid.Column="1" />
-        <Button Content="Zapisz" HorizontalAlignment="Left" Margin="47.4,330,0,0" VerticalAlignment="Top" Width="75" Name="Zapisz" Click="zapisz" Grid.Column="1"/>
-        <Button Content="Losowa kom." Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,69,0,0" VerticalAlignment="Top" Width="75" Click="losowyObszar"/>
-        <Button Content="Q" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,114,0,0" VerticalAlignment="Top" Width="75" Click="Q"/>
-        <Button Content="16x16" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,160,0,0" VerticalAlignment="Top" Width="75" Click="threetothree"/>
-        <Button Content="Wektor" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,224,0,0" VerticalAlignment="Top" Width="75" Click="gradient"/>
-        <Button Content="Wybierz obszar" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,379,0,0" VerticalAlignment="Top" Width="75" Name="choosenArea" Click="choosenArea_Click"/>
-        <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="47.4,420,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="75" Name="X"/>
-        <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="47.4,468,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="75" Name="Y"/>
-        <Button Content="Punkty sekcji" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,513,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <Button Content="Next&#xD;&#xA;" Grid.Column="1" HorizontalAlignment="Left" Margin="47.4,555,0,0" VerticalAlignment="Top" Width="75" Height="20"/>
+        <Button Content="Mapa kierunków" HorizontalAlignment="Left" Margin="26.6,85,0,0" VerticalAlignment="Top" Width="75" Name="Scentruj" Click="mapaKierunkow" Grid.Column="2" Height="19" />
+        <Button Content="Zapisz" HorizontalAlignment="Left" Margin="28.6,329,0,0" VerticalAlignment="Top" Width="75" Name="Zapisz" Click="zapisz" Grid.Column="2" Height="19"/>
+        <Button Content="Losowa kom." Grid.Column="2" HorizontalAlignment="Left" Margin="26.6,131,0,0" VerticalAlignment="Top" Width="75" Click="losowyObszar" Height="19"/>
+        <Button Content="Q" Grid.Column="2" HorizontalAlignment="Left" Margin="26.6,183,0,0" VerticalAlignment="Top" Width="75" Click="Q" Height="19"/>
+        <Button Content="16x16" Grid.Column="2" HorizontalAlignment="Left" Margin="26.6,232,0,0" VerticalAlignment="Top" Width="75" Click="threetothree" Height="19"/>
+        <Button Content="Wektor" Grid.Column="2" HorizontalAlignment="Left" Margin="26.6,270,0,0" VerticalAlignment="Top" Width="75" Click="gradient" Height="19"/>
+        <Button Content="Wybierz obszar" Grid.Column="2" HorizontalAlignment="Left" Margin="28.6,380,0,0" VerticalAlignment="Top" Width="75" Name="choosenArea" Click="choosenArea_Click" Height="19"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="28.6,421,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="75" Name="X"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="28.6,469,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="75" Name="Y"/>
+        <Button Content="Punkty sekcji" Grid.Column="2" HorizontalAlignment="Left" Margin="28.6,512,0,0" VerticalAlignment="Top" Width="75" Click="MinutaesDetection" Height="19"/>
+        <Button Content="Filtracja&#xA;" Grid.Column="2" HorizontalAlignment="Left" Margin="28.6,557,0,0" VerticalAlignment="Top" Width="75" Height="20" Click="Filtracja" />
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="74.6,640,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="27" x:Name="Theta"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="28.6,640,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="27" x:Name="Sigma"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="92.6,596,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="27" x:Name="Psi"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="44.6,596,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="27" x:Name="Lambda"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="6.6,596,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="25" x:Name="Gamma"/>
+        <Button Content="Filtruj obszar" Grid.Column="2" HorizontalAlignment="Left" Margin="28.6,689,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1" Height="19"/>
+        <Button Content="Start&#xD;&#xA;" Grid.Column="2" HorizontalAlignment="Left" Margin="26.6,30,0,0" VerticalAlignment="Top" Width="75" Height="21" Click="Start1"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="131.6,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" RenderTransformOrigin="-0.567,-0.622" Name="GammaInsert"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="131.6,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" RenderTransformOrigin="-0.567,-0.622" Name="LambdaInsert"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="131.6,131,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" RenderTransformOrigin="-0.567,-0.622" Name="PsiInsert"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="131.6,183,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" RenderTransformOrigin="-0.567,-0.622" Name="SigmaInsert"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="131.6,232,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" RenderTransformOrigin="-0.567,-0.622" Name="ThetaInsert"/>
+        <Button Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="180.6,34,0,0" VerticalAlignment="Top" Width="21" Height="21" Name="GammaMinus" Click="GammaMinusClick">
+            <Button.Background>
+                <ImageBrush ImageSource="images/minus.png"></ImageBrush>
+            </Button.Background>
+        </Button>
+        <Button Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="214.6,34,0,0" VerticalAlignment="Top" Width="21" Height="21" RenderTransformOrigin="-0.905,0.657" Name="GammaPlus" Click="GammaPlusClick">
+       <Button.Background>
+                <ImageBrush ImageSource="images/plus.png"></ImageBrush>
+            </Button.Background>
+        </Button>
+        <Button Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="180.6,81,0,0" VerticalAlignment="Top" Width="21" Height="21" RenderTransformOrigin="0.643,3.1" Name="LambdaMinus" Click="LambdaMinusClick">
+            <Button.Background>
+                <ImageBrush ImageSource="images/minus.png"/>
+            </Button.Background>
+        </Button>
+        <Button Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="180.6,133,0,0" VerticalAlignment="Top" Width="21" Height="21" Name="PsiMinus" Click="PsiMinusClick">
+            <Button.Background>
+                <ImageBrush ImageSource="images/minus.png"/>
+            </Button.Background>
+        </Button>
+        <Button Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="180.6,185,0,0" VerticalAlignment="Top" Width="21" Height="21" RenderTransformOrigin="0.643,6.986" Name="SigmaMinus" Click="SigmaMinusClick">
+            <Button.Background>
+                <ImageBrush ImageSource="images/minus.png"/>
+            </Button.Background>
+        </Button>
+        <Button Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="180.6,230,0,0" VerticalAlignment="Top" Width="21" Height="21" Name="ThetaMinus" Click="ThetaMinusClick">
+            <Button.Background>
+                <ImageBrush ImageSource="images/minus.png"/>
+            </Button.Background>
+        </Button>
+        <Button Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="214.6,85,0,0" VerticalAlignment="Top" Width="21" Height="21" RenderTransformOrigin="-0.905,0.657" Name="LambdaPlus" Click="LambdaPlusClick">
+            <Button.Background>
+                <ImageBrush ImageSource="images/plus.png"/>
+            </Button.Background>
+        </Button>
+        <Button Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="214.6,133,0,0" VerticalAlignment="Top" Width="21" Height="21" RenderTransformOrigin="-0.905,0.657" Name="PsiPlus" Click="PsiPlusClick">
+            <Button.Background>
+                <ImageBrush ImageSource="images/plus.png"/>
+            </Button.Background>
+        </Button>
+        <Button Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="214.6,185,0,0" VerticalAlignment="Top" Width="21" Height="21" RenderTransformOrigin="-0.905,0.657" Name="SigmaPlus" Click="SigmaPlusClick">
+            <Button.Background>
+                <ImageBrush ImageSource="images/plus.png"/>
+            </Button.Background>
+        </Button>
+        <Button Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="214.6,230,0,0" VerticalAlignment="Top" Width="21" Height="21" RenderTransformOrigin="-0.905,0.657" Name="ThetaPlus" Click="ThetaPlusClick">
+            <Button.Background>
+                <ImageBrush ImageSource="images/plus.png"/>
+            </Button.Background>
+        </Button>
+        <Label Content="Gamma" Grid.Column="2" HorizontalAlignment="Left" Margin="161.6,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="Lambda" Grid.Column="2" HorizontalAlignment="Left" Margin="163.6,55,0,0" VerticalAlignment="Top"/>
+        <Label Content="Psi" Grid.Column="2" HorizontalAlignment="Left" Margin="163.6,102,0,0" VerticalAlignment="Top"/>
+        <Label Content="Sigma" Grid.Column="2" HorizontalAlignment="Left" Margin="161.6,154,0,0" VerticalAlignment="Top"/>
+        <Label Content="Theta" Grid.Column="2" HorizontalAlignment="Left" Margin="158.6,206,0,0" VerticalAlignment="Top"/>
+        <Button Content="Zastosuj" Grid.Column="2" HorizontalAlignment="Left" Margin="141.6,274,0,0" VerticalAlignment="Top" Width="94" Height="31"/>
+        <Button Content="GaborFilter" Grid.Column="2" HorizontalAlignment="Left" Margin="141.6,329,0,0" VerticalAlignment="Top" Width="94" Height="31" Click="GaborFilterClick"/>
+        <Button Content="MedianFilter" Grid.Column="2" HorizontalAlignment="Left" Margin="141.6,374,0,0" VerticalAlignment="Top" Width="94" Height="31" Click="MedianFilter"/>
+        <Button Content="Normalization" Grid.Column="2" HorizontalAlignment="Left" Margin="141.6,421,0,0" VerticalAlignment="Top" Width="94" Height="31" Click="Normalization"/>
+        <Button Content="Random" Grid.Column="2" HorizontalAlignment="Left" Margin="141.6,469,0,0" VerticalAlignment="Top" Width="94" Height="36" Click="Random"/>
+        <Button Content="OK" Grid.Column="2" HorizontalAlignment="Left" Margin="141.6,516,0,0" VerticalAlignment="Top" Width="94" Height="30" Click="OK"/>
+        <Button Content="Histogram" Grid.Column="2" HorizontalAlignment="Left" Margin="141.6,562,0,0" VerticalAlignment="Top" Width="94" Height="28" Click="Histogram"/>
+        <Button Content="Binaryzation" Grid.Column="2" HorizontalAlignment="Left" Margin="141.6,604,0,0" VerticalAlignment="Top" Width="94" Height="32" Click="Binaryzation"/>
+
 
 
 

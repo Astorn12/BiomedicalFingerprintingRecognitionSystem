@@ -55,6 +55,29 @@ namespace BiometriaOdciskuPalca
                 }
             }
         }
+
+
+        public void regridIt()
+        {
+            for (int i = 0; i < bitmap.Width; i += cellSize)
+            {
+                for (int j = 0; j < bitmap.Height; j += cellSize)
+                {
+                    Bitmap gridmap = new Bitmap(cellSize, cellSize);
+                    for (int a = i; a < i + cellSize; a++)
+                    {
+                        for (int b = j; b < j + cellSize; b++)
+                        {
+                            gridmap.SetPixel(a - i, b - j, bitmap.GetPixel(a, b));
+                        }
+                    }
+                    //ImageCell imageCell = new ImageCell(gridmap);
+
+                    cellTab[i / cellSize, j / cellSize].bitmap = gridmap;
+
+                }
+            }
+        }
         public void mergeIt()
         {
            int number = bitmap.Width / cellSize;
@@ -180,7 +203,88 @@ namespace BiometriaOdciskuPalca
             return this.cellTab[x/cellSize,y/cellSize]; //tutaj trzeba sprawdzić czy wybierają dobre okno
         }
 
+        public Bitmap  GaborFilter()
+        {
+            foreach (var item in cellTab)
+            {
+                item.GaborFilter();
+            }
+            mergeIt();
+            return bitmap;
+        }
 
+
+        public Bitmap GetGaborFIlteredImage(List<Bitmap> bank)
+        {
+            
+            for(int i=0;i<cellTab.GetLength(0);i++)
+            {
+                for(int j=0;j<cellTab.GetLength(1);j++)
+                {
+                    cellTab[i, j].bitmap = ChangeImageCellImage(GetFilterFromBank(bank, cellTab[i, j].getAngle()), i, j);
+                }
+                     
+            }
+            mergeIt();
+            return bitmap;
+        }
+
+        public Bitmap GetFilterFromBank(List<Bitmap> bank,double angle)
+        {
+            double jump =(3.14)/ bank.Count();
+            int a = 0;
+            for(double i=0;i<3.14;i+=jump)
+            {
+                
+                if(angle>=i&&angle<i+jump)
+                {
+                    if (Math.Abs(angle - i) > Math.Abs(angle - i - jump))
+                    {
+                        if (a + 1 == bank.Count())
+                            return bank[a];
+                        else
+                        return bank[a + 1];
+                    }
+                    else
+                        return bank[a];
+
+
+                    
+                }
+                a++;
+            }
+
+            return null;
+        }
+
+        public Bitmap ChangeImageCellImage(Bitmap bank,int i,int j)
+        {
+            Bitmap bi = new Bitmap(cellSize, cellSize);
+            int x = 0;int y = 0;
+            for(int a=i*cellSize;a<i*cellSize+cellSize;a++)
+            {
+                for (int b = j * cellSize; b < j * cellSize + cellSize; b++)
+                {
+                    
+                    if(a>0&&b>0&&a<bank.Width&&b<bank.Height)
+                    bi.SetPixel(x, y, bank.GetPixel(a, b));
+                    y++;
+                }
+                y = 0;
+                x ++;
+                
+            }
+
+            return bi;
+        }
+
+        public void ShowAngles()
+        {
+            foreach(var item in cellTab)
+            {
+                Console.Write(item.getAngle()+" ");
+            }
+        }
         #endregion
     }
 }

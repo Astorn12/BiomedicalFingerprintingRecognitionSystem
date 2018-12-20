@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accord.Imaging.Filters;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -13,8 +14,11 @@ namespace BiometriaOdciskuPalca
 {
     class Fingerprint
     {
-        public Bitmap localOrientationMap{ get; set; }// to jest orginalne zdjęcie,(przynajmniej na początku)
         public Bitmap orginalImage { get; set; }
+       
+
+        public Bitmap localOrientationMap{ get; set; }// to jest orginalne zdjęcie,(przynajmniej na początku)
+        public FiltratorMedianowy filtratorMedianowy;
         GridedImage mapaKierunkow;
         int squareLen=16;// ustalona wielkość kwardarów przy tworzeniu mapy kierunków
 
@@ -25,16 +29,26 @@ namespace BiometriaOdciskuPalca
         
         public Fingerprint(BitmapImage bitmapImage)
         {
-           localOrientationMap = ImageSupporter.convertToModuloBitmap(ImageSupporter.BitmapImage2Bitmap(bitmapImage),squareLen);
+           localOrientationMap =ImageSupporter.convertToModuloBitmap(ImageSupporter.BitmapImage2Bitmap(bitmapImage),squareLen);
            orginalImage= ImageSupporter.convertToModuloBitmap(ImageSupporter.BitmapImage2Bitmap(bitmapImage),squareLen);
             //alreadyPassed = new Bitmap(bitmap.Width, bitmap.Height);
+           
             
             
         }
         
-        public void startRecognition()
+        public void startRecognition(Bitmap b)
         {
-            mapaKierunkow = new GridedImage(localOrientationMap, squareLen);
+            //mapaKierunkow = new GridedImage(localOrientationMap, squareLen);
+            mapaKierunkow = new GridedImage(b, squareLen);
+
+
+        }
+
+        public void ReuseImageCells(Bitmap b)
+        {
+            mapaKierunkow.bitmap = b;
+            mapaKierunkow.regridIt();
         }
         public Bitmap returnGrey2()
         {
@@ -101,6 +115,73 @@ namespace BiometriaOdciskuPalca
             return newBitmap;
         }
 
+        public Bitmap filtruj(float gamma, float lambda,float psi,float sigma,float theta)
+        {
+            Bitmap b = medianFilter(orginalImage);
+            //Bitmap b = orginalImage;
+           b= gaborFilter(b, gamma,  lambda, psi, sigma, theta);
+            //return areaFilter(b);
+            return b;
+        }
+        public Bitmap filtruj(Bitmap o,float gamma, float lambda, float psi, float sigma, float theta)
+        {
+            Bitmap  b= medianFilter(o);
+            //Bitmap b = orginalImage;
+            b = gaborFilter(b, gamma, lambda, psi, sigma, theta);
+            //return areaFilter(b);
+            return b;
+        }
+        public Bitmap medianFilter(Bitmap b)
+        {
+            FiltratorMedianowy f = new FiltratorMedianowy();
+
+            return f.filtrowanie(b);
+        }
+
+        public Bitmap gaborFilter(Bitmap b,float gamma, float lambda,float psi,float sigma,float theta )
+        {
+           // Grayscale g = new Grayscale(0.2125, 0.7154, 0.0721);
+
+            GaborFilter filter = new GaborFilter();
+            Random random = new Random();
+            Boolean flaga = true;
+
+
+
+
+            filter.Gamma = gamma;
+            filter.Lambda = lambda;
+            filter.Psi = psi;
+            filter.Sigma = sigma;
+            filter.Theta = theta;
+
+
+            /*filter.Gamma = random.Next(1,5);
+            filter.Lambda=random.Next(1,5);
+            filter.Psi=random.Next(1,5);
+            filter.Sigma=random.Next(1,5);
+            filter.Theta=random.Next(1,5);*/
+
+            Bitmap bx = ImageSupporter.ColorToGrayscale(b);
+
+                    var okno = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(filter.Apply(ImageSupporter.ColorToGrayscale(bx))));
+                    okno.Title = filter.Gamma + " " + filter.Lambda + " " + filter.Psi + " " + filter.Sigma + " " + filter.Theta;
+                    okno.Show();
+                
+            
+            filter.Gamma = 3.0;
+            filter.Theta = 0.0;
+            GrayscaleToRGB grayscaleToRGB = new GrayscaleToRGB();
+            return grayscaleToRGB.Apply( filter.Apply(ImageSupporter.ColorToGrayscale(b)));
+        }
+
+        
+        private static Bitmap areaFilter(Bitmap b)
+        {
+            
+
+            return Filtrator.HighPassFilter(EMask.Prewitt,b);
+        }
         #region Tests
         public void test1()
         {
@@ -110,11 +191,12 @@ namespace BiometriaOdciskuPalca
             
         }
 
-        public void toDirectionMask()
+        public Bitmap toDirectionMask()
         {
             mapaKierunkow.convertToDirectionMap();
             mapaKierunkow.mergeIt();
             this.localOrientationMap = mapaKierunkow.bitmap;
+            return this.localOrientationMap;
         }
         public void merge()
         {
@@ -146,16 +228,42 @@ namespace BiometriaOdciskuPalca
             minutiaeDetector =new MinutiaeDetector(orginalImage, sectionLen, startingPointsDistance,mapaKierunkow,dlugoscSkoku);
 
         }
-        public Bitmap getSectionPoints()
+        public Bitmap getSectionPoints(Bitmap bitmap)
         {
+            this.orginalImage = bitmap;
             startMinutazDetection();
-            return minutiaeDetector.getSectionPointsBitmap();
+            return minutiaeDetector.GetImageWithMatchedMinutias();
         }
         public Bitmap getAlreadyPassed()
-            {
+        {
             return minutiaeDetector.getAlreadyPassed();
         }
+        public Bitmap GetAfterFiltration()
+        {
+            //mapaKierunkow.convertToDirectionMap();
+            //mapaKierunkow.GaborFilter();
+            // mapaKierunkow.mergeIt();
+            //  return mapaKierunkow.bitmap;
+            return mapaKierunkow.GaborFilter();
+        }
 
+        public Bitmap GetGaborFilteredImage(List<Bitmap> bank)
+        {
+            return mapaKierunkow.GetGaborFIlteredImage(bank);
+        }
+       
+        public Bitmap Merge()
+        {
+            this.mapaKierunkow.mergeIt();
+            return mapaKierunkow.bitmap;
+        }
+
+
+        public void ShowAngles()
+        {
+            mapaKierunkow.ShowAngles();
+        }
+        
         #endregion
 
     }

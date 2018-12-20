@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accord.Imaging.Filters;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace BiometriaOdciskuPalca
         #region Atributes
         int size;
         public Bitmap bitmap;
-        double angle;
+        double angle { get; set; }
         #endregion
 
         #region Construktors
@@ -613,6 +614,28 @@ namespace BiometriaOdciskuPalca
             }
             return sigmaSprezenia;
         }
+
+        
+        public void GaborFilter()
+        {
+
+
+             for (int i = 0; i < 4; i++)
+              {
+            //bitmap = Filtrator.gaborFilter(bitmap, 0.1f, 4, 3, 0.01f, (float)(this.angle));
+            HistogramEqualization he = new HistogramEqualization();//DZIAŁA
+
+
+             bitmap = he.Apply(bitmap);
+            //this.bitmap = Filtrator.GaborFilter(bitmap,(float)this.angle);
+                    
+            }
+                //ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(tmp));
+
+        }
+
+
+       
         #endregion
 
 
