@@ -22,6 +22,7 @@ namespace BiometriaOdciskuPalca
         #region Atributes
         int size;
         public Bitmap bitmap;
+        private Bitmap bitmap2;//WERSJA2
         double angle { get; set; }
         #endregion
 
@@ -38,6 +39,7 @@ namespace BiometriaOdciskuPalca
             this.bitmap = bitmap;
             this.size = bitmap.Width;
             maskInitialization();
+            bitmap2 = new Bitmap(size, size);
         }
         #endregion
 
@@ -286,6 +288,7 @@ namespace BiometriaOdciskuPalca
                         if ((int)((j - (bitmap.Width + 1) / 2) + 0.5) == (int)((-a * (i - (bitmap.Width) / 2) + 0.5)))
                         {
                             bitmap.SetPixel(j, i, Color.Yellow);
+                           // bitmap2.SetPixel(j, i, Color.Black);
                         }
                        // else bitmap.SetPixel(j, i, Color.White);
                     }
@@ -301,8 +304,10 @@ namespace BiometriaOdciskuPalca
 
 
                         if ((int)((j - (bitmap.Width + 1) / 2) + 0.5) == (int)((-a * (i - (bitmap.Width) / 2) + 0.5)))
-                        {
+                        {//
                             bitmap.SetPixel(j, i, Color.Yellow);
+                           // bitmap2.SetPixel(j, i, Color.Black);
+
                         }
                         //else bitmap.SetPixel(j, i, Color.White);
                     }
@@ -319,13 +324,14 @@ namespace BiometriaOdciskuPalca
                         if ((int)((j - (bitmap.Width + 1) / 2) + 0.5) == (int)((-a * (i - (bitmap.Width) / 2) + 0.5)))
                         {
                             bitmap.SetPixel(i, j, Color.Yellow);
+                           // bitmap2.SetPixel(i, j, Color.Black);
                         }
                         //else bitmap.SetPixel(i, j, Color.White);
                     }
                 }
             }
 
-
+         //   bitmap = bitmap2;//WERJSJA2
         }//zmienia bitmapę na jeden kwadracik z ustalonum kierunkiem
 
         public double restrictAngle(double an)

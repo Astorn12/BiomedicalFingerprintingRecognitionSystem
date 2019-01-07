@@ -182,6 +182,8 @@ namespace BiometriaOdciskuPalca
 
             return Filtrator.HighPassFilter(EMask.Prewitt,b);
         }
+
+        
         #region Tests
         public void test1()
         {
@@ -238,6 +240,17 @@ namespace BiometriaOdciskuPalca
         {
             return minutiaeDetector.getAlreadyPassed();
         }
+
+        public List<Minutia> GetTemporaryMinutiasMap()
+        {
+            return minutiaeDetector.getMinutionsMap();
+        }
+
+
+
+
+
+
         public Bitmap GetAfterFiltration()
         {
             //mapaKierunkow.convertToDirectionMap();

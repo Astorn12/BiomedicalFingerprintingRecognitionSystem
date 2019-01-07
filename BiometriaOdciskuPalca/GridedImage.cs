@@ -19,8 +19,8 @@ namespace BiometriaOdciskuPalca
         {
             this.bitmap = bitmap;
             this.cellSize = cellSize;
-            int number = bitmap.Width / cellSize;
-            int numberH = bitmap.Height / cellSize;
+            int number = (int)((float)((float)bitmap.Width / (float)cellSize)+0.99f);
+            int numberH =(int)( (float)((float)bitmap.Height / (float)cellSize)+0.99f);
             cellTab = new ImageCell[number, numberH];
             gridIt();
         }
@@ -46,8 +46,14 @@ namespace BiometriaOdciskuPalca
                     {
                         for(int b=j;b<j+cellSize;b++)
                         {
+                            if (a>0&&a<bitmap.Width&&b>0&&b<bitmap.Height)
                             gridmap.SetPixel(a - i, b - j, bitmap.GetPixel(a, b));
+                            else
+                            {
+                                 gridmap.SetPixel(a - i, b - j, Color.White);
+                            }
                         }
+                        
                     }
                     ImageCell imageCell = new ImageCell(gridmap);
                     cellTab[i / cellSize, j / cellSize] =imageCell;
@@ -246,7 +252,14 @@ namespace BiometriaOdciskuPalca
                         return bank[a + 1];
                     }
                     else
-                        return bank[a];
+                    {
+                        if(a>=bank.Count)
+                        {
+                            return bank[a - 1];
+                        }
+                          else return bank[a];
+                    }
+                      
 
 
                     

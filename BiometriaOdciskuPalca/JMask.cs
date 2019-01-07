@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace BiometriaOdciskuPalca
 {
-    class MinutiaWektor
+    enum JMask
     {
-        List<Minutia> m { get; set; }
-       
-        public MinutiaWektor(List<Minutia> m)
-        {
-            this.m = m;
-        }
+        GAUSS
     }
 }

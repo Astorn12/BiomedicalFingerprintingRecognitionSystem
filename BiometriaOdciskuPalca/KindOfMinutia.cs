@@ -8,6 +8,6 @@ namespace BiometriaOdciskuPalca
 {
     enum KindOfMinutia
     {
-        ROZWIDZELNI,ZAKONCZENIE
+        ROZWIDLENIE,ZAKONCZENIE
     };
 }

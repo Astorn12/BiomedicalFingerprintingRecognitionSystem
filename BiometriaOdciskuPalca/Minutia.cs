@@ -9,9 +9,9 @@ namespace BiometriaOdciskuPalca
 {
     class Minutia
     {
-        Point p;
-        double direction;
-        KindOfMinutia kind;
+        public Point p { get; set; }
+        public double direction { get; set; }
+         public KindOfMinutia kind { get; set; }
 
         public Minutia(Point point,double angle,KindOfMinutia kind)
         {

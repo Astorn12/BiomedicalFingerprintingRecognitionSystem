@@ -17,6 +17,12 @@ namespace BiometriaOdciskuPalca
         static double[,] Pretittx = new double[3, 3] { { 1, 1, 1 }, { 0, 0, 0 }, { -1, -1, -1 } };
         static double[,] Prewitty = new double[3, 3] { { -1, 0, 1 }, { -1,0 , 1 }, { -1, 0, 1 } };
 
+        static double[,] Laplasjan = new double[3, 3] { { 1,1, 1 }, { 1,-8 , 1 }, { 1, 1, 1 } };
+        
+       
+
+        static double[,] Gauss = new double[3, 3] { { 1, 2, 1 }, { 2,4 , 2 }, { 1, 2, 1 } };
+
         public static double[,] GetMaskX(EMask name)
         {
             switch(name)
@@ -59,6 +65,25 @@ namespace BiometriaOdciskuPalca
 
 
 
+            }
+        }
+
+         public static double[,] GetLaplasjanMask()
+        {
+            return Laplasjan;
+        }
+        
+         public static double[,] GetMask(JMask name)
+        {
+            switch (name)
+            {
+
+                case JMask.GAUSS:
+                    return Gauss;
+                    break;
+            default:
+                    return null;
+                    break;
             }
         }
 

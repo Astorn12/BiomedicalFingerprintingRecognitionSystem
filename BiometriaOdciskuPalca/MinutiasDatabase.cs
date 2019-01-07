@@ -35,11 +35,26 @@ namespace BiometriaOdciskuPalca
             }
         }
 
+
+
+
+
+
         public Boolean check(MinutiaWektor potentialy)
         {
-
             
             return false;
+        }
+
+
+
+
+
+
+        public void Add(MinutiaWektor wektor,string imageName)
+        {
+            this.mBase.Add(new Tuple<string, MinutiaWektor>(imageName,wektor));
+            Save();
         }
     }
 }

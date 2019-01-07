@@ -1,5 +1,6 @@
 ﻿using Accord.Imaging.Filters;
 using Accord.Statistics.Visualizations;
+using AForge.Imaging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -27,6 +28,51 @@ namespace BiometriaOdciskuPalca
                     double sigma = Math.Sqrt(Math.Pow(Convolution(GetArea(new Point(i, j), 3, bitmap), maskx), 2)
                         +
                         Math.Pow(Convolution(GetArea(new Point(i, j), 3, bitmap), masky), 2));
+
+
+                    byte byt = (byte)(sigma + 0.5);
+
+                    b.SetPixel(i, j, Color.FromArgb(byt, byt, byt));
+                }
+            }
+            return b;
+
+        }
+
+        public static Bitmap LaplasjanFilter( Bitmap bitmap)
+        {
+            Bitmap b = (Bitmap)bitmap.Clone();
+            double[,] mask = MaskBox.GetLaplasjanMask();
+            
+
+            for (int i = 1; i < bitmap.Width - 1; i++)
+            {
+                for (int j = 1; j < bitmap.Height - 1; j++)
+                {
+                    double sigma = Convolution(GetArea(new Point(i, j), 3, bitmap), mask);
+
+
+                    byte byt = (byte)(sigma + 0.5);
+
+                    b.SetPixel(i, j, Color.FromArgb(byt, byt, byt));
+                }
+            }
+            return b;
+
+        }
+
+        public static Bitmap LowPassFilter(JMask name, Bitmap bitmap)
+        {
+            Bitmap b = (Bitmap)bitmap.Clone();
+            double[,] mask = MaskBox.GetMask(name);
+            
+
+            for (int i = 1; i < bitmap.Width - 1; i++)
+            {
+                for (int j = 1; j < bitmap.Height - 1; j++)
+                {
+                    double sigma = Convolution(GetArea(new Point(i, j), 3, bitmap), mask)/(Math.Pow(mask.GetLength(0),2));
+                     
 
 
                     byte byt = (byte)(sigma + 0.5);
@@ -87,6 +133,29 @@ namespace BiometriaOdciskuPalca
             return segTab;
         }
 
+        public static Bitmap HistorgramGridedFilter(Bitmap bitmap,int size)
+        {
+            Bitmap b = (Bitmap)bitmap.Clone();
+            GridedImage grid = new GridedImage(b,size);
+
+
+            return grid.GaborFilter();
+        }
+        public static Bitmap Invers(Bitmap b)
+        {
+            Bitmap bi = (Bitmap)b.Clone();
+            for(int i=0;i<bi.Width;i++)
+            {
+                for(int j=0;j<bi.Height;j++)
+                {
+                    byte newColor =(byte) (255 - bi.GetPixel(i, j).R);
+
+                    bi.SetPixel(i, j, Color.FromArgb(newColor, newColor, newColor));
+
+                }
+            }
+            return bi;
+        }
 
         #region Private Methods
 
@@ -203,23 +272,42 @@ namespace BiometriaOdciskuPalca
             gb.Theta = theta;
             bx = ImageSupporter.ColorToGrayscale((Bitmap)b.Clone());
 
-            try
-            {
-                Bitmap tmp = gb.Apply(bx);
-                if (WhiteningLevel(tmp, 0.1f))
-                {
+            // try
+            //{
+           Bitmap tmp = bx;
+            //for (int i = 0; i < 3; i++)
+           // {
+                tmp = gb.Apply(bx);
+          //  }
+                // if (WhiteningLevel(tmp, 0.1f))
+                //  {
+               // tmp = FFT((Bitmap)b.Clone());
                     ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(tmp));
 
                     iw.Title = gb.Gamma + " " + gb.Lambda + " " + gb.Psi + " " + gb.Sigma + " " + gb.Theta;
                     iw.Show();
-                }
-            }
+              //  }
+          /*  }
             catch (Exception e)
             {
                 e.GetBaseException();
-            }
+            }*/
 
         }
+
+        public static Bitmap FFT(Bitmap b)
+        {
+            /*Bitmap tmp=ImageSupporter.ColorToGrayscale((Bitmap)b.Clone());
+            ComplexImage ci= ComplexImage.FromBitmap(tmp);
+             ci.BackwardFourierTransform();
+             return ci.ToBitmap();*/
+            return null;
+        }
+
+
+
+
+
 
 
         public static Bitmap GaborFilter(Bitmap b,float angle)
@@ -359,12 +447,19 @@ namespace BiometriaOdciskuPalca
 
         }
 
-        
 
 
 
 
 
+       public static Bitmap Canny(Bitmap bitmap)
+        {
+            Bitmap temporary= ImageSupporter.ColorToGrayscale(bitmap);;
+            CannyEdgeDetector cannyEdgeDetector = new CannyEdgeDetector();
+            temporary = cannyEdgeDetector.Apply((Bitmap)temporary.Clone());
+
+            return ImageSupporter.GrayScaleToColor(temporary);
+        }
 
 
 
@@ -397,9 +492,9 @@ namespace BiometriaOdciskuPalca
             {
                 gb.Theta = (float)i * jump;
                 gaborBank.Add(gb.Apply(bx));
-                //ImageWindow im=new ImageWindow(ImageSupporter.Bitmap2BitmapImage( gaborBank[i]));
-                // im.Title = ImageSupporter.RadianToDegree(gb.Theta)+"";
-                //  im.Show();
+                ImageWindow im=new ImageWindow(ImageSupporter.Bitmap2BitmapImage( gaborBank[i]));
+               im.Title = ImageSupporter.RadianToDegree(gb.Theta)+"";
+                  im.Show();
             }
 
             return gaborBank;
@@ -493,6 +588,82 @@ namespace BiometriaOdciskuPalca
             return grayscaleToRGB.Apply(th.Apply(ImageSupporter.ColorToGrayscale(bx)));
         }
 
+        //metoda segmentuje zdjęcia zwracając prostokątny obraz o wartościach maksymalnej szerokości i wysokości odcisku palca, innymi słowy iusuwa poczne tło, marginesy
+        public static Bitmap segmentation(int blackBound,Bitmap orginal)
+            //blackBound oznacza od jakiego poziomu czerni określamy wystąpienie krawędzi,
+            // w przypadku obrazów czarnobiałych limit można ustawić na 0, gdy skaner wytwarza zdjęcia z całej gamy sszarości, tzn. tło zdjęcia jest szare to należy 
+           //odpowiednio zdefiniować granicę tła
+        {
+            int left = orginal.Width, right =0, bottom = 0, top =orginal.Width;
+            Bitmap segmented;
+
+            for(int i=0;i<orginal.Width;i++)
+            {
+                for(int j=0;j<orginal.Height;j++)
+                {
+                    if(orginal.GetPixel(i,j).R<=blackBound)// użycie <= podyktowane jest tym, aby w przypadku obrazów czarnobiałych można było ustaiwć limit na 0
+                    {
+                        if (i < left) left = i;
+                        break;
+                    }
+                }
+            }
+
+            for (int i =  orginal.Width-1; i >0; i--)
+            {
+                for (int j =  orginal.Height-1; j >0; j--)
+                {
+                    if (orginal.GetPixel(i, j).R <= blackBound)
+                    {
+                        if (i > right) right = i;
+                        break;
+                    }
+                }
+            }
+
+            
+          for (int j = 0; j < orginal.Height; j++)
+          {
+                for (int i = 0; i < orginal.Width; i++)
+                {
+                    if (orginal.GetPixel(i, j).R <= blackBound)
+                    {
+                        if (j <top) top = j;
+                        break;
+                    }
+                }
+            }
+
+            for (int j = orginal.Height-1; j > 0; j--)
+            {
+                for (int i = orginal.Width-1; i > 0; i--)
+                {
+               
+                    if (orginal.GetPixel(i, j).R <= blackBound)
+                    {
+                        if (j > bottom) bottom = j;
+                        break;
+                    }
+                }
+            }
+
+            segmented = new Bitmap(right - left, bottom - top);
+
+            for (int i = left; i < right; i++)
+            {
+                for (int j = top; j < bottom; j++)
+                {
+                    segmented.SetPixel(i - left, j - top,orginal.GetPixel(i,j));
+                }
+            }
+
+
+
+
+            return segmented;
+        }
+
+      
         #endregion
     }
 }

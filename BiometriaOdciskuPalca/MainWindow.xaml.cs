@@ -47,6 +47,7 @@ namespace BiometriaOdciskuPalca
         //Bitmap processImage;
 
         string databasePath = "";
+        MinutiaWektor temporaryMinutiasMap;
         #region Constructors
         public MainWindow()
         {
@@ -81,8 +82,14 @@ namespace BiometriaOdciskuPalca
             logo.UriSource = new Uri(files[0]);
             logo.EndInit(); // Getting the exception here
             originalImage.Source = logo;
-            originalImage.Source = ImageSupporter.Bitmap2BitmapImage(ImageSupporter.ColorToGrayscale(ImageSupporter.BitmapImage2Bitmap(logo)));
+
+            Bitmap tmp = ImageSupporter.ColorToGrayscale(ImageSupporter.BitmapImage2Bitmap(logo));
+           Bitmap or = Filtrator.segmentation(100,tmp);
+            //originalImage.Source = ImageSupporter.Bitmap2BitmapImage(ImageSupporter.ColorToGrayscale(ImageSupporter.BitmapImage2Bitmap(logo)));
+            originalImage.Source = ImageSupporter.Bitmap2BitmapImage(or);
             // newImageSource = files[0];
+            
+
             fingerprint = new Fingerprint((BitmapImage)originalImage.Source);
             this.orginalBitmap = fingerprint.orginalImage;
             this.workingImage = (Bitmap)orginalBitmap.Clone();
@@ -118,8 +125,9 @@ namespace BiometriaOdciskuPalca
             // mapakierunkow.Source = ImageSupporter.Bitmap2BitmapImage(actualFingerprint.returnGrey());
             try
             {
-
-                fingerprint.startRecognition(fingerprint.localOrientationMap);
+                
+               // fingerprint.startRecognition(fingerprint.localOrientationMap);
+                fingerprint.startRecognition((Bitmap)workingImage.Clone());
                 fingerprint.toDirectionMask();
 
                 mapakierunkow.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.localOrientationMap);
@@ -291,15 +299,26 @@ namespace BiometriaOdciskuPalca
         {
             //     try
             //     {
-            punktySekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getSectionPoints(afterFiltering));
+           // punktySekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getSectionPoints(afterFiltering));
+            punktySekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getSectionPoints((Bitmap)workingImage.Clone()));
             prezentacjasekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getAlreadyPassed());
+
+            temporaryMinutiasMap = new MinutiaWektor( fingerprint.GetTemporaryMinutiasMap());
+
+
 
             //    }
             //  catch (Exception ex)
             //  {
-            Console.WriteLine("Nie masz mapy kierunków");
+           // Console.WriteLine("Nie masz mapy kierunków");
             // }
         }
+
+        private void AddToBase(object sender, RoutedEventArgs e)
+        {
+            database.Add(temporaryMinutiasMap,FingerprintName.Text);
+        }
+
         private void Filtracja(object sender, RoutedEventArgs e)
         {
 
@@ -377,7 +396,7 @@ namespace BiometriaOdciskuPalca
             nt.C = 20;// i * 2.5; random.Next(255);
             nt.K = 0.4;//0.2*(float)random.Next(10);
             nt.Radius = 5;// random.Next(20);
-            //workingImage = nt.Apply(workingImage);
+            workingImage = nt.Apply(workingImage);
             QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(workingImage);
             /*-----------------------------Szukanie minucji----------------------------------*/
 
@@ -448,7 +467,7 @@ namespace BiometriaOdciskuPalca
         private void OK(object sender, RoutedEventArgs e)
         {
             this.workingImage = (Bitmap)temporary.Clone();
-
+            odszumionyObraz.Source = ImageSupporter.Bitmap2BitmapImage(workingImage);
         }
 
         private void MedianFilter(object sender, RoutedEventArgs e)
@@ -464,6 +483,12 @@ namespace BiometriaOdciskuPalca
             ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
             iw.Show();
         }
+        private void Segmentation(object sender, RoutedEventArgs e)
+        {
+            temporary = Filtrator.segmentation(30,(Bitmap)workingImage.Clone());
+            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
+            iw.Show();
+        }
 
         private void Binaryzation(object sender, RoutedEventArgs e)
         {
@@ -471,8 +496,52 @@ namespace BiometriaOdciskuPalca
             ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
             iw.Show();
         }
+        private void Gornoprzepustowy(object sender, RoutedEventArgs e)
+        {
+            temporary = Filtrator.HighPassFilter(EMask.Prewitt,(Bitmap)workingImage.Clone());
+            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
+            iw.Show();
+        }
+        private void GridedHistogram(object sender, RoutedEventArgs e)
+        {
+            temporary = Filtrator.HistorgramGridedFilter((Bitmap)workingImage.Clone(),32);
+            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
+            iw.Show();
+        }
 
+        private void Invers(object sender, RoutedEventArgs e)
+        {
+            temporary = Filtrator.Invers((Bitmap)workingImage.Clone());
+            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
+            iw.Show();
+        }
+        private void Canny(object sender, RoutedEventArgs e)
+        {
+          //  CannyEdgeDetector cannyEdgeDetector = new CannyEdgeDetector();
+          //  temporary=cannyEdgeDetector.Apply((Bitmap)workingImage.Clone());
+            temporary = Filtrator.Canny((Bitmap)workingImage.Clone());
+            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
+            iw.Show();
+        }
 
+        private void LowPassFilter(object sender, RoutedEventArgs e)
+        {
+            temporary = Filtrator.LowPassFilter(JMask.GAUSS,(Bitmap)workingImage.Clone());
+            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
+            iw.Show();
+        }
+        private void Laplasjan(object sender, RoutedEventArgs e)
+        {
+            temporary = Filtrator.LaplasjanFilter( (Bitmap)workingImage.Clone());
+            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
+            iw.Show();
+        }
+        private void Cancel(object sender, RoutedEventArgs e)
+        {
+            temporary = (Bitmap)orginalBitmap.Clone();
+            workingImage = (Bitmap)orginalBitmap.Clone();
+            odszumionyObraz.Source = ImageSupporter.Bitmap2BitmapImage(workingImage);
+        }
         public void PrzetwarzanieWstepne()
         {
             this.workingImage =  Filtrator.Normalization(workingImage);
@@ -482,13 +551,19 @@ namespace BiometriaOdciskuPalca
 
         }
 
+        private void ZastosujGaborFilter(object sender, RoutedEventArgs e)
+        {
+            StartChosenGabor();
+        }
 
 
-        #endregion
 
-        #region Gabor Filter Specyfikaction Click Listeners 
 
-        private void GaborFilterClick(object sender, RoutedEventArgs e)
+            #endregion
+
+            #region Gabor Filter Specyfikaction Click Listeners 
+
+            private void GaborFilterClick(object sender, RoutedEventArgs e)
         {
             workingImage = Filtrator.Normalization(orginalBitmap);
             fingerprint.startRecognition((Bitmap)workingImage.Clone());
@@ -508,16 +583,17 @@ namespace BiometriaOdciskuPalca
                 float.Parse(PsiInsert.Text),
                 float.Parse(SigmaInsert.Text)
              );
+            Filtrator.gaborFilterMyBank(orginalBitmap);
             Bitmap b = fingerprint.GetGaborFilteredImage(bank);
             QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(b);
             
         }
         private void SetDefault()
         {
-            GammaInsert.Text = 4.0+"";
-            LambdaInsert.Text = 8+"";
-            PsiInsert.Text = 0.5 + "";
-            SigmaInsert.Text = 9.1 + " ";
+            GammaInsert.Text = 0.3+"";
+            LambdaInsert.Text = 4.0+"";
+            PsiInsert.Text = 1.0 + "";
+            SigmaInsert.Text = 2.0 + " ";
             ThetaInsert.Text = 0 + " ";
 
         }
@@ -582,12 +658,14 @@ namespace BiometriaOdciskuPalca
 
         private void StartChosenGabor()
         {
-            Filtrator.GaborFilter((Bitmap)orginalBitmap.Clone(),
+             Filtrator.GaborFilter((Bitmap)orginalBitmap.Clone(),
                 float.Parse(GammaInsert.Text),
                 float.Parse(LambdaInsert.Text),
                 float.Parse(PsiInsert.Text),
                 float.Parse(SigmaInsert.Text),
                 (float)ImageSupporter.DegreeToRadian(float.Parse(ThetaInsert.Text)));
+
+
         }
         private void Random(object sender, RoutedEventArgs e)
         {
@@ -622,7 +700,7 @@ namespace BiometriaOdciskuPalca
 
         #endregion
 
-
+        
 
     }
 }

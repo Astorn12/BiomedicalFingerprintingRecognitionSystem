@@ -17,12 +17,14 @@ namespace BiometriaOdciskuPalca
         int startingSectionLen;
         int startingPointsDistance;//odreślenie odległości międzi punktami dyskretnej siatki służącej do upewnienia się że każdy łuk został sprawdzony
         int dlugoscSkoku;
-        List<Tuple<Point,double>> minucje = new List<Tuple<Point,double>>();//to będzie sbiór ostatecznie znalezionych minucji
+       // List<Tuple<Point,double>> minucje = new List<Tuple<Point,double>>();//to będzie sbiór ostatecznie znalezionych minucji
+        List<Minutia> minucje = new List<Minutia>();
         GridedImage localDirectionMap;//mapa kiery=unków lokalnych przechowujące kierunek w jakik skierowany jest łuk, a dokładnie kąt i ką ten jest od 0 do 180 stopni
         ImageWindow okno;
         Color standard = Color.FromArgb(0, 0, 128);
 
-        int limit = 100;//limit czarności
+        int limit = 200;//limit czarności
+        bool inverted=false;
         
         public MinutiaeDetector(Bitmap orginalBitmap,int sectionLen,int startingPointsDistance,GridedImage localDirectionMap,int dlugoscSkoku)
         {
@@ -38,16 +40,17 @@ namespace BiometriaOdciskuPalca
             this.startingSectionLen = 5;
            
         }
-        public  List<Tuple<Point,double>> getMinutionsMap()
+        public  List<Minutia> getMinutionsMap()
         {
             //tutaj trzeba zmienić na usuwanie tylko jendej z nich
             // getSectionPointsBitmap();
-            List<Tuple<Point, double>> tmpRemove = new List<Tuple<Point, double>>();
+           // List<Tuple<Point, double>> tmpRemove = new List<Tuple<Point, double>>();
+            List<Minutia> tmpRemove = new List<Minutia>();
            foreach(var p in minucje)
             {
                 foreach (var t in minucje)
                 {
-                    if(p!=t&&pointsDistance(p.Item1,t.Item1)<5)
+                    if(p!=t&&pointsDistance(p.p,t.p)<5)
                     {
                         if(!tmpRemove.Contains(p)&&!tmpRemove.Contains(t))
                         tmpRemove.Add(p);
@@ -66,9 +69,9 @@ namespace BiometriaOdciskuPalca
             MinutiaeVeryfication(minucje,orginalBitmap);
             foreach(var p in minucje)
             {
-               for(int i=p.Item1.X-2;i<p.Item1.X+2;i++)
+               for(int i=p.p.X-2;i<p.p.X+2;i++)
                 {
-                    for (int j = p.Item1.Y - 2; j < p.Item1.Y + 2; j++)
+                    for (int j = p.p.Y - 2; j < p.p.Y + 2; j++)
                     {if(i<training.Width&&i>0&&j<training.Height&&j>0)
                         training.SetPixel(i, j, Color.Orange);
                     }
@@ -131,10 +134,10 @@ namespace BiometriaOdciskuPalca
             {
 
                 
-                if (orginalBitmap.GetPixel(n.X, n.Y).R < limit && alreadyPassed.GetPixel(n.X, n.Y).B!=128 )
-                {
+              //  if (orginalBitmap.GetPixel(n.X, n.Y).R < limit && alreadyPassed.GetPixel(n.X, n.Y).B!=128 )
+             //   {
                   
-                    Dictionary<Point, int> sectionLine = getSectionPixels(n, training, startingSectionLen);
+                    Dictionary<Point, int> sectionLine = getSectionPixels(n, orginalBitmap, startingSectionLen);
 
                     foreach (var item in sectionLine)
                     {
@@ -142,6 +145,8 @@ namespace BiometriaOdciskuPalca
 
                     }
                     Point p = sectionMinimum(sectionLine, orginalBitmap);
+                if (orginalBitmap.GetPixel(p.X, p.Y).R < limit && alreadyPassed.GetPixel(p.X, p.Y).B != 128)
+                {
                     for (int a = p.X - 1; a < p.X + 2; a++)
                     {
                         for (int b = p.Y - 1; b < p.Y + 2; b++)
@@ -172,11 +177,11 @@ namespace BiometriaOdciskuPalca
 
                     Point wsk = m;
 
-                    foreach (Point p in list)
+                    foreach (Point pi in list)
                     {
-                        wsk = p;
-                        int i = orginalBitmap.GetPixel(p.X, p.Y).R;
-                        if (orginalBitmap.GetPixel(p.X, p.Y).B != 128)
+                        wsk = pi;
+                        int i = orginalBitmap.GetPixel(pi.X, pi.Y).R;
+                        if (orginalBitmap.GetPixel(pi.X, pi.Y).B != 128)
                         {
 
                         }
@@ -204,20 +209,20 @@ namespace BiometriaOdciskuPalca
 
                     }
                 }
-                else
+                else if(orginalBitmap.GetPixel(p.X, p.Y).R > limit)
                 {
                     // training.SetPixel(n.X, n.Y, Color.Orange);
 
                     List<Point> list = ImageSupporter.GetLine(m, n);
 
 
-                    Point wsk = m;
+                    Point wsk = p;
 
-                    foreach (Point p in list)
+                    foreach (Point pi in list)
                     {
-                        wsk = p;
-                        int i = orginalBitmap.GetPixel(p.X, p.Y).R;
-                        if (orginalBitmap.GetPixel(p.X, p.Y).R < 100)
+                        wsk = pi;
+                        int i = orginalBitmap.GetPixel(pi.X, pi.Y).R;
+                        if (orginalBitmap.GetPixel(pi.X, pi.Y).R < 100)
                         {
 
                         }
@@ -226,7 +231,16 @@ namespace BiometriaOdciskuPalca
                             break;
                         }
                     }
-                    minucje.Add(new Tuple<Point,double>(wsk, angle));
+                    Minutia newMinutia;
+                    if(!inverted)
+                    {
+                        newMinutia = new Minutia(wsk, angle, KindOfMinutia.ZAKONCZENIE); 
+                    }
+                    else
+                    {
+                         newMinutia = new Minutia(wsk, angle, KindOfMinutia.ROZWIDLENIE); 
+                    }
+                    minucje.Add(newMinutia);
                     try
                     {
                         for (int a = wsk.X - 1; a < wsk.X + 2; a++)
@@ -262,10 +276,10 @@ namespace BiometriaOdciskuPalca
            
             if (n.X < training.Width && n.X > 0 && n.Y > 0 && n.Y < training.Height)
             {
-              Console.WriteLine(alreadyPassed.GetPixel(n.X, n.Y).ToString());
-                if (orginalBitmap.GetPixel(n.X, n.Y).R < limit && alreadyPassed.GetPixel(n.X, n.Y).B!=128)
-                {
-                    Dictionary<Point, int> sectionLine = getSectionPixels(n, training, startingSectionLen);
+             
+                //if (orginalBitmap.GetPixel(n.X, n.Y).R < limit && alreadyPassed.GetPixel(n.X, n.Y).B!=128)
+                //{
+                    Dictionary<Point, int> sectionLine = getSectionPixels(n, orginalBitmap, startingSectionLen);
 
                     foreach (var item in sectionLine)
                     {
@@ -273,6 +287,9 @@ namespace BiometriaOdciskuPalca
 
                     }
                     Point p = sectionMinimum(sectionLine, alreadyPassed);
+
+                if (orginalBitmap.GetPixel(p.X, p.Y).R < limit && alreadyPassed.GetPixel(p.X, p.Y).B != 128)
+                {
                     for (int a = p.X - 1; a < p.X + 2; a++)
                     {
                         for (int b = p.Y - 1; b < p.Y + 2; b++)
@@ -305,13 +322,13 @@ namespace BiometriaOdciskuPalca
                     List<Point> list = ImageSupporter.GetLine(m, n);
 
 
-                    Point wsk = m;
+                    Point wsk = p;
 
-                    foreach (Point p in list)
+                    foreach (Point pi in list)
                     {
-                        wsk = p;
-                        int i = orginalBitmap.GetPixel(p.X, p.Y).R;
-                        if (orginalBitmap.GetPixel(p.X, p.Y).B != 128)
+                        wsk = pi;
+                        int i = orginalBitmap.GetPixel(pi.X, pi.Y).R;
+                        if (orginalBitmap.GetPixel(pi.X, pi.Y).B != 128)
                         {
 
                         }
@@ -338,20 +355,20 @@ namespace BiometriaOdciskuPalca
 
                     }
                 }
-                else
+                else if(orginalBitmap.GetPixel(p.X, p.Y).R > limit)
                 {
                     // training.SetPixel(n.X, n.Y, Color.Orange);
 
                     List<Point> list= ImageSupporter.GetLine(m,n);
                    
                   
-                    Point wsk = m;
+                    Point wsk = p;
                     
-                    foreach(Point p in list)
+                    foreach(Point pi in list)
                     {
-                        wsk = p;
-                        int i = orginalBitmap.GetPixel(p.X, p.Y).R;
-                        if(orginalBitmap.GetPixel(p.X,p.Y).R<120)
+                        wsk = pi;
+                        int i = orginalBitmap.GetPixel(pi.X, pi.Y).R;
+                        if(orginalBitmap.GetPixel(pi.X,pi.Y).R<120)
                         {
                             
                         }
@@ -360,7 +377,16 @@ namespace BiometriaOdciskuPalca
                             break;
                         }
                     }
-                    minucje.Add(new Tuple<Point,double>(wsk, angle));
+                    Minutia newMinutia;
+                    if (!inverted)
+                    {
+                        newMinutia = new Minutia(wsk, angle, KindOfMinutia.ZAKONCZENIE);
+                    }
+                    else
+                    {
+                        newMinutia = new Minutia(wsk, angle, KindOfMinutia.ROZWIDLENIE);
+                    }
+                    minucje.Add(newMinutia);
                     try
                     {
                         for (int a = wsk.X - 1; a < wsk.X + 2; a++)
@@ -399,12 +425,13 @@ namespace BiometriaOdciskuPalca
             //this.training =(Bitmap) orginalBitmap.Clone();
             //Bitmap revers = ImageSupporter.ReverseBitmap((Bitmap)orginalBitmap.Clone());
             this.alreadyPassed = (Bitmap)orginalBitmap.Clone();
-            this.orginalBitmap = ImageSupporter.ReverseBitmap(orginalBitmap);
-            this.training =(Bitmap) orginalBitmap.Clone();
-            
-            getSectionPointsBitmap(orginalBitmap);
-            this.orginalBitmap=ImageSupporter.ReverseBitmap((Bitmap)orginalBitmap);
-            getMinutionsMap();
+           this.orginalBitmap = ImageSupporter.ReverseBitmap(orginalBitmap);
+           this.training =(Bitmap) orginalBitmap.Clone();
+            this.inverted = true;
+           getSectionPointsBitmap(orginalBitmap);
+           this.orginalBitmap=ImageSupporter.ReverseBitmap(orginalBitmap);
+            getMinutionsMap();//tutaj jest sprawdzanie i usuwanie niewłaściwych minucji
+            this.inverted = false;
             return MatchMunities();
             //return getSectionPointsBitmap(revers);
             //return training;
@@ -412,17 +439,24 @@ namespace BiometriaOdciskuPalca
         }
         private Bitmap MatchMunities()
         {
+          //  Bitmap final = (Bitmap)orginalBitmap.Clone() ;
             Bitmap final = (Bitmap)orginalBitmap.Clone() ;
+     
             foreach (var p in minucje)
             {
                 //  final.SetPixel(item.Item1.X, item.Item1.Y,Color.Orange);
 
-                for (int i = p.Item1.X - 1; i < p.Item1.X + 1; i++)
+                for (int i = p.p.X - 1; i < p.p.X + 1; i++)
                 {
-                    for (int j = p.Item1.Y - 1; j < p.Item1.Y + 1; j++)
+                    for (int j = p.p.Y - 1; j < p.p.Y + 1; j++)
                     {
                         if (i < training.Width && i > 0 && j < training.Height && j > 0)
+                        {
+                            if(p.kind.Equals(KindOfMinutia.ZAKONCZENIE))
                             final.SetPixel(i, j, Color.Orange);
+
+                            else final.SetPixel(i, j, Color.Purple);
+                        }
                     }
                 }
             }
@@ -529,18 +563,18 @@ namespace BiometriaOdciskuPalca
             return Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
         }
 
-        private void MinutiaeVeryfication(List<Tuple<Point,double>> minutions,Bitmap bitmap)
+        private void MinutiaeVeryfication(List<Minutia> minutions,Bitmap bitmap)
         {
-           List<Tuple<Point, double>> removeList = new List<Tuple<Point, double>>();
+           List<Minutia> removeList = new List<Minutia>();
             int[,] segmentationImage = Filtrator.BackgroundSegmentation(bitmap);
             int w = 5;
             foreach (var item in minutions)
             {
                 Boolean flag = true;
                 
-               for(int i=item.Item1.X-w/2;i<item.Item1.X+w/2;i++)
+               for(int i=item.p.X-w/2;i<item.p.X+w/2;i++)
                 {
-                    for (int j = item.Item1.Y - w / 2; j < item.Item1.Y + w / 2; j++)
+                    for (int j = item.p.Y - w / 2; j < item.p.Y + w / 2; j++)
                     {
                         if(i<bitmap.Width&&i>0&&j<bitmap.Height&&j>0)
                         {
