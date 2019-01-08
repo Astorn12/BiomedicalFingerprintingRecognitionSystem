@@ -167,8 +167,17 @@
         <Button Content="Canny" Grid.Column="2" HorizontalAlignment="Left" Margin="142.2,534,0,0" VerticalAlignment="Top" Width="94" Height="36" Click="Canny"/>
         <Button Content="Segmentation" Grid.Column="2" HorizontalAlignment="Left" Margin="142.2,596,0,0" VerticalAlignment="Top" Width="94" Height="36" Click="Segmentation"/>
         <Button Content="Dodaj do bazy" Grid.Column="2" HorizontalAlignment="Left" Margin="488.2,34,0,0" VerticalAlignment="Top" Width="133" Height="41" Click="AddToBase"/>
-        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="501.2,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.15,-1.039" Name="FingerprintName"/>
-        <Label Content="Nazwa odcisku" Grid.Column="2" HorizontalAlignment="Center" Margin="513.2,128,78,0" VerticalAlignment="Top" Width="92"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="28" Margin="488.2,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" RenderTransformOrigin="0.15,-1.039" Name="FingerprintName"/>
+        <Label Content="Nazwa odcisku" Grid.Column="2" HorizontalAlignment="Center" Margin="488.2,141,62,0" VerticalAlignment="Top" Width="133"/>
+
+        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="488.2,172,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="79" Width="133" IsEnabled="False" Name="MinuteaWektorInformator"/>
+
+        <Button Content="Check With Database" Grid.Column="2" HorizontalAlignment="Left" Margin="488.2,266,0,0" VerticalAlignment="Top" Width="133" Height="38" Click="CheckWithDatabse"/>
+        <ListBox Grid.Column="2" HorizontalAlignment="Left" Height="226" Margin="457.2,344,0,0" VerticalAlignment="Top" Width="201" Name="EqualFingerprintList"/>
+
+
+
+
 
 
 

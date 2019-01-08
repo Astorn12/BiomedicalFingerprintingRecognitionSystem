@@ -46,7 +46,7 @@ namespace BiometriaOdciskuPalca
         bool testFlag=true;
         //Bitmap processImage;
 
-        string databasePath = "";
+        string databasePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\ databse.json";
         MinutiaWektor temporaryMinutiasMap;
         #region Constructors
         public MainWindow()
@@ -57,8 +57,8 @@ namespace BiometriaOdciskuPalca
             this.DragEnter += new DragEventHandler(Form1_DragEnter);
             this.Drop += new DragEventHandler(Form1_DragDrop);
             SetDefault();
-            // database = new MinutiasDatabase(databasePath);
-            // database.Load();
+            database = new MinutiasDatabase(databasePath);
+            database.Load();
 
         }
         #endregion
@@ -304,7 +304,9 @@ namespace BiometriaOdciskuPalca
             prezentacjasekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getAlreadyPassed());
 
             temporaryMinutiasMap = new MinutiaWektor( fingerprint.GetTemporaryMinutiasMap());
-
+            MinuteaWektorInformator.Text = "Wykryto " + temporaryMinutiasMap.m.Count() + " minucji \n" +
+                                           +temporaryMinutiasMap.GetEndCount() + " zakończeń \n" +
+                                           +temporaryMinutiasMap.GetForkCount() + " rozwidleń";
 
 
             //    }
@@ -312,6 +314,19 @@ namespace BiometriaOdciskuPalca
             //  {
            // Console.WriteLine("Nie masz mapy kierunków");
             // }
+        }
+
+        private void CheckWithDatabase(object sender, RoutedEventArgs e)
+        {
+            List<Tuple<DatabaseElement,float>> equals = database.CheckList(temporaryMinutiasMap);
+            foreach(var element in equals)
+            {
+                ListBoxItem item = new ListBoxItem();
+                item.Content = element.Item1.FingerprntName;
+                EqualFingerprintList.Items.Add(item);
+            }
+
+
         }
 
         private void AddToBase(object sender, RoutedEventArgs e)

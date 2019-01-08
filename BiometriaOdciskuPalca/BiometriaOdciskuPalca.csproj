@@ -89,6 +89,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ColorPoint.cs" />
+    <Compile Include="DatabaseElement.cs" />
     <Compile Include="EMask.cs" />
     <Compile Include="Filtrator.cs" />
     <Compile Include="FiltratorMedianowy.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="MinutiasDatabase.cs" />
     <Compile Include="MinutiaeDetector.cs" />
     <Compile Include="MinutiaWektor.cs" />
+    <Compile Include="MinutiaWektorComperer.cs" />
     <Compile Include="SetValuesForGabor.cs" />
     <Compile Include="StartingSection.cs" />
     <Page Include="ImageWindow.xaml">
