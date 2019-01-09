@@ -14,6 +14,10 @@ namespace BiometriaOdciskuPalca
         {
             this.m = m;
         }
+        public MinutiaWektor()
+        {
+            this.m = new List<Minutia>();
+        }
 
         public int GetMinutiaCount()
         {
@@ -41,6 +45,11 @@ namespace BiometriaOdciskuPalca
                 n++;
             }
             return n;
+        }
+
+        public void Add(Minutia m)
+        {
+            this.m.Add(m);
         }
     }
 }

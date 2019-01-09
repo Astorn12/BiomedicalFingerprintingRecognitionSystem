@@ -69,7 +69,7 @@ namespace BiometriaOdciskuPalca
         {
 
             List<Tuple<DatabaseElement, float>> result = new List<Tuple<DatabaseElement, float>>();
-            MinutiaWektorComperer comperer = new MinutiaWektorComperer(12);
+            MinutiaWektorComperer comperer = new MinutiaWektorComperer(12,2,3);
 
             foreach(var item in mBase)
             {
