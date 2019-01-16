@@ -102,6 +102,7 @@
     <Compile Include="MinutiaeDetector.cs" />
     <Compile Include="MinutiaWektor.cs" />
     <Compile Include="MinutiaWektorComperer.cs" />
+    <Compile Include="ModyficationElement.cs" />
     <Compile Include="SetValuesForGabor.cs" />
     <Compile Include="StartingSection.cs" />
     <Page Include="ImageWindow.xaml">
@@ -156,23 +157,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\szaretlo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="images\naklejka-fingerprint-odcisk-palca.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="database\" />
     <Folder Include="screens\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\plus.png" />
+    <Resource Include="images\szaretlo.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\minus.png" />
+    <Resource Include="images\plus.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.0\build\Accord.targets')" />

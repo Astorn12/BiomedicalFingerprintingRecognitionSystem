@@ -8,7 +8,7 @@ namespace BiometriaOdciskuPalca
 {
     class DatabaseElement
     {
-        public String FingerprntName { get; set; }
+       public String FingerprntName { get; set; }
        public MinutiaWektor MinutiaesWektor { get; set; }
 
         public DatabaseElement(string fingetrprontName,MinutiaWektor minuteasList )

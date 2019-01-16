@@ -12,29 +12,60 @@ namespace BiometriaOdciskuPalca
         public int Limit { get; set; }//określenie ilości minucji które muszą zostać ze spobą dopasowane żeby uzyskać odciski za tożsame
         public int LimitMove { get; set; }//dopuszczlna odległość miedzy pikselami dla której uznaznaje się że piksele leżą w tym samym miejscu
         public double LimitRotate { get; set; }//określa dopuszczalny błąd obrotu przy którym kąty określa się jako toższame
-        List<ModyficationElement> modyficationList;
+
+       // public Dictionary<int ,Dictionary<int ,Dictionary<int,int>>> acumulator;
+         //List<ModyficationElement> modyficationList;
+        int[ , , ] acumulator;
+
+        int angleRangeBottom = -46;
+        int angleRangeTop = +46;
+        int angleJump = 2;
+
+        int xRangeBottom = -201;
+        int xRangeTop = 200;
+        int xJump = 3;
+
+        int yRangeBottom = -201;
+        int yRangeTop = 200;
+        int yJump = 3;
+
         public MinutiaWektorComperer (int limit,int limitMove,double limitRotate)
         {
             this.Limit = limit;
             this.LimitMove = limitMove;
             this.LimitRotate = limitRotate;
-            modyficationList = new List<ModyficationElement>();
-            loadAngles();
+          //  modyficationList = new List<ModyficationElement>();
+           // loadAngles();
+            LoadAcumulator();
+           
             
+        }
+
+        public MinutiaWektorComperer()
+        {
+
         }
 
         //główna funkcja w klasie porównująca podobieństwo dwóch odciski palca na podstawie ich wektorów minucji
         //dane wejściowe: jeden z odcisków z bazy danych i nowy, analizowany odcisk
         //wyjście: true lub fals decyzja czy odciski są tożsame czy też nie
-        public bool Compere(MinutiaWektor databaseMinutia,MinutiaWektor n )
+        public Tuple<bool,int,ModyficationElement> Compere(MinutiaWektor databaseMinutia,MinutiaWektor n )
         {
             Voting(databaseMinutia, n);
-            ModyficationElement best=BestModyficationChecking();
-            MinutiaWektor newMinutiaWektor = MapMinutiaWektor(n, best);
+            //ModyficationElement best=BestModyficationChecking();
+            Tuple<ModyficationElement,int> tuple=BestModyficationChecking();
+            ModyficationElement best = tuple.Item1;
+            //int voteScore = tuple.Item2;
 
-            int count = HowManyIdenticalMinuties(databaseMinutia, newMinutiaWektor);
-            if (count >= this.Limit) return true;
-            else return false;
+             MinutiaWektor newMinutiaWektor = MapMinutiaWektor(n, best);
+
+             int count = HowManyIdenticalMinuties(databaseMinutia, newMinutiaWektor);
+              return new Tuple<bool, int,ModyficationElement>(true,count,best);
+           //  if (count >= this.Limit) return new Tuple<bool, int,ModyficationElement>(true,count,best);
+            // else return new Tuple<bool, int,ModyficationElement>(false, count,best);
+
+           // if (voteScore >= this.Limit) return new Tuple<bool, int,ModyficationElement>(true, voteScore,best);
+          //  else return new Tuple<bool, int,ModyficationElement>(false, voteScore,best);
         }
 
         private int HowManyIdenticalMinuties(MinutiaWektor databaseMinutia,MinutiaWektor n )
@@ -48,14 +79,14 @@ namespace BiometriaOdciskuPalca
                     if(mm(dm,nm))
                     {
                         number++;
-                        break;
+                   //     break;
                     }
                 }
             }
             return number;
         }
 
-        private MinutiaWektor MapMinutiaWektor(MinutiaWektor mw,ModyficationElement me)
+        public MinutiaWektor MapMinutiaWektor(MinutiaWektor mw,ModyficationElement me)
         {
             MinutiaWektor newMinutiaWektor = new MinutiaWektor();
            foreach(var item in mw.m)
@@ -68,45 +99,100 @@ namespace BiometriaOdciskuPalca
 
         private Minutia MapMinutia(Minutia m, ModyficationElement em)
         {
-            int x =(int)(Math.Cos(em.angle) * m.p.X - Math.Sin(em.angle)*m.p.Y+em.x+0.5);
-            int y=(int)(Math.Sin(em.angle) * m.p.X + Math.Cos(em.angle)*m.p.Y+em.y+0.5);
-            double angle = m.direction + em.angle;
-            return new Minutia(new Point(x,y), angle,m.kind);
+            double angle = ImageSupporter.DegreeToRadian(em.angle);
+            int x =(int)(Math.Cos(angle) * m.p.X - Math.Sin(angle)*m.p.Y+em.x+0.5);
+            int y=(int)(Math.Sin(angle) * m.p.X + Math.Cos(angle)*m.p.Y+em.y+0.5);
+            double angle2 = m.direction + angle;
+            return new Minutia(new Point(x,y), angle2,m.kind);
         }
-        private ModyficationElement BestModyficationChecking()
+        private Tuple<ModyficationElement,int> BestModyficationChecking()
         {
-            ModyficationElement tmp=modyficationList[0];
 
-            foreach(var item in modyficationList)
+           // ModyficationElement tmp;//=modyficationList[0];
+
+
+            /*  foreach(var item in modyficationList)
+              {
+                  if (item.vote > tmp.vote)
+                      tmp = item;
+              }*/
+            int bestVoted = 0;
+            int choseAngle = 0, choseX = 0,choseY = 0;
+            /*for (int angle = angleRangeBottom; angle < angleRangeTop; angle += angleJump)
             {
-                if (item.vote > tmp.vote)
-                    tmp = item;
-            }
-            return tmp;
+                for (int x = xRangeBottom; x < xRangeTop; x += xJump)
+                {
+                    for (int y = yRangeBottom; y < yRangeTop; y += yJump)
+                    {
 
+                        if (bestVoted < acumulator[angle, y, x])
+                        {
+                            bestVoted = acumulator[angle, y, x];
+                            choseAngle = angle;
+                            choseX = x;
+                            choseY = y;
+                            
+                        }
+                            
+                    }
+                }
+            }*/
+
+            for (int angle = 0; angle < (angleRangeTop - angleRangeBottom) / angleJump; angle += 1)
+            {
+                for (int x = 0; x < (xRangeTop - xRangeBottom) / xJump; x += 1)
+                {
+                    for (int y = 0; y < (yRangeTop - yRangeBottom) / yJump; y += 1)
+                    {
+                        if (bestVoted < acumulator[angle, y, x])
+                        {
+
+                        if(acumulator[angle, y, x]>10)
+                            {
+
+                            }
+                            bestVoted = acumulator[angle, y, x];
+                            choseAngle = angle;
+                            choseX = x;
+                            choseY = y;
+                        }
+                    }
+                }
+            }
+
+            choseAngle =angleRangeBottom+choseAngle*angleJump;
+            choseX =  xRangeBottom+ choseX*xJump;
+            choseY = yRangeBottom+ choseY*yJump;
+
+
+
+
+
+          //  return new ModyficationElement(choseAngle, choseX, choseY);
+            return new Tuple<ModyficationElement,int>(new  ModyficationElement(choseAngle, choseX, choseY),bestVoted);
         }
 
         List<int> angles = new List<int>();
         private void loadAngles()
         {
-            for (int i = 0; i < 360; i++)
+            for (int i = -90; i < 90; i++)
             {
                 angles.Add(i);
             }
         }
-        public class ModyficationElement
+       /* public class ModyficationElement
         {
             public int x{ get; set; }//przesunięcie względem osi X
             public int y{ get; set; }//przesunięcie względem osi Y
             public int angle{ get; set; }//obrót
-            public int vote { get; set; }//ilość głosów oddanych na modyfikację
+     //       public int vote { get; set; }//ilość głosów oddanych na modyfikację
 
             public ModyficationElement(int x,int y,int angle)
             {
                 this.x = x;
                 this.y = y;
                 this.angle = angle;
-                this.vote = 0;
+               // this.vote = 0;
             
             }
            
@@ -115,20 +201,22 @@ namespace BiometriaOdciskuPalca
             
                 
           
-        }
+        }*/
 
         public Tuple<bool,float> Voting(MinutiaWektor froDatabase, MinutiaWektor scaned)
         {
-            foreach (int angle in angles)
+            for (int angle = angleRangeBottom; angle < angleRangeTop; angle += angleJump)
             {
+
                 foreach (var d in froDatabase.m)//wekrot minucji z bazy danych
                 {
                     foreach (var n in scaned.m)//wektor minucji analizowanego odcisku
                     {
-                        if(dd(n.direction+ImageSupporter.DegreeToRadian(angle),d.direction) <LimitRotate)
+                       // if(dd(ImageSupporter.DegreeToRadian( angle),0)<ImageSupporter.DegreeToRadian(3) && d.p.Equals(n.p))
+                        if (dd(n.direction + ImageSupporter.DegreeToRadian(angle), d.direction) < LimitRotate)
                         {
-                            Point tmp = getShift(n,d, ImageSupporter.DegreeToRadian(angle));
-                            ModyficationElement vote = new ModyficationElement(tmp.X,tmp.Y,angle);
+                            Point tmp = getShift(n, d, ImageSupporter.DegreeToRadian(angle));
+                            ModyficationElement vote = new ModyficationElement(tmp.X, tmp.Y, angle);
                             Vote(vote);
                         }
                     }
@@ -166,18 +254,71 @@ namespace BiometriaOdciskuPalca
 
         public void dyskretyzation(ModyficationElement n)//głosuje za przekształconą minucję w dyskretyzowane miejsce
         {
+            
+
+
+        }
+
+        public void LoadAcumulator()
+        {
+            acumulator = new int[ (angleRangeTop-angleRangeBottom)/angleJump+1,(xRangeTop-xRangeBottom)/xJump+1, (yRangeTop-yRangeBottom)/yJump+1 ];
+            
+            for(int angle=0;angle<(angleRangeTop-angleRangeBottom)/angleJump;angle+=1)
+            {
+                for(int x=0;x<(xRangeTop-xRangeBottom)/xJump;x+=1)
+                {
+                    for (int y = 0; y < (yRangeTop-yRangeBottom)/yJump ; y +=1)
+                    {
+                        acumulator[angle, y, x] = 0;
+                    }
+                }
+            }
+
+
+
 
         }
         private void Vote(ModyficationElement me)
         {
             dyskretyzation(me);
-
             ModyficationListVote(me,1);
         }
 
-        private void ModyficationListVote(ModyficationElement me,int n)
+        private void ModyficationListVote(ModyficationElement me, int n)//n oznacza ilość głósów
         {
-            bool flag = true;
+            if (me.angle < angleRangeTop && me.angle > angleRangeBottom && me.x < xRangeTop && me.x > xRangeBottom && me.y < yRangeTop && me.y > yRangeBottom)
+            { 
+            int accurateAngleCell =(me.angle - angleRangeBottom) / angleJump;
+
+            int accuratexCell= (me.x - xRangeBottom) / xJump;
+
+
+            int accurateyCell =  (me.y - yRangeBottom) / yJump;
+            // na wartość ustalonej komórki głosuje się 2 razy a na komórki okalające ją po jednym razie
+            acumulator[accurateAngleCell, accuratexCell, accurateyCell] += 2; //
+
+                try
+                {
+                    acumulator[accurateAngleCell, accuratexCell - 1, accurateyCell - 1] += 1; // 
+                    acumulator[accurateAngleCell, accuratexCell - 1, accurateyCell] += 1; // 
+                    acumulator[accurateAngleCell, accuratexCell, accurateyCell - 1] += 1; // 
+                    acumulator[accurateAngleCell, accuratexCell + 1, accurateyCell + 1] += 1; // 
+                    acumulator[accurateAngleCell, accuratexCell + 1, accurateyCell] += 1; // 
+                    acumulator[accurateAngleCell, accuratexCell, accurateyCell + 1] += 1; // 
+                    acumulator[accurateAngleCell, accuratexCell + 1, accurateyCell - 1] += 1; // 
+                    acumulator[accurateAngleCell, accuratexCell - 1, accurateyCell + 1] += 1; // 
+                }
+                catch(IndexOutOfRangeException ex)
+                {
+
+                }
+                }
+
+
+
+
+
+           /* bool flag = true;
             foreach (var item in modyficationList)
             {
                 if (item.x == me.x && item.y == me.y && item.angle == me.angle)
@@ -192,7 +333,7 @@ namespace BiometriaOdciskuPalca
             {
                 me.vote = n;
                 modyficationList.Add(me);  
-            }
+            }*/
 
         }
 

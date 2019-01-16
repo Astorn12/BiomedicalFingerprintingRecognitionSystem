@@ -47,15 +47,13 @@ namespace BiometriaOdciskuPalca
 
 
 
-        public Boolean check(MinutiaWektor potentialy)
+        public List<Tuple<DatabaseElement, int,ModyficationElement>>  CheckWithDatabase(MinutiaWektor potential)
         {
-
-            return false;
+            List<Tuple<DatabaseElement, int,ModyficationElement>> result;
+            //potential = mBase[0].MinutiaesWektor;
+            result = CheckList(potential);
+            return result;
         }
-
-
-
-
 
 
         public void Add(MinutiaWektor wektor, string imageName)
@@ -65,19 +63,19 @@ namespace BiometriaOdciskuPalca
         }
 
 
-        public List<Tuple<DatabaseElement,float>> CheckList(MinutiaWektor wektor)
+        public List<Tuple<DatabaseElement,int,ModyficationElement>> CheckList(MinutiaWektor wektor)
         {
 
-            List<Tuple<DatabaseElement, float>> result = new List<Tuple<DatabaseElement, float>>();
-            MinutiaWektorComperer comperer = new MinutiaWektorComperer(12,2,3);
+            List<Tuple<DatabaseElement, int,ModyficationElement>> result = new List<Tuple<DatabaseElement, int,ModyficationElement>>();
+            MinutiaWektorComperer comperer = new MinutiaWektorComperer(12,10,ImageSupporter.DegreeToRadian(10));
 
             foreach(var item in mBase)
             {
-                Tuple<bool, float> compereResult = comperer.Compere(item.MinutiaesWektor, wektor);
+                Tuple<bool, int,ModyficationElement> compereResult = comperer.Compere(item.MinutiaesWektor, wektor);
 
                 if (compereResult.Item1)
                 {
-                    result.Add(new Tuple<DatabaseElement, float>(item, compereResult.Item2));
+                    result.Add(new Tuple<DatabaseElement, int,ModyficationElement>(item, compereResult.Item2,compereResult.Item3));
                 }
 
             }
@@ -85,6 +83,12 @@ namespace BiometriaOdciskuPalca
 
 
             return result;
+        }
+
+        public void Clear()
+        {
+            mBase.Clear();
+            Save();
         }
     }
 }

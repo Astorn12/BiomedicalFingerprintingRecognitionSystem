@@ -1,6 +1,6 @@
 ﻿using Accord.Imaging.Filters;
 using Accord.Statistics.Visualizations;
-using AForge.Imaging;
+//using AForge.Imaging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

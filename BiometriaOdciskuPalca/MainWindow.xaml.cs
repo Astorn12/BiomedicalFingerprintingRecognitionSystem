@@ -60,6 +60,8 @@ namespace BiometriaOdciskuPalca
             database = new MinutiasDatabase(databasePath);
             database.Load();
 
+
+            //EqualFingerprintList.MouseDoubleClick += new EventHandler(ListBox_DoubleClick);
         }
         #endregion
 
@@ -87,7 +89,7 @@ namespace BiometriaOdciskuPalca
            Bitmap or = Filtrator.segmentation(100,tmp);
             //originalImage.Source = ImageSupporter.Bitmap2BitmapImage(ImageSupporter.ColorToGrayscale(ImageSupporter.BitmapImage2Bitmap(logo)));
             originalImage.Source = ImageSupporter.Bitmap2BitmapImage(or);
-            // newImageSource = files[0];
+             newImageSource = files[0];
             
 
             fingerprint = new Fingerprint((BitmapImage)originalImage.Source);
@@ -315,23 +317,91 @@ namespace BiometriaOdciskuPalca
            // Console.WriteLine("Nie masz mapy kierunków");
             // }
         }
-
+        List<Tuple<DatabaseElement, int, ModyficationElement>> equals;
         private void CheckWithDatabase(object sender, RoutedEventArgs e)
         {
-            List<Tuple<DatabaseElement,float>> equals = database.CheckList(temporaryMinutiasMap);
+            //temporaryMinutiasMap = new MinutiaWektor();
+              equals = database.CheckWithDatabase(temporaryMinutiasMap);
             foreach(var element in equals)
             {
                 ListBoxItem item = new ListBoxItem();
-                item.Content = element.Item1.FingerprntName;
+                item.Content = element.Item1.FingerprntName+" "+element.Item2+" ("+element.Item3.ToString()+")" ;
                 EqualFingerprintList.Items.Add(item);
+                
             }
 
 
         }
 
-        private void AddToBase(object sender, RoutedEventArgs e)
+        private void ListBox_DoubleClick(object sender, RoutedEventArgs e)
+        {
+
+          
+            int index = EqualFingerprintList.Items.IndexOf(sender);
+            DatabaseElement chosen = equals[index].Item1;
+            ModyficationElement przesuniecie = equals[index].Item3;
+            ModyficationElement inversPrzesunięcie = new ModyficationElement(przesuniecie.x * (-1), przesuniecie.y * (-1), przesuniecie.angle * (-1));
+            MinutiaWektor wektor = temporaryMinutiasMap;
+
+            MinutiaWektor przesunietyWektor = new MinutiaWektorComperer().MapMinutiaWektor(temporaryMinutiasMap, przesuniecie);
+            przesunietyWektor=new MinutiaWektorComperer().MapMinutiaWektor(przesunietyWektor,inversPrzesunięcie);
+            // Bitmap  b=ImageSupporter.BitmapImage2Bitmap( new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\" + chosen.FingerprntName + ".png")));
+            Bitmap b = orginalBitmap;
+            b = MatchMinuties(b, temporaryMinutiasMap);
+            QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(b);
+
+        }
+        private Bitmap MatchMinuties(Bitmap bitmap, MinutiaWektor wektor)
+        {
+            Bitmap final = (Bitmap)bitmap.Clone();
+            foreach (var p in wektor.m)
+            {
+                //  final.SetPixel(item.Item1.X, item.Item1.Y,Color.Orange);
+
+                for (int i = p.p.X - 1; i < p.p.X + 1; i++)
+                {
+                    for (int j = p.p.Y - 1; j < p.p.Y + 1; j++)
+                    {
+                        if (i < final.Width && i > 0 && j < final.Height && j > 0)
+                        {
+                            if (p.kind.Equals(KindOfMinutia.ZAKONCZENIE))
+                                final.SetPixel(i, j, Color.Orange);
+
+                            else final.SetPixel(i, j, Color.Purple);
+                        }
+                    }
+                }
+            }
+            return final;
+        }
+
+
+        private void CleanDatabase(object sender, RoutedEventArgs e)
+        {
+            database.Clear();
+        }
+
+            private void AddToBase(object sender, RoutedEventArgs e)
         {
             database.Add(temporaryMinutiasMap,FingerprintName.Text);
+            AddImageToDatabase();
+
+        }
+
+            private void AddImageToDatabase()
+        {
+           
+
+                // if (!File.Exists(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\images\\" + i + ".png"))
+                //   {
+                String name = FingerprintName.Text;
+                      //  System.IO.File.Copy(newImageSource, Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\" + name + ".png");
+                        
+
+            ImageSupporter.Save((BitmapImage)originalImage.Source, Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\" + name + ".png");
+                  //  }
+                
+            
         }
 
         private void Filtracja(object sender, RoutedEventArgs e)

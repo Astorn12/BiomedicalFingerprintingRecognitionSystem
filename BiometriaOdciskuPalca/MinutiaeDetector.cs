@@ -145,14 +145,27 @@ namespace BiometriaOdciskuPalca
 
                     }
                     Point p = sectionMinimum(sectionLine, orginalBitmap);
-                if (orginalBitmap.GetPixel(p.X, p.Y).R < limit && alreadyPassed.GetPixel(p.X, p.Y).B != 128)
+
+                List<Point> points = ImageSupporter.GetLine(m, p);
+                bool flag = true;
+                foreach(var item in points)
+                {
+                    if(orginalBitmap.GetPixel(item.X, item.Y).R>limit)
+                    {
+                        flag = false;
+                    }
+                }
+                
+
+
+                if (/*orginalBitmap.GetPixel(p.X, p.Y).R< limit*/flag  && alreadyPassed.GetPixel(p.X, p.Y).B != 128)
                 {
                     for (int a = p.X - 1; a < p.X + 2; a++)
                     {
                         for (int b = p.Y - 1; b < p.Y + 2; b++)
                         {
-                            if(a<training.Width&&a>0&&b<training.Height&&b>0)
-                            training.SetPixel(a, b, Color.Blue);
+                           // if(a<training.Width&&a>0&&b<training.Height&&b>0)
+                          //  training.SetPixel(a, b, Color.Blue);
                         }
                     }
                     ImageSupporter.matchLine2(alreadyPassed, m, n,standard , 5);
@@ -170,7 +183,7 @@ namespace BiometriaOdciskuPalca
 
                     
                 }
-                else if (alreadyPassed.GetPixel(n.X, n.Y).B == 128)
+                else if (alreadyPassed.GetPixel(p.X, p.Y).B == 128&&flag)
                 {
                     List<Point> list = ImageSupporter.GetLine(m, n);
 
@@ -198,7 +211,7 @@ namespace BiometriaOdciskuPalca
                         {
                             for (int b = wsk.Y - 1; b < wsk.Y + 2; b++)
                             {
-                               // training.SetPixel(a, b, Color.Orange);
+                                training.SetPixel(a, b, Color.Yellow);
                             }
                         }
                         //int i = orginalBitmap.GetPixel(wsk.X, wsk.Y).R;
@@ -209,25 +222,27 @@ namespace BiometriaOdciskuPalca
 
                     }
                 }
-                else if(orginalBitmap.GetPixel(p.X, p.Y).R > limit)
+               // else if(orginalBitmap.GetPixel(p.X, p.Y).R >= limit)
+               else// if( !flag&& alreadyPassed.GetPixel(p.X, p.Y).B != 128)
                 {
                     // training.SetPixel(n.X, n.Y, Color.Orange);
 
                     List<Point> list = ImageSupporter.GetLine(m, n);
 
 
-                    Point wsk = p;
+                    Point wsk = n;
 
                     foreach (Point pi in list)
                     {
-                        wsk = pi;
-                        int i = orginalBitmap.GetPixel(pi.X, pi.Y).R;
-                        if (orginalBitmap.GetPixel(pi.X, pi.Y).R < 100)
+                       
+                       // int i = orginalBitmap.GetPixel(pi.X, pi.Y).R;
+                        if (orginalBitmap.GetPixel(pi.X, pi.Y).R <limit )
                         {
-
+                            //wsk = pi;
                         }
                         else
                         {
+                            wsk = pi;
                             break;
                         }
                     }
@@ -258,6 +273,7 @@ namespace BiometriaOdciskuPalca
                     }
                 }
                
+               
 
 
 
@@ -287,17 +303,30 @@ namespace BiometriaOdciskuPalca
 
                     }
                     Point p = sectionMinimum(sectionLine, alreadyPassed);
-
-                if (orginalBitmap.GetPixel(p.X, p.Y).R < limit && alreadyPassed.GetPixel(p.X, p.Y).B != 128)
+                List<Point> points = ImageSupporter.GetLine(m, p);
+                bool flag = true;
+                foreach (var item in points)
                 {
+                    if (orginalBitmap.GetPixel(item.X, item.Y).R > limit)
+                    {
+                        flag = false;
+                    }
+                }
+
+
+
+                if (/*orginalBitmap.GetPixel(p.X, p.Y).R< limit*/flag && alreadyPassed.GetPixel(p.X, p.Y).B != 128)
+                
+                    //if (orginalBitmap.GetPixel(p.X, p.Y).R < limit && alreadyPassed.GetPixel(p.X, p.Y).B != 128)
+                    {
                     for (int a = p.X - 1; a < p.X + 2; a++)
                     {
                         for (int b = p.Y - 1; b < p.Y + 2; b++)
                         {
                             try
                             {
-                                 if(a<training.Width&&a>0&&b<training.Height&&b>0)
-                                training.SetPixel(a, b, Color.Blue);
+                              //   if(a<training.Width&&a>0&&b<training.Height&&b>0)
+                               // training.SetPixel(a, b, Color.Blue);
                             }
                             catch(Exception e)
                             {
@@ -317,7 +346,7 @@ namespace BiometriaOdciskuPalca
                     else
                     followingDown(p);
                 }
-                else if(alreadyPassed.GetPixel(n.X, n.Y).B==128)
+                else if(alreadyPassed.GetPixel(p.X, p.Y).B==128&&flag)
                 {
                     List<Point> list = ImageSupporter.GetLine(m, n);
 
@@ -344,7 +373,7 @@ namespace BiometriaOdciskuPalca
                         {
                             for (int b = wsk.Y - 1; b < wsk.Y + 2; b++)
                             {
-                               // training.SetPixel(a, b, Color.Orange);
+                                training.SetPixel(a, b, Color.Yellow);
                             }
                         }
                         //int i = orginalBitmap.GetPixel(wsk.X, wsk.Y).R;
@@ -355,25 +384,27 @@ namespace BiometriaOdciskuPalca
 
                     }
                 }
-                else if(orginalBitmap.GetPixel(p.X, p.Y).R > limit)
+                //   else if(orginalBitmap.GetPixel(p.X, p.Y).R >= limit)
+                else //if( !flag&& alreadyPassed.GetPixel(p.X, p.Y).B != 128)
                 {
                     // training.SetPixel(n.X, n.Y, Color.Orange);
 
                     List<Point> list= ImageSupporter.GetLine(m,n);
                    
                   
-                    Point wsk = p;
+                    Point wsk = n;
                     
                     foreach(Point pi in list)
                     {
-                        wsk = pi;
-                        int i = orginalBitmap.GetPixel(pi.X, pi.Y).R;
-                        if(orginalBitmap.GetPixel(pi.X,pi.Y).R<120)
+                        
+                       // int i = orginalBitmap.GetPixel(pi.X, pi.Y).R;
+                        if(orginalBitmap.GetPixel(pi.X,pi.Y).R<limit)
                         {
                             
                         }
                         else
                         {
+                            wsk = pi;
                             break;
                         }
                     }
@@ -405,6 +436,8 @@ namespace BiometriaOdciskuPalca
                     }
                 }
 
+               
+
 
 
             }
@@ -422,25 +455,23 @@ namespace BiometriaOdciskuPalca
         public Bitmap GetImageWithMatchedMinutias()
         {
             getSectionPointsBitmap(orginalBitmap);
-            //this.training =(Bitmap) orginalBitmap.Clone();
-            //Bitmap revers = ImageSupporter.ReverseBitmap((Bitmap)orginalBitmap.Clone());
-            this.alreadyPassed = (Bitmap)orginalBitmap.Clone();
+           
+            //this.alreadyPassed = (Bitmap)orginalBitmap.Clone();
            this.orginalBitmap = ImageSupporter.ReverseBitmap(orginalBitmap);
-           this.training =(Bitmap) orginalBitmap.Clone();
-            this.inverted = true;
-           getSectionPointsBitmap(orginalBitmap);
-           this.orginalBitmap=ImageSupporter.ReverseBitmap(orginalBitmap);
-            getMinutionsMap();//tutaj jest sprawdzanie i usuwanie niewłaściwych minucji
-            this.inverted = false;
+         //  this.training =(Bitmap) orginalBitmap.Clone();
+        //    this.inverted = true;
+        //   getSectionPointsBitmap(orginalBitmap);
+        ///  this.orginalBitmap=ImageSupporter.ReverseBitmap(orginalBitmap);
+         //   getMinutionsMap();//tutaj jest sprawdzanie i usuwanie niewłaściwych minucji
+            //this.inverted = false;
             return MatchMunities();
-            //return getSectionPointsBitmap(revers);
-            //return training;
-            //return orginalBitmap;
+          
         }
         private Bitmap MatchMunities()
         {
-          //  Bitmap final = (Bitmap)orginalBitmap.Clone() ;
-            Bitmap final = (Bitmap)orginalBitmap.Clone() ;
+        
+           // Bitmap final = (Bitmap)orginalBitmap.Clone() ;
+           Bitmap final = (Bitmap)training.Clone() ;
      
             foreach (var p in minucje)
             {
@@ -462,6 +493,7 @@ namespace BiometriaOdciskuPalca
             }
             return final;
         }
+       
         public Bitmap GetImageWithFullMinutiesDetection()
         {
 
