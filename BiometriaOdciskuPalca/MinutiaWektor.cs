@@ -24,6 +24,15 @@ namespace BiometriaOdciskuPalca
             return m.Count();
         }
 
+        public MinutiaWektor Clone()
+        {
+            List<Minutia> cloneList = new List<Minutia>();
+            foreach(var item in m)
+            {
+                cloneList.Add((Minutia)item.Clone());
+            }
+            return new MinutiaWektor(cloneList);
+        }
 
         public int GetForkCount()
         {

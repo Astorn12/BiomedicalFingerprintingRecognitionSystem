@@ -16,5 +16,12 @@ namespace BiometriaOdciskuPalca
             this.FingerprntName = fingetrprontName;
             this.MinutiaesWektor = minuteasList;
         }
+
+
+        public DatabaseElement Clone()
+        {
+            return new DatabaseElement(this.FingerprntName, this.MinutiaesWektor.Clone());
+
+        }
     }
 }

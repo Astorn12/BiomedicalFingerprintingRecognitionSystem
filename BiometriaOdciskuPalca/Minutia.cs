@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BiometriaOdciskuPalca
 {
-    class Minutia
+    class Minutia : ICloneable
     {
         public Point p { get; set; }
         public double direction { get; set; }
@@ -20,6 +20,14 @@ namespace BiometriaOdciskuPalca
             this.kind = kind;
             
         }
+
+        
+
+         public object Clone()
+        {
+            return new Minutia(new Point(p.X, p.Y), direction, kind);
+        }
+
         
     }
 }

@@ -456,22 +456,22 @@ namespace BiometriaOdciskuPalca
         {
             getSectionPointsBitmap(orginalBitmap);
            
-            //this.alreadyPassed = (Bitmap)orginalBitmap.Clone();
+            this.alreadyPassed = (Bitmap)orginalBitmap.Clone();
            this.orginalBitmap = ImageSupporter.ReverseBitmap(orginalBitmap);
-         //  this.training =(Bitmap) orginalBitmap.Clone();
-        //    this.inverted = true;
-        //   getSectionPointsBitmap(orginalBitmap);
-        ///  this.orginalBitmap=ImageSupporter.ReverseBitmap(orginalBitmap);
-         //   getMinutionsMap();//tutaj jest sprawdzanie i usuwanie niewłaściwych minucji
-            //this.inverted = false;
+           this.training =(Bitmap) orginalBitmap.Clone();
+            this.inverted = true;
+             getSectionPointsBitmap(orginalBitmap);
+            this.orginalBitmap=ImageSupporter.ReverseBitmap(orginalBitmap);
+            getMinutionsMap();//tutaj jest sprawdzanie i usuwanie niewłaściwych minucji
+            this.inverted = false;
             return MatchMunities();
           
         }
         private Bitmap MatchMunities()
         {
         
-           // Bitmap final = (Bitmap)orginalBitmap.Clone() ;
-           Bitmap final = (Bitmap)training.Clone() ;
+           Bitmap final = (Bitmap)orginalBitmap.Clone() ;
+          // Bitmap final = (Bitmap)training.Clone() ;
      
             foreach (var p in minucje)
             {

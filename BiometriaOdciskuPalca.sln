@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiometriaOdciskuPalca", "BiometriaOdciskuPalca\BiometriaOdciskuPalca.csproj", "{95023155-A9FC-48BD-AAF8-D9E192DFAB8A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiometriaOdciskuPalcaTests1", "BiometriaOdciskuPalcaTests1\BiometriaOdciskuPalcaTests1.csproj", "{5C436E16-E609-4311-B89A-775D1E0574CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{95023155-A9FC-48BD-AAF8-D9E192DFAB8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95023155-A9FC-48BD-AAF8-D9E192DFAB8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95023155-A9FC-48BD-AAF8-D9E192DFAB8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C436E16-E609-4311-B89A-775D1E0574CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C436E16-E609-4311-B89A-775D1E0574CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C436E16-E609-4311-B89A-775D1E0574CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C436E16-E609-4311-B89A-775D1E0574CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

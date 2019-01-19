@@ -317,37 +317,70 @@ namespace BiometriaOdciskuPalca
            // Console.WriteLine("Nie masz mapy kierunków");
             // }
         }
-        List<Tuple<DatabaseElement, int, ModyficationElement>> equals;
+        List<Tuple<DatabaseElement, int, ModyficationElement,int>> equals;
         private void CheckWithDatabase(object sender, RoutedEventArgs e)
         {
             //temporaryMinutiasMap = new MinutiaWektor();
-              equals = database.CheckWithDatabase(temporaryMinutiasMap);
+            EqualFingerprintList.Items.Clear();
+            
+         //  DatabaseElement testWektor= database.mBase[0].Clone();
+           //database.mBase[0].MinutiaesWektor=new MinutiaWektorComperer().MapMinutiaWektor(testWektor.MinutiaesWektor,new ModyficationElement(0,30,-10));
+          
+
+            equals = database.CheckWithDatabase(temporaryMinutiasMap);
+            //equals = database.CheckWithDatabase(testWektor.MinutiaesWektor);
             foreach(var element in equals)
             {
                 ListBoxItem item = new ListBoxItem();
-                item.Content = element.Item1.FingerprntName+" "+element.Item2+" ("+element.Item3.ToString()+")" ;
+                item.Content = element.Item1.FingerprntName+" "+element.Item2+" ("+element.Item3.ToString()+") voting:"+element.Item4 ;
                 EqualFingerprintList.Items.Add(item);
                 
             }
 
 
         }
+        private void Test(object sender, RoutedEventArgs e)
+        {
+            MinutiaWektor wektor = database.mBase[1].MinutiaesWektor;
+            ModyficationElement przesuniecie = new ModyficationElement(0,0, 10);
+           
 
-        private void ListBox_DoubleClick(object sender, RoutedEventArgs e)
+            MinutiaWektor przesunietyWektor = new MinutiaWektorComperer().MapMinutiaWektor(wektor, przesuniecie);
+            Bitmap b = (Bitmap)orginalBitmap.Clone();
+            b = MatchMinuties(b, przesunietyWektor);
+            QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(b);
+        }
+
+
+            private void ListBox_DoubleClick(object sender, RoutedEventArgs e)
         {
 
           
             int index = EqualFingerprintList.Items.IndexOf(sender);
             DatabaseElement chosen = equals[index].Item1;
             ModyficationElement przesuniecie = equals[index].Item3;
-            ModyficationElement inversPrzesunięcie = new ModyficationElement(przesuniecie.x * (-1), przesuniecie.y * (-1), przesuniecie.angle * (-1));
+            //ModyficationElement przesuniecie = new ModyficationElement(20, -20, -10);
             MinutiaWektor wektor = temporaryMinutiasMap;
-
+           
             MinutiaWektor przesunietyWektor = new MinutiaWektorComperer().MapMinutiaWektor(temporaryMinutiasMap, przesuniecie);
-            przesunietyWektor=new MinutiaWektorComperer().MapMinutiaWektor(przesunietyWektor,inversPrzesunięcie);
-            // Bitmap  b=ImageSupporter.BitmapImage2Bitmap( new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\" + chosen.FingerprntName + ".png")));
-            Bitmap b = orginalBitmap;
-            b = MatchMinuties(b, temporaryMinutiasMap);
+             
+           // przesunietyWektor=new MinutiaWektorComperer().MapMinutiaWektor(przesunietyWektor,inversPrzesunięcie);
+            Bitmap  b=ImageSupporter.BitmapImage2Bitmap( new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\" + chosen.FingerprntName + ".png")));
+            //Bitmap b = orginalBitmap;
+            //b = MatchMinuties(b, przesunietyWektor);
+            //ModyficationElement tmpp = new ModyficationElement(0, 0, 1);
+            /*for(int i=0;i<30;i++)
+            {tmpp = new ModyficationElement(0, 0, i);
+                MinutiaWektor wektorx=new MinutiaWektorComperer().MapMinutiaWektor(temporaryMinutiasMap, tmpp);
+                Bitmap x= MatchMinuties2(b,wektorx,Color.Aqua,Color.Bisque );
+                ImageWindow image = new ImageWindow(ImageSupporter.Bitmap2BitmapImage( x));
+                image.Show();
+            }*/
+            b = MatchMinuties2(b,przesunietyWektor,Color.Green,Color.Green );
+            MinutiaWektor zbazy = database.mBase[0].MinutiaesWektor;
+            b = MatchMinuties2(b,zbazy,Color.Blue,Color.Blue );
+            b = MatchMinuties2(b,temporaryMinutiasMap,Color.Orange,Color.Orange );
+
             QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(b);
 
         }
@@ -372,7 +405,48 @@ namespace BiometriaOdciskuPalca
                     }
                 }
             }
+            try
+            {
+                final.SetPixel(wektor.m[0].p.X, wektor.m[0].p.Y, Color.Red);
+                final.SetPixel(wektor.m[1].p.X, wektor.m[1].p.Y, Color.Yellow);
+            }
+            catch(Exception ex)
+            {
+
+            }
             return final;
+        }
+        private Bitmap MatchMinuties2(Bitmap bitmap, MinutiaWektor wektor, Color zakocznczenia,Color rozwidlenia)
+        {
+            Bitmap final = (Bitmap)bitmap.Clone();
+            foreach (var p in wektor.m)
+            {
+                //  final.SetPixel(item.Item1.X, item.Item1.Y,Color.Orange);
+
+                for (int i = p.p.X - 1; i < p.p.X + 1; i++)
+                {
+                    for (int j = p.p.Y - 1; j < p.p.Y + 1; j++)
+                    {
+                        if (i < final.Width && i > 0 && j < final.Height && j > 0)
+                        {
+                            if (p.kind.Equals(KindOfMinutia.ZAKONCZENIE))
+                                final.SetPixel(i, j, zakocznczenia);
+
+                            else final.SetPixel(i, j, rozwidlenia);
+                        }
+                    }
+                }
+            }
+            try
+            {
+                final.SetPixel(wektor.m[0].p.X, wektor.m[0].p.Y, Color.Red);
+                final.SetPixel(wektor.m[1].p.X, wektor.m[1].p.Y, Color.Yellow);
+            }
+            catch(Exception ex)
+            {
+
+            }
+                return final;
         }
 
 

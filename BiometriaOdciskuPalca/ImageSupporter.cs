@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 namespace BiometriaOdciskuPalca
 {
 
-    static class ImageSupporter
+    public static class ImageSupporter
     {
 
 

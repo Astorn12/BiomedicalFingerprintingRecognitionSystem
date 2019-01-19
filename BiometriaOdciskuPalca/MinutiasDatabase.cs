@@ -11,7 +11,7 @@ namespace BiometriaOdciskuPalca
 {
     class MinutiasDatabase
     {
-        List<DatabaseElement> mBase { get; set; }
+        public List<DatabaseElement> mBase { get; set; }
         string path { get; set; }
 
         public MinutiasDatabase(string path)
@@ -47,9 +47,9 @@ namespace BiometriaOdciskuPalca
 
 
 
-        public List<Tuple<DatabaseElement, int,ModyficationElement>>  CheckWithDatabase(MinutiaWektor potential)
+        public List<Tuple<DatabaseElement, int,ModyficationElement,int>>  CheckWithDatabase(MinutiaWektor potential)
         {
-            List<Tuple<DatabaseElement, int,ModyficationElement>> result;
+            List<Tuple<DatabaseElement, int,ModyficationElement,int>> result;
             //potential = mBase[0].MinutiaesWektor;
             result = CheckList(potential);
             return result;
@@ -63,19 +63,19 @@ namespace BiometriaOdciskuPalca
         }
 
 
-        public List<Tuple<DatabaseElement,int,ModyficationElement>> CheckList(MinutiaWektor wektor)
+        public List<Tuple<DatabaseElement,int,ModyficationElement,int>> CheckList(MinutiaWektor wektor)
         {
 
-            List<Tuple<DatabaseElement, int,ModyficationElement>> result = new List<Tuple<DatabaseElement, int,ModyficationElement>>();
-            MinutiaWektorComperer comperer = new MinutiaWektorComperer(12,10,ImageSupporter.DegreeToRadian(10));
+            List<Tuple<DatabaseElement, int,ModyficationElement,int>> result = new List<Tuple<DatabaseElement, int,ModyficationElement,int>>();
+            MinutiaWektorComperer comperer = new MinutiaWektorComperer(5,5,ImageSupporter.DegreeToRadian(10));
 
             foreach(var item in mBase)
             {
-                Tuple<bool, int,ModyficationElement> compereResult = comperer.Compere(item.MinutiaesWektor, wektor);
+                Tuple<bool, int,ModyficationElement,int> compereResult = comperer.Compere(item.MinutiaesWektor, wektor);
 
                 if (compereResult.Item1)
                 {
-                    result.Add(new Tuple<DatabaseElement, int,ModyficationElement>(item, compereResult.Item2,compereResult.Item3));
+                    result.Add(new Tuple<DatabaseElement, int,ModyficationElement,int>(item, compereResult.Item2,compereResult.Item3,compereResult.Item4));
                 }
 
             }
