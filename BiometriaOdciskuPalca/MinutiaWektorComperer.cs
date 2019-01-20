@@ -23,11 +23,11 @@ namespace BiometriaOdciskuPalca
 
         int xRangeBottom = -50;
         int xRangeTop = 50;
-        int xJump = 2;
+        int xJump = 3;
 
         int yRangeBottom = -50;
         int yRangeTop = 50;
-        int yJump = 2;
+        int yJump = 3;
 
         public MinutiaWektorComperer (int limit,int limitMove,double limitRotate)
         {
@@ -383,7 +383,7 @@ namespace BiometriaOdciskuPalca
 
             int accurateyCell =  (me.y - yRangeBottom) / yJump;
             // na wartość ustalonej komórki głosuje się 2 razy a na komórki okalające ją po jednym razie
-            acumulator[accurateAngleCell, accuratexCell, accurateyCell] += 2; //
+            acumulator[accurateAngleCell, accuratexCell, accurateyCell] += 3; //
 
                 try
                 {

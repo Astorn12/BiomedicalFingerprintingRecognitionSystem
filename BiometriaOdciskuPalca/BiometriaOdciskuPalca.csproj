@@ -170,6 +170,33 @@
     <Resource Include="images\minus.png" />
     <Resource Include="images\plus.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\white-waves.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\szaretlo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\tlodark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\tlo2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\dark-paths.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\prism.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\stripes-light.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\tlo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\topography.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.0\build\Accord.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

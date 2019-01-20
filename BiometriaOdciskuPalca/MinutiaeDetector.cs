@@ -45,12 +45,14 @@ namespace BiometriaOdciskuPalca
             //tutaj trzeba zmienić na usuwanie tylko jendej z nich
             // getSectionPointsBitmap();
            // List<Tuple<Point, double>> tmpRemove = new List<Tuple<Point, double>>();
+
+
             List<Minutia> tmpRemove = new List<Minutia>();
            foreach(var p in minucje)
             {
                 foreach (var t in minucje)
                 {
-                    if(p!=t&&pointsDistance(p.p,t.p)<5)
+                    if(p!=t&&pointsDistance(p.p,t.p)<10)
                     {
                         if(!tmpRemove.Contains(p)&&!tmpRemove.Contains(t))
                         tmpRemove.Add(p);
@@ -67,16 +69,7 @@ namespace BiometriaOdciskuPalca
             }
 
             MinutiaeVeryfication(minucje,orginalBitmap);
-            foreach(var p in minucje)
-            {
-               for(int i=p.p.X-2;i<p.p.X+2;i++)
-                {
-                    for (int j = p.p.Y - 2; j < p.p.Y + 2; j++)
-                    {if(i<training.Width&&i>0&&j<training.Height&&j>0)
-                        training.SetPixel(i, j, Color.Orange);
-                    }
-                }
-            }
+            
             return this.minucje;
         }
 
@@ -599,7 +592,7 @@ namespace BiometriaOdciskuPalca
         {
            List<Minutia> removeList = new List<Minutia>();
             int[,] segmentationImage = Filtrator.BackgroundSegmentation(bitmap);
-            int w = 5;
+            int w = 10;
             foreach (var item in minutions)
             {
                 Boolean flag = true;

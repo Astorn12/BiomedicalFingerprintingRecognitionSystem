@@ -67,7 +67,7 @@ namespace BiometriaOdciskuPalca
         {
 
             List<Tuple<DatabaseElement, int,ModyficationElement,int>> result = new List<Tuple<DatabaseElement, int,ModyficationElement,int>>();
-            MinutiaWektorComperer comperer = new MinutiaWektorComperer(5,5,ImageSupporter.DegreeToRadian(10));
+            MinutiaWektorComperer comperer = new MinutiaWektorComperer(10,10,ImageSupporter.DegreeToRadian(15));
 
             foreach(var item in mBase)
             {
@@ -89,6 +89,12 @@ namespace BiometriaOdciskuPalca
         {
             mBase.Clear();
             Save();
+            string[] filePaths = Directory.GetFiles(path.Replace("databse.json",""));
+            foreach (string filePath in filePaths)
+            {
+                if (filePath.Contains(".png"))
+                    File.Delete(filePath);
+            }
         }
     }
 }

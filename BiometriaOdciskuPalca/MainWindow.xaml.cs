@@ -56,7 +56,7 @@ namespace BiometriaOdciskuPalca
             this.AllowDrop = true;
             this.DragEnter += new DragEventHandler(Form1_DragEnter);
             this.Drop += new DragEventHandler(Form1_DragDrop);
-            SetDefault();
+            //SetDefault();
             database = new MinutiasDatabase(databasePath);
             database.Load();
 
@@ -100,6 +100,36 @@ namespace BiometriaOdciskuPalca
         }
         #endregion
 
+
+
+        public void AutomaticalStart(object sender,RoutedEventArgs e)
+        {
+            //filtrowanie
+            Normalization();
+            MedianFilter();
+            GridedHistogram();
+            OK(sender,e);
+            //tworzenie mapy kierunków
+            MapaKierunkow(sender, e);
+            //znajdowanie wektora minucji
+            MinutaesDetection(sender, e);
+
+            //zprawdzanie z baza danych
+            CheckWithDatabase(sender, e);
+        }
+
+      
+
+        public void ControlledStart(object sender,RoutedEventArgs e)
+        {
+            //tworzenie mapy kierunków
+            MapaKierunkow(sender, e);
+            //znajdowanie wektora minucji
+            MinutaesDetection(sender, e);
+
+            //zprawdzanie z baza danych
+            CheckWithDatabase(sender, e);
+        }
         public void zapisz(object sender, EventArgs e)
         {
 
@@ -122,7 +152,7 @@ namespace BiometriaOdciskuPalca
 
         }
 
-        public void mapaKierunkow(object sender, EventArgs e)
+        public void MapaKierunkow(object sender, RoutedEventArgs e)
         {
             // mapakierunkow.Source = ImageSupporter.Bitmap2BitmapImage(actualFingerprint.returnGrey());
             try
@@ -286,11 +316,11 @@ namespace BiometriaOdciskuPalca
 
         private void choosenArea_Click(object sender, RoutedEventArgs e)
         {
-            int x = Int32.Parse(X.Text);
-            int y = Int32.Parse(Y.Text);
+          //  int x = Int32.Parse(X.Text);
+          //  int y = Int32.Parse(Y.Text);
             fingerprint = new Fingerprint((BitmapImage)originalImage.Source);
             fingerprint.startRecognition(fingerprint.localOrientationMap);
-            randomCel = fingerprint.getCell(mapakierunkow, x, y);
+           /// randomCel = fingerprint.getCell(mapakierunkow, x, y);
             ImageSupporter.WriteBitmap(randomCel.bitmap);
             QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(randomCel.bitmap);
             fingerprint.merge();
@@ -517,6 +547,8 @@ namespace BiometriaOdciskuPalca
         {
             /*-----------------------Przefiltrowanie orginalnego filtru filtrem medianowym------------------------*/
             workingImage = fingerprint.medianFilter(orginalBitmap);
+             /*-----------------------Wykorzystanie normalizacji------------------------*/
+             /*-----------------------Wyrównanie histogramu na obszarach------------------------*/
             /*--------------------Tworzenie mapy kierunków--------------------------*/
             fingerprint.startRecognition((Bitmap)workingImage.Clone());
             fingerprint.toDirectionMask();
@@ -616,32 +648,76 @@ namespace BiometriaOdciskuPalca
 
 
         #region Dobre Metody
-        private void Normalization(object sender, RoutedEventArgs e)
+        private void StartImageWindow(Bitmap bitmap)
         {
-            temporary = Filtrator.Normalization(workingImage);
-            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
+            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(bitmap));
             iw.Show();
         }
-
         private void OK(object sender, RoutedEventArgs e)
         {
-            this.workingImage = (Bitmap)temporary.Clone();
-            odszumionyObraz.Source = ImageSupporter.Bitmap2BitmapImage(workingImage);
+            try
+            {
+                this.workingImage = (Bitmap)temporary.Clone();
+                odszumionyObraz.Source = ImageSupporter.Bitmap2BitmapImage(workingImage);
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
-        private void MedianFilter(object sender, RoutedEventArgs e)
+
+        private void NormalizationBinder(object sender, RoutedEventArgs e)
         {
-            temporary = Filtrator.MedianFilter((Bitmap)workingImage.Clone());
-            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
-            iw.Show();
+            try
+            {
+                Normalization();
+                StartImageWindow(temporary);
+            }
+            catch(Exception ex)
+            {
+
+            }
+            }
+
+        private void Normalization()
+        {
+            try { 
+            temporary = Filtrator.Normalization(workingImage);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+    
+
+
+        
+
+        
+
+        private void MedianFilterBinder(object sender, RoutedEventArgs e)
+        {
+            MedianFilter();
+            StartImageWindow(temporary);
+        }
+        private void MedianFilter()
+        {
+             temporary = Filtrator.MedianFilter((Bitmap)workingImage.Clone());
         }
 
         private void Histogram(object sender, RoutedEventArgs e)
         {
-            temporary = Filtrator.Histogram((Bitmap)workingImage.Clone());
-            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
-            iw.Show();
+            Histogram();
+            StartImageWindow(temporary);
         }
+
+        private void Histogram()
+        {
+            temporary = Filtrator.Histogram((Bitmap)workingImage.Clone());
+        }
+
         private void Segmentation(object sender, RoutedEventArgs e)
         {
             temporary = Filtrator.segmentation(30,(Bitmap)workingImage.Clone());
@@ -651,23 +727,34 @@ namespace BiometriaOdciskuPalca
 
         private void Binaryzation(object sender, RoutedEventArgs e)
         {
+            Binaryzation();
             temporary = Filtrator.Binaryzation((Bitmap)workingImage.Clone());
-            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
-            iw.Show();
+            StartImageWindow(temporary);
         }
+        private void Binaryzation()
+        {
+            temporary = Filtrator.Binaryzation((Bitmap)workingImage.Clone());
+        }
+
         private void Gornoprzepustowy(object sender, RoutedEventArgs e)
         {
             temporary = Filtrator.HighPassFilter(EMask.Prewitt,(Bitmap)workingImage.Clone());
             ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
             iw.Show();
         }
+
+
         private void GridedHistogram(object sender, RoutedEventArgs e)
         {
-            temporary = Filtrator.HistorgramGridedFilter((Bitmap)workingImage.Clone(),32);
-            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
-            iw.Show();
+            GridedHistogram();
+             StartImageWindow(temporary);
         }
 
+        private void GridedHistogram()
+        {
+            temporary = Filtrator.HistorgramGridedFilter((Bitmap)workingImage.Clone(), 32);
+           
+        }
         private void Invers(object sender, RoutedEventArgs e)
         {
             temporary = Filtrator.Invers((Bitmap)workingImage.Clone());
@@ -712,7 +799,7 @@ namespace BiometriaOdciskuPalca
 
         private void ZastosujGaborFilter(object sender, RoutedEventArgs e)
         {
-            StartChosenGabor();
+            //StartChosenGabor();
         }
 
 
@@ -722,7 +809,7 @@ namespace BiometriaOdciskuPalca
 
             #region Gabor Filter Specyfikaction Click Listeners 
 
-            private void GaborFilterClick(object sender, RoutedEventArgs e)
+         /*  private void GaborFilterClick(object sender, RoutedEventArgs e)
         {
             workingImage = Filtrator.Normalization(orginalBitmap);
             fingerprint.startRecognition((Bitmap)workingImage.Clone());
@@ -731,7 +818,7 @@ namespace BiometriaOdciskuPalca
 
 
 
-            mapakierunkow.Source = ImageSupporter.Bitmap2BitmapImage(/*workingImage*/fingerprint.localOrientationMap);
+            mapakierunkow.Source = ImageSupporter.Bitmap2BitmapImage(workingImagefingerprint.localOrientationMap);
 
             fingerprint.ReuseImageCells(workingImage);
 
@@ -842,7 +929,7 @@ namespace BiometriaOdciskuPalca
                     (float)ImageSupporter.DegreeToRadian(float.Parse(ThetaInsert.Text)));
 
                 }
-            }
+            }*/
 
             /* for (float j = float.Parse(SigmaInsert.Text) - (x * 0.1f); j < float.Parse(SigmaInsert.Text); j += 0.1f)
              {
@@ -862,4 +949,4 @@ namespace BiometriaOdciskuPalca
         
 
     }
-}
+//}
