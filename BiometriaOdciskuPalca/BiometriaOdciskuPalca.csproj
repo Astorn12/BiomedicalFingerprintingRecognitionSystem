@@ -103,6 +103,9 @@
     <Compile Include="MinutiaWektor.cs" />
     <Compile Include="MinutiaWektorComperer.cs" />
     <Compile Include="ModyficationElement.cs" />
+    <Compile Include="PopupInputWindow.xaml.cs">
+      <DependentUpon>PopupInputWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SetValuesForGabor.cs" />
     <Compile Include="StartingSection.cs" />
     <Page Include="ImageWindow.xaml">
@@ -128,6 +131,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PopupInputWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

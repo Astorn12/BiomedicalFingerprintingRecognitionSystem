@@ -19,16 +19,27 @@ namespace BiometriaOdciskuPalca
     /// <summary>
     /// Interaction logic for ImageWindow.xaml
     /// </summary>
+    
     public partial class ImageWindow : Window
     {
+        public delegate void OK();
+        private OK ok;
+        public ImageWindow(ImageSource source, OK ok)
+        {
+            InitializeComponent();
+
+            obrazek.Source = source;
+            this.ok = ok;
+        }
         public ImageWindow(ImageSource source)
         {
             InitializeComponent();
 
             obrazek.Source = source;
+           
         }
 
-        
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -51,6 +62,20 @@ namespace BiometriaOdciskuPalca
             obrazek.Source =ImageSupporter.Bitmap2BitmapImage(bitmap);
         }
 
-       
+        private void ScrollViewer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (ok.Method != null)
+                {
+                    ok.Invoke();
+                    this.Close();
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
     }
 }

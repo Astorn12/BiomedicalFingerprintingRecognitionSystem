@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BiometriaOdciskuPalca"
         mc:Ignorable="d"
-        Title="MainWindow" Height="944.4" Width="1150">
+        ResizeMode="NoResize"
+        Title="MainWindow" Height="813.2" Width="1150">
     <Window.Background>
         <!-- Background pattern from Toptal Subtle Patterns -->
         <ImageBrush ImageSource="images/topography.png"></ImageBrush>
@@ -45,7 +46,7 @@
                 <Label Content="{TemplateBinding Header}" Foreground="Black" Margin="0,5,5,5" />
 
                 <!-- draw the right arrow only if this menu item has sub items -->
-                <Image Source="icon_right.png" Visibility="{Binding HasItems, Converter={StaticResource btv}, RelativeSource={RelativeSource TemplatedParent}}" />
+                <Image Visibility="{Binding HasItems, Converter={StaticResource btv}, RelativeSource={RelativeSource TemplatedParent}}" />
 
                 <!-- sub items -->
                 <Popup IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" Placement="Right" >
@@ -70,7 +71,7 @@
         <ControlTemplate x:Key="VsOnline" TargetType="MenuItem">
             <StackPanel TextBlock.FontSize="15px" Height="40" Orientation="Horizontal" Background="#005A9E">
                 <Label Content="{TemplateBinding Header}" Margin="5" Foreground="White" />
-                <Image Source="icon_down.png" Height="20" Margin="0,0,5,0" />
+                <Image  Height="20" Margin="0,0,5,0" />
 
                 <!-- sub items -->
                 <Popup IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False">
@@ -102,15 +103,17 @@
             <RowDefinition Height="445*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="547*"/>
-            <ColumnDefinition Width="311*"/>
+            <ColumnDefinition Width="15*"/>
+            <ColumnDefinition Width="438*"/>
+            <ColumnDefinition Width="94*"/>
+            <ColumnDefinition Width="312*"/>
 
 
             <ColumnDefinition Width="287.2"/>
 
 
         </Grid.ColumnDefinitions>
-        <ScrollViewer HorizontalAlignment="Left" Width="818" Margin="21,2.2,0,0" Height="803" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.ColumnSpan="2">
+        <ScrollViewer HorizontalAlignment="Left" Width="818" Margin="5.799,2.2,0,0" Height="710" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="1">
             <ScrollViewer.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -122,8 +125,18 @@
             <Grid HorizontalAlignment="Left"  VerticalAlignment="Top" Height="1221" Width="792">
 
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,28,0,0" VerticalAlignment="Top" Width="344" Name="original"  >
-                    <Button Click="ExpandImage" >
-                        <Image Source="images/szaretlo.jpg" Stretch="Fill"  Name="originalImage" Width="144" Height="115" />
+                    <Button Click="ExpandImageSpecial" >
+
+
+
+
+                        <Grid>
+                            <Image Source="images/szaretlo.jpg"   Name="originalImage"/>
+                            <TextBlock HorizontalAlignment="Center"  Opacity="0.5"  TextAlignment="Center" TextWrapping="Wrap" Padding="0 0 0 0" Margin="251,309,160.2,185.6" VerticalAlignment="Center" Height="291" Width="592" FontSize="80" Name="helpText">Przeciągnij skan odcisku palca</TextBlock>
+                        </Grid>
+
+
+
                     </Button>
                 </Viewbox>
 
@@ -131,54 +144,51 @@
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,28,0,0"  VerticalAlignment="Top" Width="344" >
 
                     <Button Click="ExpandImage" >
-                        <Image  Source="images/szaretlo.jpg" Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="odszumionyObraz" Width="144" Height="115"   />
+                        <Image  Source="images/szaretlo.jpg" ToolTip="Obraz po filtracji" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="odszumionyObraz" Width="144" Height="115"   />
 
 
                     </Button>
                 </Viewbox>
 
-                <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,330,0,0" VerticalAlignment="Top" Width="344" Stretch="Fill">
+                <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,330,0,0" VerticalAlignment="Top" Width="344" >
                     <Button Click="ExpandImage" >
-                        <Image  Source="images/szaretlo.jpg" Stretch="Fill" Width="144" Height="115" Name="mapakierunkow"/>
+                        <Image  Source="images/szaretlo.jpg"  ToolTip="Mapa kierunków" Width="144" Height="115" Name="mapakierunkow"/>
                     </Button>
                 </Viewbox>
 
-                <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,330,0,0" Stretch="Fill" VerticalAlignment="Top" Width="344" Name="wynik" >
+                <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,330,0,0"  VerticalAlignment="Top" Width="344" Name="wynik" >
                     <Button Click="ExpandImage" >
-                        <Image  Source="images/szaretlo.jpg" Stretch="Fill" Width="144" Height="115" Name="QUATRE" RenderTransformOrigin="0.495,0.58" />
+                        <Image  Source="images/szaretlo.jpg"  Width="144" Height="115" Name="QUATRE" RenderTransformOrigin="0.495,0.58" />
                     </Button>
                 </Viewbox>
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,649,0,0" VerticalAlignment="Top" Width="344" >
                     <Button Click="ExpandImage" >
-                        <Image  Source="images/szaretlo.jpg" Stretch="Fill" Width="144" Height="115" RenderTransformOrigin="0.495,0.58" Name="pojedynczyKierunek"/>
+                        <Image  Source="images/szaretlo.jpg" ToolTip="Widok lini śledzenia na obrazie orginalnym"  Width="144" Height="115" RenderTransformOrigin="0.495,0.58" Name="pojedynczyKierunek"/>
                     </Button>
                 </Viewbox>
 
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,649,0,0" Stretch="Fill" VerticalAlignment="Top" Width="344" >
                     <Button Click="ExpandImage" >
-                        <Image  Source="images/szaretlo.jpg" Stretch="Fill" Width="144" Height="115"  RenderTransformOrigin="0.495,0.58" Name="threetothreeImage" />
+                        <Image  Source="images/szaretlo.jpg"   Width="144" Height="115" ToolTip="Obraz linii papilarnej z zaznaczonymi wykrytymi minucjami"  RenderTransformOrigin="0.495,0.58" Name="threetothreeImage" />
                     </Button>
                 </Viewbox>
 
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,950,0,-202" Stretch="Fill" VerticalAlignment="Top" Width="344" Name="prezentacjaseckjiArea"  >
                     <Button Click="ExpandImage" >
-                        <Image  Source="images/szaretlo.jpg" Stretch="Fill" Width="144" Height="115" Name="prezentacjasekcjiImage" />
+                        <Image  Source="images/szaretlo.jpg"  ToolTip="Widok lini śledzenia na obrazie odwróconym" Width="144" Height="115" Name="prezentacjasekcjiImage" />
                     </Button>
                 </Viewbox>
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,950,0,-8" Stretch="Fill" VerticalAlignment="Top" Width="344" Name="punktySekcjiImageArea"  >
                     <Button Click="ExpandImage" >
-                        <Image  Source="images/szaretlo.jpg" Stretch="Fill" Width="144" Height="115" Name="punktySekcjiImage"/>
+                        <Image  Source="images/szaretlo.jpg"   Width="144" Height="115" Name="punktySekcjiImage"/>
                     </Button>
                 </Viewbox>
 
             </Grid>
         </ScrollViewer>
-        <Button Content="Dodaj do bazy" Grid.Column="2" HorizontalAlignment="Left" Margin="25.6,25.2,0,0" VerticalAlignment="Top" Width="133" Height="41" Click="AddToBase" Grid.Row="1"/>
-        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="28" Margin="25.6,96.2,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" RenderTransformOrigin="0.15,-1.039" Name="FingerprintName" Grid.Row="1"/>
-        <Label Content="Nazwa odcisku" Grid.Column="2" HorizontalAlignment="Center" Margin="25.6,134.2,128.6,0" VerticalAlignment="Top" Width="133" Height="26" Grid.Row="1" RenderTransformOrigin="0.748,0.711"/>
 
-        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="25.6,165.2,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="79" Width="133" IsEnabled="False" Name="MinuteaWektorInformator" Grid.Row="1"/>
-        <ListBox Grid.Column="2" HorizontalAlignment="Left" Height="226" Margin="25.6,417.2,0,0" VerticalAlignment="Top" Width="201" Name="EqualFingerprintList" Grid.Row="1" >
+        <TextBlock Grid.Column="4" HorizontalAlignment="Left" Margin="25.6,11.2,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="100" Width="201" IsEnabled="False" Name="MinuteaWektorInformator" Grid.Row="1"/>
+        <ListBox Grid.Column="4" ToolTip="Lista powiązanych odcisków" HorizontalAlignment="Left" Height="240" Margin="25.6,483.2,0,0" VerticalAlignment="Top" Width="201" Name="EqualFingerprintList" Grid.Row="1" >
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
@@ -187,14 +197,14 @@
             </ListBox.ItemContainerStyle>
         </ListBox>
 
-        <Button Content="Clean Database" Grid.Column="2" HorizontalAlignment="Left" Margin="55.6,676.2,0,0" VerticalAlignment="Top" Width="133" Height="38" Click="CleanDatabase" Grid.Row="1"/>
-
-        <Menu IsMainMenu="True" Margin="0,5,10.6,1434.2" Grid.ColumnSpan="3" Height="Auto" Grid.RowSpan="2">
+        <Menu IsMainMenu="True" Margin="0,5,10.044,1301" Grid.ColumnSpan="5" Height="Auto" Grid.RowSpan="2">
             <MenuItem Header="_Start" Template="{StaticResource VsOnline}" >
                 <MenuItem Header="_Automatyczny" Template="{StaticResource VsMenuSub}"  Click="AutomaticalStart"/>
                 <MenuItem Header="_Kontrolowany" Template="{StaticResource VsMenuSub}"  Click="ControlledStart"/>
             </MenuItem>
             <MenuItem Header="_Filtry" Template="{StaticResource VsMenuTop}">
+                <MenuItem Header="_Cofnij" Template="{StaticResource VsMenuSub}" Click="Cancel"/>
+                <Separator Template="{StaticResource VsMenuSep}" />
                 <MenuItem Header="_Normalizacja" Template="{StaticResource VsMenuSub}"  Click="NormalizationBinder"/>
                 <MenuItem Header="_Histogram" Template="{StaticResource VsMenuSub}"  Click="Histogram"/>
                 <MenuItem Header="_Histogram Obszarowy" Template="{StaticResource VsMenuSub}"  Click="GridedHistogram"/>
@@ -209,19 +219,14 @@
                 <MenuItem Header="_Binaryzacja" Template="{StaticResource VsMenuSub}"  Click="Binaryzation" />
 
             </MenuItem>
-            <MenuItem Header="_Zatwierdź" Template="{StaticResource VsMenuTop}" Click="OK">
-
-
-            </MenuItem>
-            <MenuItem Header="_Cofnij" Template="{StaticResource VsMenuTop}" Click="Cancel">
-
-
-            </MenuItem>
+            
             <MenuItem Header="_Baza danych" Template="{StaticResource VsMenuTop}">
-                <MenuItem Header="_Dodaj" Template="{StaticResource VsMenuSub}" Click="AddToBase" />
+                <MenuItem Header="_Dodaj" Template="{StaticResource VsMenuSub}" Click="ShowAddToBaseWindow" />
                 <MenuItem Header="_Wyczyść bazę danych" Template="{StaticResource VsMenuSub}" Click="CleanDatabase"/>
-                <MenuItem Header="_Wyświel" Template="{StaticResource VsMenuSub}" />
-                <MenuItem Header="_Załaduj bazę z folderu" Template="{StaticResource VsMenuSub}" />
+                <MenuItem Header="_Wyświel" Template="{StaticResource VsMenuSub}"  Click="ShowDatabase"/>
+                <MenuItem Header="_Załaduj bazę z folderu" Template="{StaticResource VsMenuSub}" Click="ShowLoadDatabaseFromFolder" />
+
+
 
             </MenuItem>
             <MenuItem Header="_Algorytmy" Template="{StaticResource VsMenuTop}">
@@ -233,6 +238,16 @@
 
 
         </Menu>
+        <ListBox Grid.Column="4" ToolTip="Lista powiązanych odcisków" HorizontalAlignment="Left" Height="290" Margin="25.6,143.2,0,0" VerticalAlignment="Top" Width="201" Name="DatabaseList" Grid.Row="1" >
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <EventSetter Event="Control.MouseDoubleClick" Handler="ShowChosenFingerprint"/>
+                    <EventSetter Event="MouseRightButtonUp" Handler="CheckSimillar"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+        <CheckBox Content=" Filtracja" Grid.Column="4" HorizontalAlignment="Left" Margin="165.6,16,0,0" VerticalAlignment="Top"  Name="FiltracjaCheckedBox"/>
 
 
 

@@ -1,0 +1,19 @@
+﻿<Window x:Class="BiometriaOdciskuPalca.PopupInputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BiometriaOdciskuPalca"
+        mc:Ignorable="d"
+        Title="PopupInputWindow" Height="122.041" Width="292.024">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.New" Executed="AddCommand_Executed" CanExecute="AddCommand_CanExecute" />
+    </Window.CommandBindings>
+    <Grid Margin="0,0,-6.4,0.8" >
+        <Grid.InputBindings>
+            <KeyBinding Command="ApplicationCommands.New"  Key="Enter" />
+        </Grid.InputBindings>
+        <Label  HorizontalAlignment="Center"  Margin="0,52,0,0" VerticalAlignment="Top" Height="30" Width="219" HorizontalContentAlignment="Center" Name="textBox" />
+        <TextBox HorizontalAlignment="Center" Height="23" Margin="0,17,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="249" Name="TextBox"/>
+    </Grid>
+</Window>

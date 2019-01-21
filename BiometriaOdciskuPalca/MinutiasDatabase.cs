@@ -96,5 +96,7 @@ namespace BiometriaOdciskuPalca
                     File.Delete(filePath);
             }
         }
+
+        
     }
 }
