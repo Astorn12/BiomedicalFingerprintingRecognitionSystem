@@ -236,7 +236,7 @@ namespace BiometriaOdciskuPalca
             startMinutazDetection();
             return minutiaeDetector.GetImageWithMatchedMinutias();
         }
-        public Bitmap getAlreadyPassed()
+        public Tuple<Bitmap,Bitmap> getAlreadyPassed()
         {
             return minutiaeDetector.getAlreadyPassed();
         }

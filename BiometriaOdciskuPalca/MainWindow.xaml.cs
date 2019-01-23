@@ -46,7 +46,7 @@ namespace BiometriaOdciskuPalca
         bool testFlag=true;
         //Bitmap processImage;
 
-        string databasePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\ databse.json";
+        string databasePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\databse.json";
         MinutiaWektor temporaryMinutiasMap;
         #region Constructors
         public MainWindow()
@@ -124,11 +124,11 @@ namespace BiometriaOdciskuPalca
         public void AutomaticalStart(object sender,RoutedEventArgs e)
         {
             //filtrowanie
-            Normalization();
-             BackgroundOK();
+           // Normalization();
+            // BackgroundOK();
             MedianFilter();
              BackgroundOK();
-            GridedHistogram();
+           // GridedHistogram();
             ShowOK(sender,e);
             //tworzenie mapy kierunków
             MapaKierunkow(sender, e);
@@ -231,133 +231,7 @@ namespace BiometriaOdciskuPalca
             }
         }
 
-        public void losowyObszar(object sender, EventArgs e)
-        {
-            fingerprint = new Fingerprint((BitmapImage)originalImage.Source);
-            fingerprint.startRecognition(fingerprint.localOrientationMap);
-            randomCel = fingerprint.getRandomCell(mapakierunkow);
-            ImageSupporter.WriteBitmap(randomCel.bitmap);
-            QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(randomCel.bitmap);
-            fingerprint.merge();
-            threetothreeImage.Source = ImageSupporter.ToBitmapSource(ImageSupporter.Scale(1, fingerprint.localOrientationMap));
-        }
-
-        private void Q(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //randomCel.toDirectionMap();
-                //pojedynczyKierunek.Source = ImageSupporter.Bitmap2BitmapImage(randomCel.bitmap);
-                //  pojedynczyKierunek.Source = ImageSupporter.Bitmap2BitmapImage(randomCel.toDirectionMapTest());
-                pojedynczyKierunek.Source = ImageSupporter.ToBitmapSource(ImageSupporter.Scale(100, randomCel.toDirectionMapTest()));
-            }
-            catch (System.NullReferenceException en)
-            {
-                Console.WriteLine("Nie masz wylosowanej komórki");
-            }
-
-        }
-
-
-        private void threetothree(object sender, EventArgs e)
-        {
-            try
-            {
-                Bitmap bb = new Bitmap(3, 3);
-                bb.SetPixel(0, 0, Color.FromArgb(0, 0, 0));
-                bb.SetPixel(1, 0, Color.FromArgb(50, 50, 50));
-                bb.SetPixel(2, 0, Color.FromArgb(100, 100, 100));
-                bb.SetPixel(0, 1, Color.FromArgb(50, 50, 50));
-                bb.SetPixel(1, 1, Color.FromArgb(100, 100, 100));
-                bb.SetPixel(2, 1, Color.FromArgb(255, 255, 255));
-                bb.SetPixel(0, 2, Color.FromArgb(100, 100, 100));
-                bb.SetPixel(1, 2, Color.FromArgb(255, 255, 255));
-                bb.SetPixel(2, 2, Color.FromArgb(255, 255, 255));
-
-                /* bb.SetPixel(0, 0, Color.FromArgb(0, 0, 0));
-                 bb.SetPixel(1, 0, Color.FromArgb(0, 0, 0));
-                 bb.SetPixel(2, 0, Color.FromArgb(0, 0, 0));
-                 bb.SetPixel(0, 1, Color.FromArgb(0, 0, 0));
-                 bb.SetPixel(1, 1, Color.FromArgb(0, 0,0));
-                 bb.SetPixel(2, 1, Color.FromArgb(0, 0, 0));
-                 bb.SetPixel(0, 2, Color.FromArgb(255, 255, 255));
-                 bb.SetPixel(1, 2, Color.FromArgb(255, 255, 255));
-                 bb.SetPixel(2, 2, Color.FromArgb(255, 255, 255));*/
-
-                /*bb.SetPixel(0, 0, Color.FromArgb(255, 255, 255));
-                bb.SetPixel(1, 0, Color.FromArgb(200, 200,200));
-                bb.SetPixel(2, 0, Color.FromArgb(100, 100, 100));
-                bb.SetPixel(0, 1, Color.FromArgb(200, 200, 200));
-                bb.SetPixel(1, 1, Color.FromArgb(100, 100, 100));
-                bb.SetPixel(2, 1, Color.FromArgb(50, 50, 50));
-                bb.SetPixel(0, 2, Color.FromArgb(100, 100, 100));
-                bb.SetPixel(1, 2, Color.FromArgb(50, 50, 50));
-                bb.SetPixel(2, 2, Color.FromArgb(0, 0, 0));*/
-
-
-                /*  bb.SetPixel(0, 0, Color.FromArgb(255, 255, 255));
-                  bb.SetPixel(1, 0, Color.FromArgb(200, 200, 200));
-                  bb.SetPixel(2, 0, Color.FromArgb(100, 100, 100));
-                  bb.SetPixel(0, 1, Color.FromArgb(200, 200, 200));
-                  bb.SetPixel(1, 1, Color.FromArgb(100, 100, 100));
-                  bb.SetPixel(2, 1, Color.FromArgb(50, 50, 50));
-                  bb.SetPixel(0, 2, Color.FromArgb(100, 100, 100));
-                  bb.SetPixel(1, 2, Color.FromArgb(50, 50, 50));
-                  bb.SetPixel(2, 2, Color.FromArgb(0, 0, 0));*/
-                this.threeToThree = randomCel.getRandomThreeToThree();
-                //this.threeToThree = bb;
-                // var bitmapSrc = MyImagingHelper.Scale(100, twoPixelBitmap)//this will get a Bitmap size 200 * 100,change the ratio if it is not enough
-                //.ToBitmapSource();
-                threetothreeImage.Source = ImageSupporter.ToBitmapSource(ImageSupporter.Scale(100, threeToThree));
-                /* Bitmap bitmapTwo = randomCel.getRandomTwo();
-                 Console.WriteLine(bitmapTwo.Size);
-                 threetothreeImage.Source = ImageSupporter.bitmapToBitmapimage2(bitmapTwo);
-                 Console.WriteLine("Wielkość: " + threetothreeImage.Width + "  " + threetothreeImage.Source.Height);*/
-
-                //Console.WriteLine("Color na pozycji 1 0= " +threeToThree.GetPixel(0, 1).R);
-                ImageSupporter.WriteBitmap(threeToThree);
-
-
-            }
-            catch (System.NullReferenceException en)
-            {
-                Console.WriteLine("Nie masz wylosowanej komórki");
-            }
-
-
-        }
-
-        private void gradient(object sender, EventArgs e)
-        {
-            try
-            {
-                // Console.WriteLine(randomCel.wektorToAngle(randomCel.getWektor(threeToThree)));
-                int x = Int32.Parse(Console.ReadLine());
-                int y = Int32.Parse(Console.ReadLine());
-
-                fingerprint = new Fingerprint((BitmapImage)originalImage.Source);
-                fingerprint.startRecognition(fingerprint.localOrientationMap);
-                randomCel = fingerprint.getCell(mapakierunkow, x, y);
-                ImageSupporter.WriteBitmap(randomCel.bitmap);
-                QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(randomCel.bitmap);
-                fingerprint.merge();
-                threetothreeImage.Source = ImageSupporter.ToBitmapSource(ImageSupporter.Scale(1, fingerprint.localOrientationMap));
-
-
-
-
-
-
-
-            }
-            catch (System.NullReferenceException en)
-            {
-                Console.WriteLine("Nie masz wylosowanego obszaru 3 na 3");
-            }
-
-            //Console.WriteLine(imageCell.)
-
-        }
+     
 
 
 
@@ -378,6 +252,31 @@ namespace BiometriaOdciskuPalca
             // Console.WriteLine(Color.Blue.ToArgb());
         }
 
+        public void ExpandImage2(object sender, EventArgs e)
+        {
+            var source = ((sender as Button).Content as System.Windows.Controls.Image).Source;
+
+            var okno = new ImageWindow(source,MinutiaFromPixcel);
+            okno.Show();
+            // Console.WriteLine(Color.Blue.ToArgb());
+        }
+
+        public void MinutiaFromPixcel(int x,int y)
+        {
+            MinutiaWektor mw = database.mBase[chossenDatabaseElement].MinutiaesWektor;
+            foreach(var item in mw.m)
+            {
+                
+                    if (Math.Abs(item.p.X - x) < 3 && Math.Abs(item.p.Y - y) < 3)
+                    {
+                    int index = mw.m.FindIndex(a=>a==item);
+                        Console.WriteLine("Minutia: " + item.p.X + " " + item.p.Y + " " + item.direction+" "+index);
+                    }
+                
+            }
+
+        }
+
         #endregion
 
         private void choosenArea_Click(object sender, RoutedEventArgs e)
@@ -396,9 +295,11 @@ namespace BiometriaOdciskuPalca
         private void MinutaesDetection(object sender, RoutedEventArgs e)
         {
          
-            threetothreeImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getSectionPoints((Bitmap)workingImage.Clone()));
-            prezentacjasekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getAlreadyPassed());
+            QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getSectionPoints((Bitmap)workingImage.Clone()));
 
+            Tuple<Bitmap, Bitmap> alreadyPassedImages = fingerprint.getAlreadyPassed();
+            pojedynczyKierunek.Source = ImageSupporter.Bitmap2BitmapImage(alreadyPassedImages.Item2);
+           threetothreeImage.Source=ImageSupporter.Bitmap2BitmapImage(alreadyPassedImages.Item1);
             temporaryMinutiasMap = new MinutiaWektor( fingerprint.GetTemporaryMinutiasMap());
             MinuteaWektorInformator.Text = "Wykryto " + temporaryMinutiasMap.m.Count() + " minucji \n" +
                                            +temporaryMinutiasMap.GetEndCount() + " zakończeń \n" +
@@ -407,7 +308,7 @@ namespace BiometriaOdciskuPalca
         private void MinutaesDetection()
         {
 
-            threetothreeImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getSectionPoints((Bitmap)workingImage.Clone()));
+           QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getSectionPoints((Bitmap)workingImage.Clone()));
            // fingerprint.getAlreadyPassed();
 
             temporaryMinutiasMap = new MinutiaWektor(fingerprint.GetTemporaryMinutiasMap());
@@ -421,27 +322,37 @@ namespace BiometriaOdciskuPalca
             databaseList= database.mBase;
             
             DatabaseList.Items.Clear();
-            foreach (var element in databaseList)
+            if (databaseList != null)
             {
-                ListBoxItem item = new ListBoxItem();
-                item.Content = element.FingerprntName;
-                DatabaseList.Items.Add(item);
+                foreach (var element in databaseList)
+                {
+                    ListBoxItem item = new ListBoxItem();
+                    item.Content = element.FingerprntName;
+                    DatabaseList.Items.Add(item);
+                }
             }
 
         }
 
-
+        
 
         List<Tuple<DatabaseElement, int, ModyficationElement,int>> equals;
         private void CheckWithDatabase(object sender, RoutedEventArgs e)
         {
             EqualFingerprintList.Items.Clear();
             equals = database.CheckWithDatabase(temporaryMinutiasMap);
+      
             foreach(var element in equals)
             {
                 ListBoxItem item = new ListBoxItem();
-                item.Content = element.Item1.FingerprntName+" "+element.Item2+" ("+element.Item3.ToString()+") voting:"+element.Item4 ;
+                double d = (double)element.Item2 / (double)element.Item1.MinutiaesWektor.m.Count;
+                item.Content = d+" "+ element.Item1.FingerprntName+" "+element.Item2+" ("+element.Item3.ToString()+") voting:"+element.Item4 ;
+                if (d >= 0.4)
+                {
+                    item.Background = System.Windows.Media.Brushes.Red;
+                }
                 EqualFingerprintList.Items.Add(item);
+             
                 
             }
         }
@@ -473,11 +384,12 @@ namespace BiometriaOdciskuPalca
 
 
 
-
+        int chossenDatabaseElement;
         private void ShowChosenFingerprint(object sender,RoutedEventArgs e)
         {
            
             int index = DatabaseList.Items.IndexOf(sender);
+            chossenDatabaseElement = index;
             DatabaseElement chosen = databaseList[index];
             
             Bitmap b = ImageSupporter.BitmapImage2Bitmap(new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\" + chosen.FingerprntName + ".png")));
@@ -576,7 +488,13 @@ namespace BiometriaOdciskuPalca
                     }
                 }
             }
-           
+
+           // final.SetPixel(wektor.m[0].p.X, wektor.m[0].p.Y,Color.Red);
+           // final.SetPixel(wektor.m[1].p.X, wektor.m[1].p.Y,Color.Pink);
+           // final.SetPixel(wektor.m[2].p.X, wektor.m[2].p.Y,Color.Green);
+           // final.SetPixel(wektor.m[3].p.X, wektor.m[3].p.Y,Color.HotPink);
+           // final.SetPixel(wektor.m[4].p.X, wektor.m[4].p.Y,Color.Lavender);
+          
                 return final;
         }
 
@@ -675,22 +593,6 @@ namespace BiometriaOdciskuPalca
 
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            /* Bitmap x = ImageSupporter.BitmapImage2Bitmap((BitmapImage)randomCell.Source);
-             Bitmap b = actualFingerprint.filtruj(
-                 x,
-                      /* float.Parse(Gamma.Text, CultureInfo.InvariantCulture.NumberFormat),
-                       float.Parse(Lambda.Text, CultureInfo.InvariantCulture.NumberFormat),
-                       float.Parse(Psi.Text, CultureInfo.InvariantCulture.NumberFormat),
-                       float.Parse(Sigma.Text, CultureInfo.InvariantCulture.NumberFormat),
-                       float.Parse(Theta.Text, CultureInfo.InvariantCulture.NumberFormat)*/
-            /*  1, 1, 1, 1, 0.1f
-            );
-     prezentacjasekcjiImage.Source=ImageSupporter.Bitmap2BitmapImage(b);*/
-            prezentacjasekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.GetAfterFiltration());
-
-        }
 
         private void Start(object sender, RoutedEventArgs e)
         {
@@ -740,8 +642,8 @@ namespace BiometriaOdciskuPalca
             QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(workingImage);
             /*-----------------------------Szukanie minucji----------------------------------*/
 
-            punktySekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getSectionPoints(workingImage));
-            prezentacjasekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getAlreadyPassed());
+            pojedynczyKierunek.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getSectionPoints(workingImage));
+           // prezentacjasekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getAlreadyPassed());
 
             /*---------------------------Sprawdzanie podobieństwa z odciskami z bazy danych-------------------*/
 
@@ -976,13 +878,142 @@ namespace BiometriaOdciskuPalca
             //StartChosenGabor();
         }
 
-        
+
 
 
 
 
         #endregion
+        #region Metody Testowe
+        //metody nieużywane do działąnia programu, ale istotne w trakcie testów i przygotowania pracy dyplomowej
+           public void losowyObszar(object sender, EventArgs e)
+        {
+            fingerprint = new Fingerprint((BitmapImage)originalImage.Source);
+            fingerprint.startRecognition(fingerprint.localOrientationMap);
+            randomCel = fingerprint.getRandomCell(mapakierunkow);
+            ImageSupporter.WriteBitmap(randomCel.bitmap);
+            QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(randomCel.bitmap);
+            fingerprint.merge();
+            threetothreeImage.Source = ImageSupporter.ToBitmapSource(ImageSupporter.Scale(1, fingerprint.localOrientationMap));
+        }
 
+        private void Q(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //randomCel.toDirectionMap();
+                //pojedynczyKierunek.Source = ImageSupporter.Bitmap2BitmapImage(randomCel.bitmap);
+                //  pojedynczyKierunek.Source = ImageSupporter.Bitmap2BitmapImage(randomCel.toDirectionMapTest());
+                pojedynczyKierunek.Source = ImageSupporter.ToBitmapSource(ImageSupporter.Scale(100, randomCel.toDirectionMapTest()));
+            }
+            catch (System.NullReferenceException en)
+            {
+                Console.WriteLine("Nie masz wylosowanej komórki");
+            }
+
+        }
+
+
+        private void threetothree(object sender, EventArgs e)
+        {
+            try
+            {
+                Bitmap bb = new Bitmap(3, 3);
+                bb.SetPixel(0, 0, Color.FromArgb(0, 0, 0));
+                bb.SetPixel(1, 0, Color.FromArgb(50, 50, 50));
+                bb.SetPixel(2, 0, Color.FromArgb(100, 100, 100));
+                bb.SetPixel(0, 1, Color.FromArgb(50, 50, 50));
+                bb.SetPixel(1, 1, Color.FromArgb(100, 100, 100));
+                bb.SetPixel(2, 1, Color.FromArgb(255, 255, 255));
+                bb.SetPixel(0, 2, Color.FromArgb(100, 100, 100));
+                bb.SetPixel(1, 2, Color.FromArgb(255, 255, 255));
+                bb.SetPixel(2, 2, Color.FromArgb(255, 255, 255));
+
+                /* bb.SetPixel(0, 0, Color.FromArgb(0, 0, 0));
+                 bb.SetPixel(1, 0, Color.FromArgb(0, 0, 0));
+                 bb.SetPixel(2, 0, Color.FromArgb(0, 0, 0));
+                 bb.SetPixel(0, 1, Color.FromArgb(0, 0, 0));
+                 bb.SetPixel(1, 1, Color.FromArgb(0, 0,0));
+                 bb.SetPixel(2, 1, Color.FromArgb(0, 0, 0));
+                 bb.SetPixel(0, 2, Color.FromArgb(255, 255, 255));
+                 bb.SetPixel(1, 2, Color.FromArgb(255, 255, 255));
+                 bb.SetPixel(2, 2, Color.FromArgb(255, 255, 255));*/
+
+                /*bb.SetPixel(0, 0, Color.FromArgb(255, 255, 255));
+                bb.SetPixel(1, 0, Color.FromArgb(200, 200,200));
+                bb.SetPixel(2, 0, Color.FromArgb(100, 100, 100));
+                bb.SetPixel(0, 1, Color.FromArgb(200, 200, 200));
+                bb.SetPixel(1, 1, Color.FromArgb(100, 100, 100));
+                bb.SetPixel(2, 1, Color.FromArgb(50, 50, 50));
+                bb.SetPixel(0, 2, Color.FromArgb(100, 100, 100));
+                bb.SetPixel(1, 2, Color.FromArgb(50, 50, 50));
+                bb.SetPixel(2, 2, Color.FromArgb(0, 0, 0));*/
+
+
+                /*  bb.SetPixel(0, 0, Color.FromArgb(255, 255, 255));
+                  bb.SetPixel(1, 0, Color.FromArgb(200, 200, 200));
+                  bb.SetPixel(2, 0, Color.FromArgb(100, 100, 100));
+                  bb.SetPixel(0, 1, Color.FromArgb(200, 200, 200));
+                  bb.SetPixel(1, 1, Color.FromArgb(100, 100, 100));
+                  bb.SetPixel(2, 1, Color.FromArgb(50, 50, 50));
+                  bb.SetPixel(0, 2, Color.FromArgb(100, 100, 100));
+                  bb.SetPixel(1, 2, Color.FromArgb(50, 50, 50));
+                  bb.SetPixel(2, 2, Color.FromArgb(0, 0, 0));*/
+                this.threeToThree = randomCel.getRandomThreeToThree();
+                //this.threeToThree = bb;
+                // var bitmapSrc = MyImagingHelper.Scale(100, twoPixelBitmap)//this will get a Bitmap size 200 * 100,change the ratio if it is not enough
+                //.ToBitmapSource();
+                threetothreeImage.Source = ImageSupporter.ToBitmapSource(ImageSupporter.Scale(100, threeToThree));
+                /* Bitmap bitmapTwo = randomCel.getRandomTwo();
+                 Console.WriteLine(bitmapTwo.Size);
+                 threetothreeImage.Source = ImageSupporter.bitmapToBitmapimage2(bitmapTwo);
+                 Console.WriteLine("Wielkość: " + threetothreeImage.Width + "  " + threetothreeImage.Source.Height);*/
+
+                //Console.WriteLine("Color na pozycji 1 0= " +threeToThree.GetPixel(0, 1).R);
+                ImageSupporter.WriteBitmap(threeToThree);
+
+
+            }
+            catch (System.NullReferenceException en)
+            {
+                Console.WriteLine("Nie masz wylosowanej komórki");
+            }
+
+
+        }
+
+        private void gradient(object sender, EventArgs e)
+        {
+            try
+            {
+                // Console.WriteLine(randomCel.wektorToAngle(randomCel.getWektor(threeToThree)));
+                int x = Int32.Parse(Console.ReadLine());
+                int y = Int32.Parse(Console.ReadLine());
+
+                fingerprint = new Fingerprint((BitmapImage)originalImage.Source);
+                fingerprint.startRecognition(fingerprint.localOrientationMap);
+                randomCel = fingerprint.getCell(mapakierunkow, x, y);
+                ImageSupporter.WriteBitmap(randomCel.bitmap);
+                QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(randomCel.bitmap);
+                fingerprint.merge();
+                threetothreeImage.Source = ImageSupporter.ToBitmapSource(ImageSupporter.Scale(1, fingerprint.localOrientationMap));
+
+
+
+
+
+
+
+            }
+            catch (System.NullReferenceException en)
+            {
+                Console.WriteLine("Nie masz wylosowanego obszaru 3 na 3");
+            }
+
+            //Console.WriteLine(imageCell.)
+
+        }
+        #endregion
         #region Gabor Filter Specyfikaction Click Listeners 
 
         /*  private void GaborFilterClick(object sender, RoutedEventArgs e)

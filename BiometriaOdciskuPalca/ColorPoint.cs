@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace BiometriaOdciskuPalca
 {
+    //klasa reprezentująca punkt układu kartezjańskiego o zadanym kolorze
     class ColorPoint
     {
         public int color { get; set; }

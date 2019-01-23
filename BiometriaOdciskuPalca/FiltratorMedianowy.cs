@@ -6,12 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BiometriaOdciskuPalca
-{
+{       //klasa implementująca działanie filtratora medianowego
      class FiltratorMedianowy
     {
-      
-       
-
        public  Bitmap  filtrowanie(Bitmap bitmapaOrginalna )
         {
             int wielkoscObszaru  = 5;
@@ -22,11 +19,11 @@ namespace BiometriaOdciskuPalca
                     for (int j = wielkoscObszaru / 2; j < b.Height - wielkoscObszaru / 2; j++)
                     {
                         byte byt = medianaObszaru(getObszar(new Point(i, j), wielkoscObszaru, bitmapaOrginalna));
-                        //Console.WriteLine(byt + " " + bitmapaOrginalna.GetPixel(i, j).R);
+                      
                         b.SetPixel(i, j, Color.FromArgb(byt, byt, byt));
                     }
                 }
-                //bitmapaOrginalna = (Bitmap)b.Clone();
+             
             
             return b;
         }
@@ -50,8 +47,6 @@ namespace BiometriaOdciskuPalca
             
             return area;
         }
-
-
         private byte medianaObszaru(int[,] area)
         {
             List<int> l = new List<int>(); 

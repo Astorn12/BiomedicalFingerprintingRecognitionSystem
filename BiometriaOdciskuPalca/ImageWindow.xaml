@@ -8,7 +8,7 @@
         Title="ImageWindow" Height="500" Width="500" >
     <ScrollViewer MouseDoubleClick="ScrollViewer_MouseDoubleClick">
         <Grid >
-            <Image x:Name="obrazek" Stretch="UniformToFill" Margin="0,-10,9.8,0.4" />
+            <Image x:Name="obrazek" Stretch="UniformToFill" Margin="0,-10,9.8,0.4" MouseLeftButtonUp="Obrazek_MouseLeftButtonUp" />
         </Grid>
     </ScrollViewer>
 </Window>

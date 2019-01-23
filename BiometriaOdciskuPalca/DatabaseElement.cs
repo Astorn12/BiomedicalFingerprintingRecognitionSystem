@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace BiometriaOdciskuPalca
 {
+    //klasa reprezentująca elementy bazy danych, jest to klasa łącząca wektor cech obrazu z nazwą obrazu
     class DatabaseElement
     {
-       public String FingerprntName { get; set; }
-       public MinutiaWektor MinutiaesWektor { get; set; }
+       public String FingerprntName { get; set; }//nazwa obrazu linii papilarnych, w programie imię i nazwisko posiadacza linii papilarnej
+       public MinutiaWektor MinutiaesWektor { get; set; }//wektor cech obrazu linii papilarnej
 
         public DatabaseElement(string fingetrprontName,MinutiaWektor minuteasList )
         {

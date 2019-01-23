@@ -9,12 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BiometriaOdciskuPalca
-{
+{     //klasa posiadająca wiele statycznych metod służączych do filtracji obrazu linii papilarnych
     class Filtrator
     {
 
 
-
+        #region public methods
         public static Bitmap HighPassFilter(EMask name, Bitmap bitmap)
         {
             Bitmap b = (Bitmap)bitmap.Clone();
@@ -156,43 +156,10 @@ namespace BiometriaOdciskuPalca
             }
             return bi;
         }
-
+        #endregion
         #region Private Methods
+        #region Filtres
 
-        private static double[,] GetArea(Point middlePoint, int len, Bitmap bitmap)
-        {
-
-
-            double[,] area = new double[len, len];
-            int a = 0;
-            int b = 0;
-            for (int i = middlePoint.X - len / 2; i <= middlePoint.X + len / 2; i++)
-            {
-                for (int j = middlePoint.Y - len / 2; j <= middlePoint.Y + len / 2; j++)
-                {
-                    area[a, b] = bitmap.GetPixel(i, j).R;
-                    a++;
-                }
-                b++;
-                a = 0;
-            }
-
-            return area;
-        }
-
-        private static double Convolution(double[,] area, double[,] mask)
-        {
-            double result = 0;
-
-            for (int i = 0; i < area.GetLength(0); i++)
-            {
-                for (int j = 0; j < area.GetLength(1); j++)
-                {
-                    result += area[i, j] * mask[i, j];
-                }
-            }
-            return result;
-        }
 
         public static Bitmap gaborFilter(Bitmap b, float gamma, float lambda, float psi, float sigma, float theta)
         {
@@ -272,43 +239,16 @@ namespace BiometriaOdciskuPalca
             gb.Theta = theta;
             bx = ImageSupporter.ColorToGrayscale((Bitmap)b.Clone());
 
-            // try
-            //{
+            
            Bitmap tmp = bx;
-            //for (int i = 0; i < 3; i++)
-           // {
+        
                 tmp = gb.Apply(bx);
-          //  }
-                // if (WhiteningLevel(tmp, 0.1f))
-                //  {
-               // tmp = FFT((Bitmap)b.Clone());
+        
                     ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(tmp));
 
                     iw.Title = gb.Gamma + " " + gb.Lambda + " " + gb.Psi + " " + gb.Sigma + " " + gb.Theta;
                     iw.Show();
-              //  }
-          /*  }
-            catch (Exception e)
-            {
-                e.GetBaseException();
-            }*/
-
         }
-
-        public static Bitmap FFT(Bitmap b)
-        {
-            /*Bitmap tmp=ImageSupporter.ColorToGrayscale((Bitmap)b.Clone());
-            ComplexImage ci= ComplexImage.FromBitmap(tmp);
-             ci.BackwardFourierTransform();
-             return ci.ToBitmap();*/
-            return null;
-        }
-
-
-
-
-
-
 
         public static Bitmap GaborFilter(Bitmap b,float angle)
         {
@@ -343,7 +283,6 @@ namespace BiometriaOdciskuPalca
 
                 gb.Theta = 0;
                 bx = ImageSupporter.ColorToGrayscale(b);
-                //gb.Apply(ImageSupporter.ColorToGrayscale(bx));
                 if (gb.Gamma == 0) gb.Gamma = 0.01;
                 Console.WriteLine(gb.Gamma + " " + gb.Lambda + " " + gb.Psi + " " + gb.Sigma + " " + gb.Theta);
                 try
@@ -360,44 +299,7 @@ namespace BiometriaOdciskuPalca
             }
         }
 
-        public static List<Bitmap> gaborFilterBank(Bitmap b, int numberOfFilters)
-        {
-            GaborFilter gb = new GaborFilter();
-            Random random = new Random();
-            Bitmap bx;
-
-            List<Bitmap> gaborBank = new List<Bitmap>();
-
-            float jump = (3.14f) / numberOfFilters;
-
-
-            gb.Gamma = 1; //random.NextDouble() * random.Next(1,10)+0.1 ;
-            gb.Lambda = 9;// random.Next(1, 10);//7;
-            gb.Psi = 0.1;
-            gb.Sigma = 20;// 3;// random.Next(1, 10);
-
-            //gb.Theta = 1;
-            bx = ImageSupporter.ColorToGrayscale(b);
-            Console.WriteLine(gb.Gamma + " " + gb.Lambda + " " + gb.Psi + " " + gb.Sigma);
-            for (int i = 0; i < numberOfFilters + 1; i++)
-            {
-                gb.Theta = (float)i * jump;
-                gaborBank.Add(gb.Apply(bx));
-                //ImageWindow im=new ImageWindow(ImageSupporter.Bitmap2BitmapImage( gaborBank[i]));
-                // im.Title = ImageSupporter.RadianToDegree(gb.Theta)+"";
-                //  im.Show();
-            }
-
-            return gaborBank;
-
-
-
-        }
-        
-
-        
-
-
+        //metoda zwracająca bank filtrów gabora dla zadanej bitmapy
         public static List<Bitmap> gaborFilterMyBank(Bitmap bs)
         {
            
@@ -447,11 +349,7 @@ namespace BiometriaOdciskuPalca
 
         }
 
-
-
-
-
-
+        //metoda zrwacająca wynik filtru Cannyego 
        public static Bitmap Canny(Bitmap bitmap)
         {
             Bitmap temporary= ImageSupporter.ColorToGrayscale(bitmap);;
@@ -460,50 +358,7 @@ namespace BiometriaOdciskuPalca
 
             return ImageSupporter.GrayScaleToColor(temporary);
         }
-
-
-
-
-
-
-
-
-
-        public static List<Bitmap> gaborFilterBank(Bitmap b, int numberOfFilters,float gamma,float lambda,float psi,float sigma)
-        {
-            GaborFilter gb = new GaborFilter();
-            Random random = new Random();
-            Bitmap bx;
-
-            List<Bitmap> gaborBank = new List<Bitmap>();
-
-            float jump = (3.14f) / numberOfFilters;
-
-
-            gb.Gamma = gamma;
-            gb.Lambda = lambda;
-            gb.Psi = psi;
-            gb.Sigma = sigma;
-
-            //gb.Theta = 1;
-            bx = ImageSupporter.ColorToGrayscale(b);
-            Console.WriteLine(gb.Gamma + " " + gb.Lambda + " " + gb.Psi + " " + gb.Sigma);
-            for (int i = 0; i < numberOfFilters + 1; i++)
-            {
-                gb.Theta = (float)i * jump;
-                gaborBank.Add(gb.Apply(bx));
-                ImageWindow im=new ImageWindow(ImageSupporter.Bitmap2BitmapImage( gaborBank[i]));
-               im.Title = ImageSupporter.RadianToDegree(gb.Theta)+"";
-                  im.Show();
-            }
-
-            return gaborBank;
-
-
-
-        }
-
-        public static Bitmap ToBinarImage(Bitmap bitmap,int limit)
+          public static Bitmap ToBinarImage(Bitmap bitmap,int limit)
         {
             Bitmap b =(Bitmap) bitmap.Clone();
             for(int i=0;i<b.Width;i++)
@@ -663,7 +518,46 @@ namespace BiometriaOdciskuPalca
             return segmented;
         }
 
-      
+        #endregion
+        #region Supported methods for computing algorythms on bimtap
+        private static double[,] GetArea(Point middlePoint, int len, Bitmap bitmap)
+        {
+
+
+            double[,] area = new double[len, len];
+            int a = 0;
+            int b = 0;
+            for (int i = middlePoint.X - len / 2; i <= middlePoint.X + len / 2; i++)
+            {
+                for (int j = middlePoint.Y - len / 2; j <= middlePoint.Y + len / 2; j++)
+                {
+                    area[a, b] = bitmap.GetPixel(i, j).R;
+                    a++;
+                }
+                b++;
+                a = 0;
+            }
+
+            return area;
+        }
+
+        private static double Convolution(double[,] area, double[,] mask)
+        {
+            double result = 0;
+
+            for (int i = 0; i < area.GetLength(0); i++)
+            {
+                for (int j = 0; j < area.GetLength(1); j++)
+                {
+                    result += area[i, j] * mask[i, j];
+                }
+            }
+            return result;
+        }
+
+
+
+        #endregion
         #endregion
     }
 }

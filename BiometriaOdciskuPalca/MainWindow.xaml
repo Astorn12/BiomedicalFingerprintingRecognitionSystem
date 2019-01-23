@@ -122,7 +122,7 @@
                     <TranslateTransform X="2.794"/>
                 </TransformGroup>
             </ScrollViewer.RenderTransform>
-            <Grid HorizontalAlignment="Left"  VerticalAlignment="Top" Height="1221" Width="792">
+            <Grid HorizontalAlignment="Left"  VerticalAlignment="Top" Height="987" Width="792">
 
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,28,0,0" VerticalAlignment="Top" Width="344" Name="original"  >
                     <Button Click="ExpandImageSpecial" >
@@ -157,7 +157,7 @@
                 </Viewbox>
 
                 <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,330,0,0"  VerticalAlignment="Top" Width="344" Name="wynik" >
-                    <Button Click="ExpandImage" >
+                    <Button Click="ExpandImage2" >
                         <Image  Source="images/szaretlo.jpg"  Width="144" Height="115" Name="QUATRE" RenderTransformOrigin="0.495,0.58" />
                     </Button>
                 </Viewbox>
@@ -172,18 +172,6 @@
                         <Image  Source="images/szaretlo.jpg"   Width="144" Height="115" ToolTip="Obraz linii papilarnej z zaznaczonymi wykrytymi minucjami"  RenderTransformOrigin="0.495,0.58" Name="threetothreeImage" />
                     </Button>
                 </Viewbox>
-
-                <Viewbox HorizontalAlignment="Left" Height="279" Margin="10,950,0,-202" Stretch="Fill" VerticalAlignment="Top" Width="344" Name="prezentacjaseckjiArea"  >
-                    <Button Click="ExpandImage" >
-                        <Image  Source="images/szaretlo.jpg"  ToolTip="Widok lini śledzenia na obrazie odwróconym" Width="144" Height="115" Name="prezentacjasekcjiImage" />
-                    </Button>
-                </Viewbox>
-                <Viewbox HorizontalAlignment="Left" Height="279" Margin="378,950,0,-8" Stretch="Fill" VerticalAlignment="Top" Width="344" Name="punktySekcjiImageArea"  >
-                    <Button Click="ExpandImage" >
-                        <Image  Source="images/szaretlo.jpg"   Width="144" Height="115" Name="punktySekcjiImage"/>
-                    </Button>
-                </Viewbox>
-
             </Grid>
         </ScrollViewer>
 
