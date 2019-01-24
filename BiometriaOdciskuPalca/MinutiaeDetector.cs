@@ -9,6 +9,8 @@ namespace BiometriaOdciskuPalca
 {
     class MinutiaeDetector
     {
+
+      
         private Bitmap orginalBitmap { get; set; }// orginalna mapa bitowa
         private Bitmap alreadyPassed { get; set; }//mapa śledzenia łuków na obrazie orginalnym
         private Bitmap alreadyPassedInverted { get; set; }//mapa śledzenia łuków na obrazie odwróconym
@@ -42,6 +44,9 @@ namespace BiometriaOdciskuPalca
             this.startingSectionLen = 5;
            
         }
+      
+
+        
         public  List<Minutia> getMinutionsMap()
         {
             //tutaj trzeba zmienić na usuwanie tylko jendej z nich
@@ -512,6 +517,31 @@ namespace BiometriaOdciskuPalca
 
                         }
                         }
+        }
+
+        public void MatchMinutia(Bitmap bitmap, Color zakonczenie,Color rozwidlenie, Minutia minutia)
+        {
+            int xo = minutia.p.X, yo = minutia.p.Y;// center of circle
+            int r, rr;
+
+            r = 3;
+            //rr =(int)( Math.Pow(r, 2));
+            Color color;
+            if (minutia.kind.Equals(KindOfMinutia.ZAKONCZENIE)) color = zakonczenie;
+            else color = rozwidlenie;
+            for (int i = xo - (int)r; i <= xo + r; i++)
+                for (int j = yo - (int)r; j <= yo + r; j++)
+                    if (Math.Abs(Math.Sqrt(Math.Pow(i - xo, 2) + Math.Pow(j - yo, 2)) - (float)r) < 0.5f)
+                    {
+                        try
+                        {
+                            bitmap.SetPixel(i, j, color);
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                    }
         }
         public Bitmap GetImageWithFullMinutiesDetection()
         {

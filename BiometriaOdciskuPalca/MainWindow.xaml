@@ -190,6 +190,10 @@
                 <MenuItem Header="_Automatyczny" Template="{StaticResource VsMenuSub}"  Click="AutomaticalStart"/>
                 <MenuItem Header="_Kontrolowany" Template="{StaticResource VsMenuSub}"  Click="ControlledStart"/>
             </MenuItem>
+            <MenuItem Header="_Rejestracja" Template="{StaticResource VsMenuTop}" >
+                <MenuItem Header="_Automatyczna" Template="{StaticResource VsMenuSub}"  Click="AutomaticalRejestration"/>
+                <MenuItem Header="_Kontrolowana" Template="{StaticResource VsMenuSub}"  Click="ControlledRejestration"/>
+            </MenuItem>
             <MenuItem Header="_Filtry" Template="{StaticResource VsMenuTop}">
                 <MenuItem Header="_Cofnij" Template="{StaticResource VsMenuSub}" Click="Cancel"/>
                 <Separator Template="{StaticResource VsMenuSep}" />
@@ -204,10 +208,33 @@
                 <Separator Template="{StaticResource VsMenuSep}" />
 
                 <MenuItem Header="_Odwrócenie" Template="{StaticResource VsMenuSub}"  Click="Invers"/>
-                <MenuItem Header="_Binaryzacja" Template="{StaticResource VsMenuSub}"  Click="Binaryzation" />
+                <MenuItem  Template="{StaticResource VsMenuSub}" >
+                    <MenuItem.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="textBlock1" Text="Binaryzacja" VerticalAlignment="Center" MouseLeftButtonUp="Binaryzation" FontSize="15px"/>
+                            <TextBox VerticalContentAlignment="Center"  Grid.Row="1" Grid.Column="1" Text="125" Margin="2.6,0" Width="25"  Name="BinaryzationValue"  TextAlignment="Center"  Padding="0"/>
+                            <Button  Grid.Column="2" HorizontalAlignment="Left" Margin="28.4,0,-54.8,0" VerticalAlignment="Top" Width="28" Height="28" Click="BinaryzationIncrease">
+                               <Image  Source="images/minus.png"/>
 
+                            </Button>
+                            <Button  Grid.Column="2" HorizontalAlignment="Left" Margin="0.4,0,-29.4,0" VerticalAlignment="Top" Width="28" Height="28" Click="BinaryzationDecrease">
+                                
+                                 <Image  Source="images/plus.png"/>
+                            </Button>
+
+                        </Grid>
+                    </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <Image Source="images/minus.png" Height="20" Width="20"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
-            
+
             <MenuItem Header="_Baza danych" Template="{StaticResource VsMenuTop}">
                 <MenuItem Header="_Dodaj" Template="{StaticResource VsMenuSub}" Click="ShowAddToBaseWindow" />
                 <MenuItem Header="_Wyczyść bazę danych" Template="{StaticResource VsMenuSub}" Click="CleanDatabase"/>

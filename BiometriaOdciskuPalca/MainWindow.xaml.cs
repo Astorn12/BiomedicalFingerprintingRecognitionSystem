@@ -61,6 +61,7 @@ namespace BiometriaOdciskuPalca
             database.Load();
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             FiltracjaCheckedBox.IsChecked = true;
+          
             //EqualFingerprintList.MouseDoubleClick += new EventHandler(ListBox_DoubleClick);
         }
         #endregion
@@ -124,11 +125,11 @@ namespace BiometriaOdciskuPalca
         public void AutomaticalStart(object sender,RoutedEventArgs e)
         {
             //filtrowanie
-           // Normalization();
-            // BackgroundOK();
+           Normalization();
+             BackgroundOK();
             MedianFilter();
              BackgroundOK();
-           // GridedHistogram();
+            GridedHistogram();
             ShowOK(sender,e);
             //tworzenie mapy kierunków
             MapaKierunkow(sender, e);
@@ -161,7 +162,53 @@ namespace BiometriaOdciskuPalca
 
             
         }
-      
+        private void AutomaticalRejestration(object sender,RoutedEventArgs e)
+        {
+
+            PreProcessing();
+
+            ProperAlgorithm();
+
+           // AddToBase(name);
+            PopupInputWindow popup = new PopupInputWindow(AddToBase, "Wpisz nazwę dla odcisku palca", "Dodawanie odcisku palca do bazy danych");
+            popup.Show();
+
+
+        }
+
+        private void ControlledRejestration(object sender,RoutedEventArgs e)
+        {
+
+
+            ProperAlgorithm();
+        PopupInputWindow popup = new PopupInputWindow(AddToBase, "Wpisz nazwę dla odcisku palca", "Dodawanie odcisku palca do bazy danych");
+        popup.Show();
+        }
+
+        public void PreProcessing()
+        {
+            Normalization();
+            BackgroundOK();
+            MedianFilter();
+            BackgroundOK();
+            GridedHistogram();
+
+            BackgroundOK();
+        }
+
+        public void ProperAlgorithm()
+        {
+            BackgroundOK();
+
+            MapaKierunkow();
+
+            MinutaesDetection();
+            
+
+            
+        }
+
+
 
         public void ControlledStart(object sender,RoutedEventArgs e)
         {
@@ -395,7 +442,8 @@ namespace BiometriaOdciskuPalca
             Bitmap b = ImageSupporter.BitmapImage2Bitmap(new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\" + chosen.FingerprntName + ".png")));
             
             MinutiaWektor zbazy = database.mBase[index].MinutiaesWektor;
-            b = MatchMinuties2(b, zbazy, Color.Blue, Color.Blue);
+
+            b = MatchMinuties2(b, zbazy, Color.Blue, Color.Orange);
             QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(b);
         }
         private void CheckSimillar(object sender, RoutedEventArgs e)
@@ -469,7 +517,9 @@ namespace BiometriaOdciskuPalca
         }
         private Bitmap MatchMinuties2(Bitmap bitmap, MinutiaWektor wektor, Color zakocznczenia,Color rozwidlenia)
         {
-            Bitmap final = (Bitmap)bitmap.Clone();
+           
+
+                Bitmap final = (Bitmap)bitmap.Clone();
             foreach (var p in wektor.m)
             {
                 //  final.SetPixel(item.Item1.X, item.Item1.Y,Color.Orange);
@@ -480,10 +530,11 @@ namespace BiometriaOdciskuPalca
                     {
                         if (i < final.Width && i > 0 && j < final.Height && j > 0)
                         {
-                            if (p.kind.Equals(KindOfMinutia.ZAKONCZENIE))
-                                final.SetPixel(i, j, zakocznczenia);
+                           ImageSupporter.MatchMinutia2(final, zakocznczenia, rozwidlenia, p);                      
+                           // if (p.kind.Equals(KindOfMinutia.ZAKONCZENIE))
+                           //     final.SetPixel(i, j, zakocznczenia);
 
-                            else final.SetPixel(i, j, rozwidlenia);
+                           // else final.SetPixel(i, j, rozwidlenia);
                         }
                     }
                 }
@@ -796,12 +847,30 @@ namespace BiometriaOdciskuPalca
         private void Binaryzation(object sender, RoutedEventArgs e)
         {
             Binaryzation();
-            temporary = Filtrator.Binaryzation((Bitmap)workingImage.Clone());
+            temporary = Filtrator.Binaryzation((Bitmap)workingImage.Clone(),Int32.Parse(BinaryzationValue.Text));
             StartImageWindow(temporary);
+        }
+
+        private void BinaryzationIncrease(object sender, RoutedEventArgs e)
+        {
+
+            int value = Int32.Parse(BinaryzationValue.Text);
+            BinaryzationValue.Text = (value + 3) + "";
+
+        }
+        private void BinaryzationDecrease(object sender, RoutedEventArgs e)
+        {
+
+            int value = Int32.Parse(BinaryzationValue.Text);
+
+            int result = value - 3;
+            if (result < 0) result = 0;
+            BinaryzationValue.Text = (result) + "";
+
         }
         private void Binaryzation()
         {
-            temporary = Filtrator.Binaryzation((Bitmap)workingImage.Clone());
+            temporary = Filtrator.Binaryzation((Bitmap)workingImage.Clone(),Int32.Parse(BinaryzationValue.Text));
         }
 
         private void Gornoprzepustowy(object sender, RoutedEventArgs e)
@@ -1013,7 +1082,13 @@ namespace BiometriaOdciskuPalca
             //Console.WriteLine(imageCell.)
 
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
         #endregion
+
         #region Gabor Filter Specyfikaction Click Listeners 
 
         /*  private void GaborFilterClick(object sender, RoutedEventArgs e)

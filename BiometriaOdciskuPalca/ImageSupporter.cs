@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 namespace BiometriaOdciskuPalca
 {
 
-    public static class ImageSupporter
+   static class ImageSupporter
     {
 
 
@@ -755,6 +755,32 @@ namespace BiometriaOdciskuPalca
         {
             GrayscaleToRGB grayscaleToRGB = new GrayscaleToRGB();
             return grayscaleToRGB.Apply(ImageSupporter.ColorToGrayscale(bitmap));
+        }
+
+
+        public static void MatchMinutia2(Bitmap bitmap, Color zakonczenie, Color rozwidlenie, Minutia minutia)
+        {
+            int xo = minutia.p.X, yo = minutia.p.Y;// center of circle
+            int r, rr;
+
+            r = 3;
+            //rr =(int)( Math.Pow(r, 2));
+            Color color;
+            if (minutia.kind.Equals(KindOfMinutia.ZAKONCZENIE)) color = zakonczenie;
+            else color = rozwidlenie;
+            for (int i = xo - (int)r; i <= xo + r; i++)
+                for (int j = yo - (int)r; j <= yo + r; j++)
+                    if (Math.Abs(Math.Sqrt(Math.Pow(i - xo, 2) + Math.Pow(j - yo, 2)) - (float)r) < 0.5f)
+                    {
+                        try
+                        {
+                            bitmap.SetPixel(i, j, color);
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                    }
         }
     }
    

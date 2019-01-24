@@ -433,13 +433,14 @@ namespace BiometriaOdciskuPalca
             return he.Apply((Bitmap)bitmap.Clone());
         }
 
-        public static Bitmap Binaryzation(Bitmap b)
+        public static Bitmap Binaryzation(Bitmap b,int limit)
         {
             Threshold th = new Threshold();
-
+            th.ThresholdValue = limit;
             Bitmap bx= ImageSupporter.ColorToGrayscale((Bitmap)b.Clone());
 
             GrayscaleToRGB grayscaleToRGB = new GrayscaleToRGB();
+            
             return grayscaleToRGB.Apply(th.Apply(ImageSupporter.ColorToGrayscale(bx)));
         }
 
