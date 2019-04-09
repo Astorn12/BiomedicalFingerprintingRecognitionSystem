@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BiometriaOdciskuPalca
-{
+{     //klasa służąca do przechowywaniu obrazów banku gabora
     class GaborBank
     {
         List<SetValuesForGabor> bank;

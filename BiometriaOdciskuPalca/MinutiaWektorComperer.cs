@@ -57,18 +57,12 @@ namespace BiometriaOdciskuPalca
         //wyjście: true lub fals decyzja czy odciski są tożsame czy też nie
         public Tuple<bool,int,ModyficationElement,int> Compere(MinutiaWektor databaseMinutia,MinutiaWektor n )
         {
-          //  int wow = GetAngle(databaseMinutia, n);
             ClearAcumulator();
             Voting(databaseMinutia, n);
-            //ModyficationElement best=BestModyficationChecking();
             Tuple<ModyficationElement,int> tuple=BestModyficationChecking();
             ModyficationElement best = tuple.Item1;
             int votingCount=tuple.Item2;
-            //int voteScore = tuple.Item2;
-           // best = new ModyficationElement(254, -63, 37);
              MinutiaWektor newMinutiaWektor = MapMinutiaWektor(n, best);
-            
-
              int count = HowManyIdenticalMinuties(databaseMinutia, newMinutiaWektor);
              return new Tuple<bool, int,ModyficationElement,int>(true,count,best,votingCount);
         

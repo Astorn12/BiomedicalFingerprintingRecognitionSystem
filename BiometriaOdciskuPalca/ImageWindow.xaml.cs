@@ -16,9 +16,7 @@ using System.Windows.Shapes;
 
 namespace BiometriaOdciskuPalca
 {
-    /// <summary>
-    /// Interaction logic for ImageWindow.xaml
-    /// </summary>
+  
     
     public partial class ImageWindow : Window
     {
@@ -72,7 +70,7 @@ namespace BiometriaOdciskuPalca
         {
             obrazek.Source =ImageSupporter.Bitmap2BitmapImage(bitmap);
         }
-
+        //listener odpowiadający za potwierdzenie użycia filtru w przypadku podwójnego kliknięcia na okno
         private void ScrollViewer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             try
@@ -99,13 +97,13 @@ namespace BiometriaOdciskuPalca
             
             int xr = (int)(p.X * (((double)b.Width) / obrazek.ActualWidth)+0.5);
             int yr =(int) (p.Y * (((double)b.Height) / obrazek.ActualHeight)+0.5);
-            // Console.WriteLine("Współrzędne: " + xr + " " + yr);
+            
             try
             {
                 if (choo.Method != null)
                 {
                     choo.Invoke(xr,yr);
-                    //this.Close();
+                   
                 }
             }
             catch (Exception ex)

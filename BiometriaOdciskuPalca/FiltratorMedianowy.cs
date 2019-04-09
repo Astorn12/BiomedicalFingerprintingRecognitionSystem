@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BiometriaOdciskuPalca
-{       //klasa implementująca działanie filtratora medianowego
+{       //klasa umożliwia wykonywanie filtracji medianowej
      class FiltratorMedianowy
     {
        public  Bitmap  filtrowanie(Bitmap bitmapaOrginalna )

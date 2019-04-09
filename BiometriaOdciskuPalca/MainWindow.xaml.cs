@@ -61,8 +61,6 @@ namespace BiometriaOdciskuPalca
             database.Load();
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             FiltracjaCheckedBox.IsChecked = true;
-          
-            //EqualFingerprintList.MouseDoubleClick += new EventHandler(ListBox_DoubleClick);
         }
         #endregion
 
@@ -284,11 +282,11 @@ namespace BiometriaOdciskuPalca
 
         public void ExpandImageSpecial(object sender, EventArgs e)
         {
-            var source = (((sender as Button).Content as Grid));// as System.Windows.Controls.Image).Source;
+            var source = (((sender as Button).Content as Grid));
             var s=(source.Children[0]  as System.Windows.Controls.Image).Source;
             var okno = new ImageWindow(s);
             okno.Show();
-            // Console.WriteLine(Color.Blue.ToArgb());
+            
         }
         public void ExpandImage(object sender, EventArgs e)
         {
@@ -296,7 +294,7 @@ namespace BiometriaOdciskuPalca
            
             var okno = new ImageWindow(source);
             okno.Show();
-            // Console.WriteLine(Color.Blue.ToArgb());
+           
         }
 
         public void ExpandImage2(object sender, EventArgs e)
@@ -305,7 +303,6 @@ namespace BiometriaOdciskuPalca
 
             var okno = new ImageWindow(source,MinutiaFromPixcel);
             okno.Show();
-            // Console.WriteLine(Color.Blue.ToArgb());
         }
 
         public void MinutiaFromPixcel(int x,int y)
@@ -325,20 +322,6 @@ namespace BiometriaOdciskuPalca
         }
 
         #endregion
-
-        private void choosenArea_Click(object sender, RoutedEventArgs e)
-        {
-          //  int x = Int32.Parse(X.Text);
-          //  int y = Int32.Parse(Y.Text);
-            fingerprint = new Fingerprint((BitmapImage)originalImage.Source);
-            fingerprint.startRecognition(fingerprint.localOrientationMap);
-           /// randomCel = fingerprint.getCell(mapakierunkow, x, y);
-            ImageSupporter.WriteBitmap(randomCel.bitmap);
-            QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(randomCel.bitmap);
-            fingerprint.merge();
-            threetothreeImage.Source = ImageSupporter.ToBitmapSource(ImageSupporter.Scale(1, fingerprint.localOrientationMap));
-        }
-
         private void MinutaesDetection(object sender, RoutedEventArgs e)
         {
          
@@ -354,14 +337,8 @@ namespace BiometriaOdciskuPalca
         }
         private void MinutaesDetection()
         {
-
            QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getSectionPoints((Bitmap)workingImage.Clone()));
-           // fingerprint.getAlreadyPassed();
-
             temporaryMinutiasMap = new MinutiaWektor(fingerprint.GetTemporaryMinutiasMap());
-            //MinuteaWektorInformator.Text = "Wykryto " + temporaryMinutiasMap.m.Count() + " minucji \n" +
-                                         //  +temporaryMinutiasMap.GetEndCount() + " zakończeń \n" +
-                                          // +temporaryMinutiasMap.GetForkCount() + " rozwidleń";
         }
         List<DatabaseElement> databaseList;
         private void ShowDatabase(object sender, RoutedEventArgs e)
@@ -380,9 +357,6 @@ namespace BiometriaOdciskuPalca
             }
 
         }
-
-        
-
         List<Tuple<DatabaseElement, int, ModyficationElement,int>> equals;
         private void CheckWithDatabase(object sender, RoutedEventArgs e)
         {
@@ -393,8 +367,8 @@ namespace BiometriaOdciskuPalca
             {
                 ListBoxItem item = new ListBoxItem();
                 double d = (double)element.Item2 / (double)element.Item1.MinutiaesWektor.m.Count;
-                item.Content = d+" "+ element.Item1.FingerprntName+" "+element.Item2+" ("+element.Item3.ToString()+") voting:"+element.Item4 ;
-                if (d >= 0.4)
+                item.Content =element.Item1.FingerprntName+" "+element.Item2+" ("+element.Item3.ToString()+") voting:"+element.Item4 ;
+                if (element.Item2>12)
                 {
                     item.Background = System.Windows.Media.Brushes.Red;
                 }
@@ -403,26 +377,15 @@ namespace BiometriaOdciskuPalca
                 
             }
         }
-
         private void CheckWithDatabase()
         {
             EqualFingerprintList.Items.Clear();
             equals = database.CheckWithDatabase(temporaryMinutiasMap);
-         /*   foreach (var element in equals)
-            {
-                ListBoxItem item = new ListBoxItem();
-                item.Content = element.Item1.FingerprntName + " " + element.Item2 + " (" + element.Item3.ToString() + ") voting:" + element.Item4;
-                EqualFingerprintList.Items.Add(item);
-
-            }*/
         }
-
         private void Test(object sender, RoutedEventArgs e)
         {
             MinutiaWektor wektor = database.mBase[1].MinutiaesWektor;
             ModyficationElement przesuniecie = new ModyficationElement(0,0, 10);
-           
-
             MinutiaWektor przesunietyWektor = new MinutiaWektorComperer().MapMinutiaWektor(wektor, przesuniecie);
             Bitmap b = (Bitmap)orginalBitmap.Clone();
             b = MatchMinuties(b, przesunietyWektor);
@@ -466,23 +429,11 @@ namespace BiometriaOdciskuPalca
             int index = EqualFingerprintList.Items.IndexOf(sender);
             DatabaseElement chosen = equals[index].Item1;
             ModyficationElement przesuniecie = equals[index].Item3;
-            //ModyficationElement przesuniecie = new ModyficationElement(20, -20, -10);
             MinutiaWektor wektor = temporaryMinutiasMap;
            
             MinutiaWektor przesunietyWektor = new MinutiaWektorComperer().MapMinutiaWektor(temporaryMinutiasMap, przesuniecie);
              
-           // przesunietyWektor=new MinutiaWektorComperer().MapMinutiaWektor(przesunietyWektor,inversPrzesunięcie);
             Bitmap  b=ImageSupporter.BitmapImage2Bitmap( new BitmapImage(new Uri(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\" + chosen.FingerprntName + ".png")));
-            //Bitmap b = orginalBitmap;
-            //b = MatchMinuties(b, przesunietyWektor);
-            //ModyficationElement tmpp = new ModyficationElement(0, 0, 1);
-            /*for(int i=0;i<30;i++)
-            {tmpp = new ModyficationElement(0, 0, i);
-                MinutiaWektor wektorx=new MinutiaWektorComperer().MapMinutiaWektor(temporaryMinutiasMap, tmpp);
-                Bitmap x= MatchMinuties2(b,wektorx,Color.Aqua,Color.Bisque );
-                ImageWindow image = new ImageWindow(ImageSupporter.Bitmap2BitmapImage( x));
-                image.Show();
-            }*/
             b = MatchMinuties2(b,przesunietyWektor,Color.Green,Color.Green );
             MinutiaWektor zbazy = database.mBase[index].MinutiaesWektor;
             b = MatchMinuties2(b,zbazy,Color.Blue,Color.Blue );
@@ -496,8 +447,6 @@ namespace BiometriaOdciskuPalca
             Bitmap final = (Bitmap)bitmap.Clone();
             foreach (var p in wektor.m)
             {
-                //  final.SetPixel(item.Item1.X, item.Item1.Y,Color.Orange);
-
                 for (int i = p.p.X - 1; i < p.p.X + 1; i++)
                 {
                     for (int j = p.p.Y - 1; j < p.p.Y + 1; j++)
@@ -522,7 +471,6 @@ namespace BiometriaOdciskuPalca
                 Bitmap final = (Bitmap)bitmap.Clone();
             foreach (var p in wektor.m)
             {
-                //  final.SetPixel(item.Item1.X, item.Item1.Y,Color.Orange);
 
                 for (int i = p.p.X - 1; i < p.p.X + 1; i++)
                 {
@@ -531,40 +479,25 @@ namespace BiometriaOdciskuPalca
                         if (i < final.Width && i > 0 && j < final.Height && j > 0)
                         {
                            ImageSupporter.MatchMinutia2(final, zakocznczenia, rozwidlenia, p);                      
-                           // if (p.kind.Equals(KindOfMinutia.ZAKONCZENIE))
-                           //     final.SetPixel(i, j, zakocznczenia);
-
-                           // else final.SetPixel(i, j, rozwidlenia);
                         }
                     }
                 }
             }
-
-           // final.SetPixel(wektor.m[0].p.X, wektor.m[0].p.Y,Color.Red);
-           // final.SetPixel(wektor.m[1].p.X, wektor.m[1].p.Y,Color.Pink);
-           // final.SetPixel(wektor.m[2].p.X, wektor.m[2].p.Y,Color.Green);
-           // final.SetPixel(wektor.m[3].p.X, wektor.m[3].p.Y,Color.HotPink);
-           // final.SetPixel(wektor.m[4].p.X, wektor.m[4].p.Y,Color.Lavender);
-          
                 return final;
         }
 
-
+        #region Obsługa bazy wzorców
         private void CleanDatabase(object sender, RoutedEventArgs e)
         {
             database.Clear();
         }
-
-            public void AddToBase(String text)
+        public void AddToBase(String text)
         {
             database.Add(temporaryMinutiasMap,text);
             AddImageToDatabase(text);
 
         }
-         delegate void  AddToBaseDelegate(String str);
-
-       
-
+        delegate void  AddToBaseDelegate(String str);
         private void ShowAddToBaseWindow(object sender, RoutedEventArgs e)
         {
             PopupInputWindow popup = new PopupInputWindow(AddToBase,"Wpisz nazwę dla odcisku palca","Dodawanie odcisku palca do bazy danych");
@@ -602,22 +535,16 @@ namespace BiometriaOdciskuPalca
 
 
         }
-        
-
-
         private void AddImageToDatabase(String text)
         {
            
 
-                // if (!File.Exists(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\images\\" + i + ".png"))
-                //   {
+               
                 String name = text;
-            //  System.IO.File.Copy(newImageSource, Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\" + name + ".png");
             try
             {
 
                 ImageSupporter.Save(ImageSupporter.Bitmap2BitmapImage(orginalBitmap), Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\database\\" + name + ".png");
-                //  }
             }
             catch(Exception ex)
             {
@@ -625,131 +552,8 @@ namespace BiometriaOdciskuPalca
             }
             
         }
-
-        private void Filtracja(object sender, RoutedEventArgs e)
-        {
-
-            Bitmap b = fingerprint.filtruj(
-
-                      /* float.Parse(Gamma.Text, CultureInfo.InvariantCulture.NumberFormat),
-                       float.Parse(Lambda.Text, CultureInfo.InvariantCulture.NumberFormat),
-                       float.Parse(Psi.Text, CultureInfo.InvariantCulture.NumberFormat),
-                       float.Parse(Sigma.Text, CultureInfo.InvariantCulture.NumberFormat),
-                       float.Parse(Theta.Text, CultureInfo.InvariantCulture.NumberFormat)*/
-                      1, 1, 1, 1, 0.1f
-                    );
-            afterFiltering = b;
-            odszumionyObraz.Source = ImageSupporter.Bitmap2BitmapImage(b);
-
-
-        }
-
-
-        private void Start(object sender, RoutedEventArgs e)
-        {
-            /*-----------------------Przefiltrowanie orginalnego filtru filtrem medianowym------------------------*/
-            workingImage = fingerprint.medianFilter(orginalBitmap);
-             /*-----------------------Wykorzystanie normalizacji------------------------*/
-             /*-----------------------Wyrównanie histogramu na obszarach------------------------*/
-            /*--------------------Tworzenie mapy kierunków--------------------------*/
-            fingerprint.startRecognition((Bitmap)workingImage.Clone());
-            fingerprint.toDirectionMask();
-            //wyświetlenie mapy kierunków
-            mapakierunkow.Source = ImageSupporter.Bitmap2BitmapImage(/*workingImage*/fingerprint.localOrientationMap);
-            fingerprint.ReuseImageCells(workingImage);
-            /*----------------------- Przefiltrowanie obrazu filtrem Gabora----------------------------------*/
-             HistogramEqualization he = new HistogramEqualization();
-
-            workingImage = fingerprint.GetAfterFiltration();
-
-
-
-
-
-
-
-
-            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(workingImage));
-            iw.Show();
-
-             workingImage = Filtrator.ToBinarImage(workingImage, 127);
-            NiblackThreshold nt = new NiblackThreshold();
-            Random random = new Random();
-            /* for (int i = 0; i < 20; i++)
-             {
-                 nt.C = 20;// i * 2.5; random.Next(255);
-                 nt.K = i*0.2;//0.2*(float)random.Next(10);
-                 nt.Radius =5 ;// random.Next(20);
-
-                 ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(nt.Apply(workingImage)));
-                 iw.Title = nt.C + " " + nt.K + " " + nt.Radius;
-                 iw.Show();
-
-             }*/
-            nt.C = 20;// i * 2.5; random.Next(255);
-            nt.K = 0.4;//0.2*(float)random.Next(10);
-            nt.Radius = 5;// random.Next(20);
-            workingImage = nt.Apply(workingImage);
-            QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(workingImage);
-            /*-----------------------------Szukanie minucji----------------------------------*/
-
-            pojedynczyKierunek.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getSectionPoints(workingImage));
-           // prezentacjasekcjiImage.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.getAlreadyPassed());
-
-            /*---------------------------Sprawdzanie podobieństwa z odciskami z bazy danych-------------------*/
-
-        }
-        private void Start1(object sender, RoutedEventArgs e)
-        {
-            /*GaborFilter gb = new GaborFilter();
-            Random random = new Random();
-            for (int i = 0; i < 1; i++)
-            {
-                gb.Gamma = random.NextDouble();
-                gb.Lambda = random.Next(1,10);
-                gb.Psi = 1;
-                gb.Sigma = random.Next(1,10);
-                
-                gb.Theta =1;
-
-
-                ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(Filtrator.gaborFilter((Bitmap)orginalBitmap.Clone(),gb)));
-                iw.Title = gb.Gamma + " " + gb.Lambda + " " + gb.Psi + " " + gb.Sigma + " " + gb.Theta;
-                iw.Show();
-            }*/
-            //Filtrator.gaborFilterRandom(orginalBitmap);
-            workingImage = Filtrator.Normalization(orginalBitmap);
-            fingerprint.startRecognition((Bitmap)workingImage.Clone());
-            fingerprint.toDirectionMask();
-            //wyświetlenie mapy kierunków
-
-
-
-            mapakierunkow.Source = ImageSupporter.Bitmap2BitmapImage(/*workingImage*/fingerprint.localOrientationMap);
-            
-            fingerprint.ReuseImageCells(workingImage);
-
-            //QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.Merge());
-           // for (int i = 0; i < 10; i++)
-           // {
-                //List<Bitmap> bank = Filtrator.gaborFilterBank(orginalBitmap, 12);
-
-
-
-            List<Bitmap> bank = Filtrator.gaborFilterMyBank(orginalBitmap);
-                Bitmap b = fingerprint.GetGaborFilteredImage(bank);
-              //  ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(b));
-              //  iw.Show();
-                QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(b);
-           // }
-        }
-        private void Start2(object sender, RoutedEventArgs e)
-        {
-            Filtrator.gaborFilterRandom(orginalBitmap);
-        }
-
-
-        #region Dobre Metody
+        #endregion
+        #region Listenery filtrowań
         private void StartImageWindow(Bitmap bitmap)
         {
             ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(bitmap),OK);
@@ -767,7 +571,6 @@ namespace BiometriaOdciskuPalca
 
             }
         }
-
         public void OK()
         {
               this.workingImage = (Bitmap)temporary.Clone();
@@ -784,8 +587,6 @@ namespace BiometriaOdciskuPalca
                 
             }
         }
-
-
         private void NormalizationBinder(object sender, RoutedEventArgs e)
         {
             try
@@ -798,7 +599,6 @@ namespace BiometriaOdciskuPalca
 
             }
             }
-
         private void Normalization()
         {
             try { 
@@ -809,13 +609,6 @@ namespace BiometriaOdciskuPalca
 
             }
         }
-    
-
-
-        
-
-        
-
         private void MedianFilterBinder(object sender, RoutedEventArgs e)
         {
             MedianFilter();
@@ -825,32 +618,21 @@ namespace BiometriaOdciskuPalca
         {
              temporary = Filtrator.MedianFilter((Bitmap)workingImage.Clone());
         }
-
         private void Histogram(object sender, RoutedEventArgs e)
         {
             Histogram();
             StartImageWindow(temporary);
         }
-
         private void Histogram()
         {
             temporary = Filtrator.Histogram((Bitmap)workingImage.Clone());
         }
-
-        private void Segmentation(object sender, RoutedEventArgs e)
-        {
-            temporary = Filtrator.segmentation(30,(Bitmap)workingImage.Clone());
-            ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
-            iw.Show();
-        }
-
         private void Binaryzation(object sender, RoutedEventArgs e)
         {
             Binaryzation();
             temporary = Filtrator.Binaryzation((Bitmap)workingImage.Clone(),Int32.Parse(BinaryzationValue.Text));
             StartImageWindow(temporary);
         }
-
         private void BinaryzationIncrease(object sender, RoutedEventArgs e)
         {
 
@@ -872,21 +654,17 @@ namespace BiometriaOdciskuPalca
         {
             temporary = Filtrator.Binaryzation((Bitmap)workingImage.Clone(),Int32.Parse(BinaryzationValue.Text));
         }
-
         private void Gornoprzepustowy(object sender, RoutedEventArgs e)
         {
             temporary = Filtrator.HighPassFilter(EMask.Prewitt,(Bitmap)workingImage.Clone());
             ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
             iw.Show();
         }
-
-
         private void GridedHistogram(object sender, RoutedEventArgs e)
         {
             GridedHistogram();
              StartImageWindow(temporary);
         }
-
         private void GridedHistogram()
         {
             temporary = Filtrator.HistorgramGridedFilter((Bitmap)workingImage.Clone(), 32);
@@ -900,13 +678,10 @@ namespace BiometriaOdciskuPalca
         }
         private void Canny(object sender, RoutedEventArgs e)
         {
-          //  CannyEdgeDetector cannyEdgeDetector = new CannyEdgeDetector();
-          //  temporary=cannyEdgeDetector.Apply((Bitmap)workingImage.Clone());
             temporary = Filtrator.Canny((Bitmap)workingImage.Clone());
             ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(temporary));
             iw.Show();
         }
-
         private void LowPassFilter(object sender, RoutedEventArgs e)
         {
             temporary = Filtrator.LowPassFilter(JMask.GAUSS,(Bitmap)workingImage.Clone());
@@ -933,25 +708,6 @@ namespace BiometriaOdciskuPalca
             }
                 
             }
-        public void PrzetwarzanieWstepne()
-        {
-            this.workingImage =  Filtrator.Normalization(workingImage);
-            this.workingImage =  Filtrator.MedianFilter((Bitmap)workingImage.Clone());
-            this.workingImage =  Filtrator.Histogram((Bitmap)workingImage.Clone());
-
-
-        }
-
-        private void ZastosujGaborFilter(object sender, RoutedEventArgs e)
-        {
-            //StartChosenGabor();
-        }
-
-
-
-
-
-
         #endregion
         #region Metody Testowe
         //metody nieużywane do działąnia programu, ale istotne w trakcie testów i przygotowania pracy dyplomowej
@@ -1089,146 +845,15 @@ namespace BiometriaOdciskuPalca
         }
         #endregion
 
-        #region Gabor Filter Specyfikaction Click Listeners 
+       
 
-        /*  private void GaborFilterClick(object sender, RoutedEventArgs e)
-       {
-           workingImage = Filtrator.Normalization(orginalBitmap);
-           fingerprint.startRecognition((Bitmap)workingImage.Clone());
-           fingerprint.toDirectionMask();
-           //wyświetlenie mapy kierunków
-
-
-
-           mapakierunkow.Source = ImageSupporter.Bitmap2BitmapImage(workingImagefingerprint.localOrientationMap);
-
-           fingerprint.ReuseImageCells(workingImage);
-
-           //QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(fingerprint.Merge());
-
-           List<Bitmap> bank = Filtrator.gaborFilterBank(orginalBitmap, 12, float.Parse(GammaInsert.Text),
-               float.Parse(LambdaInsert.Text),
-               float.Parse(PsiInsert.Text),
-               float.Parse(SigmaInsert.Text)
-            );
-           Filtrator.gaborFilterMyBank(orginalBitmap);
-           Bitmap b = fingerprint.GetGaborFilteredImage(bank);
-           QUATRE.Source = ImageSupporter.Bitmap2BitmapImage(b);
-
-       }
-       private void SetDefault()
-       {
-           GammaInsert.Text = 0.3+"";
-           LambdaInsert.Text = 4.0+"";
-           PsiInsert.Text = 1.0 + "";
-           SigmaInsert.Text = 2.0 + " ";
-           ThetaInsert.Text = 0 + " ";
-
-       }
-       private void GammaMinusClick(object sender, RoutedEventArgs e)
-       {
-
-           GammaInsert.Text = (float.Parse(GammaInsert.Text) - 0.1)+"";
-           if (testFlag==true)StartChosenGabor();
-       }
-       private void GammaPlusClick(object sender, RoutedEventArgs e)
-       {
-           GammaInsert.Text = (float.Parse(GammaInsert.Text) + 0.1)+"";
-           if (testFlag==true)StartChosenGabor();
-       }
-
-       private void LambdaMinusClick(object sender, RoutedEventArgs e)
-       {
-           LambdaInsert.Text = (float.Parse(LambdaInsert.Text) - 0.1) + "";
-           if (testFlag==true)StartChosenGabor();
-       }
-       private void LambdaPlusClick(object sender, RoutedEventArgs e)
-       {
-          LambdaInsert.Text = (float.Parse(LambdaInsert.Text) + 0.1) + "";
-           if (testFlag==true)StartChosenGabor();
-       }
-
-       private void PsiMinusClick(object sender, RoutedEventArgs e)
-       {
-          PsiInsert.Text = (float.Parse(PsiInsert.Text) - 0.1) + "";
-           if (testFlag==true)StartChosenGabor();
-       }
-       private void PsiPlusClick(object sender, RoutedEventArgs e)
-       {
-           PsiInsert.Text = (float.Parse(PsiInsert.Text) + 0.1) + "";
-           if (testFlag==true)StartChosenGabor();
-       }
-
-
-       private void SigmaMinusClick(object sender, RoutedEventArgs e)
-       {
-           SigmaInsert.Text = (float.Parse(SigmaInsert.Text) - 0.1) + "";
-          if (testFlag==true)StartChosenGabor();
-       }
-       private void SigmaPlusClick(object sender, RoutedEventArgs e)
-       {
-           SigmaInsert.Text = (float.Parse(SigmaInsert.Text) + 0.1) + "";
-           if (testFlag==true)StartChosenGabor();
-       }
-
-
-
-       private void ThetaMinusClick(object sender, RoutedEventArgs e)
-       {
-           ThetaInsert.Text = (float.Parse(ThetaInsert.Text) - 15) + "";
-           if (testFlag==true)StartChosenGabor();
-       }
-       private void ThetaPlusClick(object sender, RoutedEventArgs e)
-       {
-          ThetaInsert.Text = (float.Parse(ThetaInsert.Text) + 15) + "";
-           if (testFlag==true)StartChosenGabor();
-       }
-
-       private void StartChosenGabor()
-       {
-            Filtrator.GaborFilter((Bitmap)orginalBitmap.Clone(),
-               float.Parse(GammaInsert.Text),
-               float.Parse(LambdaInsert.Text),
-               float.Parse(PsiInsert.Text),
-               float.Parse(SigmaInsert.Text),
-               (float)ImageSupporter.DegreeToRadian(float.Parse(ThetaInsert.Text)));
-
-
-       }
-       private void Random(object sender, RoutedEventArgs e)
-       {
-           float x = 20;
-           float y = 80;
-           for (float i = float.Parse(LambdaInsert.Text) - (x * 0.1f); i < float.Parse(LambdaInsert.Text) + (x * 0.1f); i += 0.1f)
-           {
-               for (float j = float.Parse(SigmaInsert.Text) - (y * 0.01f); j < float.Parse(SigmaInsert.Text) + (y * 0.1f); j += 0.1f)
-               {
-                   Filtrator.GaborFilter(orginalBitmap,
-                   float.Parse(GammaInsert.Text),
-                   i,
-                   float.Parse(PsiInsert.Text),
-                   j,
-                   (float)ImageSupporter.DegreeToRadian(float.Parse(ThetaInsert.Text)));
-
-               }
-           }*/
-
-        /* for (float j = float.Parse(SigmaInsert.Text) - (x * 0.1f); j < float.Parse(SigmaInsert.Text); j += 0.1f)
-         {
-             Filtrator.GaborFilter(orginalBitmap,
-             float.Parse(GammaInsert.Text),
-             float.Parse(LambdaInsert.Text),
-             float.Parse(PsiInsert.Text),
-             j,
-             (float)ImageSupporter.DegreeToRadian(float.Parse(ThetaInsert.Text)));
-
-         }*/
+       
 
     }
 
-        #endregion
+      
 
         
 
     }
-//}
+

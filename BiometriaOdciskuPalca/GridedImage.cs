@@ -77,8 +77,6 @@ namespace BiometriaOdciskuPalca
                             gridmap.SetPixel(a - i, b - j, bitmap.GetPixel(a, b));
                         }
                     }
-                    //ImageCell imageCell = new ImageCell(gridmap);
-
                     cellTab[i / cellSize, j / cellSize].bitmap = gridmap;
 
                 }
@@ -101,26 +99,12 @@ namespace BiometriaOdciskuPalca
                     }
                 }
             }
-           // this.bitmap = cellTab[4, 4].bitmap;
-            
-            
-
+           
         }
         #endregion
 
         #region Tests
-        public void boundGrids()
-        {
-           
-            for(int i=0;i<cellTab.GetLength(0);i++)
-            {
-                for(int j=0;j<cellTab.GetLength(1); j++)
-                {
-                    cellTab[i, j].setBorder(Color.Black);
-                }
-            }
-            //mergeIt();
-        }
+      
 
         public void convertToDirectionMap()
         {
@@ -153,13 +137,7 @@ namespace BiometriaOdciskuPalca
             }
 
             ImageSupporter.matchArea(image, i * 16 , j * 16 , 16, 16);
-            /*for(int a=0;a<this.bitmap.Width;a++)
-            {
-                for (int b = 0; b < this.bitmap.Height; b++)
-                {
-                    bitmap.SetPixel(a, b, Color.Black);
-                }
-            }*/
+            
             return cellTab[i, j];
         }
 
@@ -168,7 +146,7 @@ namespace BiometriaOdciskuPalca
 
             int number = bitmap.Width / cellSize;
             int numberH = bitmap.Height / cellSize;
-           // if (x < number && y < numberH)
+          
             
                 Random random = new Random();
                 int i = x;
@@ -188,13 +166,8 @@ namespace BiometriaOdciskuPalca
                 ImageSupporter.matchArea(image, i * 16, j * 16, 16, 16);
             
            
-                /*for(int a=0;a<this.bitmap.Width;a++)
-                {
-                    for (int b = 0; b < this.bitmap.Height; b++)
-                    {
-                        bitmap.SetPixel(a, b, Color.Black);
-                    }
-                }*/
+                
+
                 return cellTab[i, j];
             
         }
@@ -206,7 +179,7 @@ namespace BiometriaOdciskuPalca
 
         public ImageCell getCellContainedPixel(int x,int y)
         {
-            return this.cellTab[x/cellSize,y/cellSize]; //tutaj trzeba sprawdzić czy wybierają dobre okno
+            return this.cellTab[x/cellSize,y/cellSize]; 
         }
 
         public Bitmap  GaborFilter()
@@ -289,14 +262,6 @@ namespace BiometriaOdciskuPalca
             }
 
             return bi;
-        }
-
-        public void ShowAngles()
-        {
-            foreach(var item in cellTab)
-            {
-                Console.Write(item.getAngle()+" ");
-            }
         }
         #endregion
     }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BiometriaOdciskuPalca
-{
+{      //clasa opisująza o jaki kąt i jakie przesunięcie należy zmodyfikować obraz odcisku palca
     class ModyficationElement
     {
         public int x { get; set; }//przesunięcie względem osi X
@@ -18,7 +18,7 @@ namespace BiometriaOdciskuPalca
             this.x = x;
             this.y = y;
             this.angle = angle;
-            // this.vote = 0;
+          
 
         }
         

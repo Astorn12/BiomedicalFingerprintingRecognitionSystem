@@ -235,9 +235,9 @@
                 </MenuItem>
             </MenuItem>
 
-            <MenuItem Header="_Baza danych" Template="{StaticResource VsMenuTop}">
+            <MenuItem Header="_Baza wzorców" Template="{StaticResource VsMenuTop}">
                 <MenuItem Header="_Dodaj" Template="{StaticResource VsMenuSub}" Click="ShowAddToBaseWindow" />
-                <MenuItem Header="_Wyczyść bazę danych" Template="{StaticResource VsMenuSub}" Click="CleanDatabase"/>
+                <MenuItem Header="_Wyczyść bazę wzorców" Template="{StaticResource VsMenuSub}" Click="CleanDatabase"/>
                 <MenuItem Header="_Wyświel" Template="{StaticResource VsMenuSub}"  Click="ShowDatabase"/>
                 <MenuItem Header="_Załaduj bazę z folderu" Template="{StaticResource VsMenuSub}" Click="ShowLoadDatabaseFromFolder" />
 

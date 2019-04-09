@@ -22,7 +22,7 @@ namespace BiometriaOdciskuPalca
         #region Atributes
         int size;
         public Bitmap bitmap;
-        private Bitmap bitmap2;//WERSJA2
+        private Bitmap bitmap2;
         double angle { get; set; }
         #endregion
 
@@ -66,25 +66,6 @@ namespace BiometriaOdciskuPalca
             maskH[2, 1] = Math.Sqrt(2);
             maskH[2, 2] = 1;
 
-            /*mask45[0, 0] = 0;
-            mask45[1, 0] = 1;
-            mask45[2, 0] = Math.Sqrt(2);
-            mask45[0, 1] = -1;
-            mask45[1, 1] = 0;
-            mask45[2, 1] = 1;
-            mask45[0, 2] = -Math.Sqrt(2);
-            mask45[1, 2] = -1;
-            mask45[2, 2] = 0;
-
-            mask135[0, 0] = Math.Sqrt(2);
-            mask135[1, 0] = 1;
-            mask135[2, 0] = 0;
-            mask135[0, 1] = 1;
-            mask135[1, 1] = 0;
-            mask135[2, 1] = -1;
-            mask135[0, 2] = 0;
-            mask135[1, 2] = -1;
-            mask135[2, 2] = -Math.Sqrt(2);*/
         }
        
 
@@ -134,55 +115,11 @@ namespace BiometriaOdciskuPalca
             this.angle = DegreeToRadian(90) + Math.Atan2(2 * A, B - C)/2;
             this.angle += DegreeToRadian(90);
             this.angle=restrictAngle(angle);
-            /*Wektor D = new Wektor(0, 0);
-            for (int i = 0; i < Math.Sqrt(angle.Length)-1; i++)
-            {
-                for (int j = 0; j < Math.Sqrt(angle.Length)-1; j++)
-                {
-                    D.x += angle[i, j].x;
-                    D.y += angle[i, j].y;
-                }
-            }
-            D.x = D.x / angle.Length;
-            D.y= D.y / angle.Length;*/
-
-
-            //double angleD = wektorToAngle(D);
-
-           // Console.WriteLine("Kąt obszarowy= "+ RadianToDegree(this.angle));
-          //  this.angle = DegreeToRadian( angleD);
-            //Console.WriteLine(this.angle);
-
         }
         public Wektor getWektor(double[,] otoczenie)
         {
             return getWektorP(otoczenie);
-            /*double deltaX = 0;
-            double deltaY = 0;
-            if ((otoczenie.Length == maskV.Length) && (maskV.Length == maskH.Length))
-            {
-                for (int i = 0; i < Math.Sqrt(otoczenie.Length); i++)
-                {
-                    for (int j = 0; j < Math.Sqrt(otoczenie.Length); j++)
-                    {
-                        deltaX += otoczenie[i, j] * maskV[i, j];
-                        deltaY += otoczenie[i, j] * maskH[i, j];
-                    }
-                }
-            }
-
-            double Q = Math.Atan(deltaY / deltaX);
-            Q = RadianToDegree(Q);
-            Q += 90;
-            if (Q < 0) Q += 360;
-            if (Q > 180) Q -= 180;
-            Q = DegreeToRadian(Q);
-            // Q += 22.5;
-            double r = Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2);
-            Wektor d = new Wektor(r * Math.Cos( Q), r * Math.Sin( Q));
-            Console.WriteLine("Kąt: "+d.ToString()+" i moc: " +r);
-            return d;*/
-
+           
         }
 
         public Wektor getWektorP1(double[,] otoczenie)
@@ -218,8 +155,7 @@ namespace BiometriaOdciskuPalca
             double deltaX = 0;
             double deltaY = 0;
 
-           // if ((otoczenie.Length == maskV.Length) && (maskV.Length == maskH.Length))
-           // {
+          
                 for (int i = 0; i < Math.Sqrt(otoczenie.Length); i++)
                 {
                     for (int j = 0; j < Math.Sqrt(otoczenie.Length); j++)
@@ -228,19 +164,8 @@ namespace BiometriaOdciskuPalca
                         deltaY += otoczenie[i, j] * maskH[i, j];
                     }
                 }
-        //    }
+       
             return new Wektor(deltaX, deltaY);
-            /*double Q = Math.Atan(deltaY / deltaX);
-            Q = RadianToDegree(Q);
-            Q += 90;
-            if (Q < 0) Q += 180;
-            if (Q > 180) Q -= 180;
-            Q = DegreeToRadian(Q);
-            // Q += 22.5;
-            double r = Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2);
-            Wektor d = new Wektor(r * Math.Cos(Q), r * Math.Sin(Q));
-            Console.WriteLine("Kąt: " + d.ToString() + " i moc: " + r);
-            return d;*/
         }
 
         /*Szukanie wektoru kierunkowego metodą kompasową*/
@@ -254,27 +179,21 @@ namespace BiometriaOdciskuPalca
             double angle = Math.Atan(wektor.y / wektor.x);
 
             angle = RadianToDegree(angle);
-           //if (angle < 0) angle += 180;
-          // if (angle > 180) angle -= 180;
+          
             return angle ;
 
         }
         public void toDirectionMap()
         {
             maska();
-            //if (this.angle.Equals(null)) maska();
-           // this.angle = 45;
-           // Console.WriteLine(angle);
-           //this.angle = DegreeToRadian(0);
-            /////////////////////double y = bitmap.Width / 2 * Math.Tan(angle);
-            //double a = y / bitmap.Width;
+           
 
             double y = 0;
-            //if (angle == DegreeToRadian(90)) angle = DegreeToRadian(88);
+          
 
             y = bitmap.Width / 2 * Math.Tan(angle);
             double a = Math.Tan(angle);
-           // Console.WriteLine("Kąt obszarowy: "+RadianToDegree(angle));
+      
             if (RadianToDegree(angle) > 45 && RadianToDegree(angle) <=90)
             {
                  a = Math.Tan(DegreeToRadian(90)- angle);
@@ -288,9 +207,9 @@ namespace BiometriaOdciskuPalca
                         if ((int)((j - (bitmap.Width + 1) / 2) + 0.5) == (int)((-a * (i - (bitmap.Width) / 2) + 0.5)))
                         {
                             bitmap.SetPixel(j, i, Color.Yellow);
-                           // bitmap2.SetPixel(j, i, Color.Black);
+                         
                         }
-                       // else bitmap.SetPixel(j, i, Color.White);
+                     
                     }
                 }
             }
@@ -306,10 +225,10 @@ namespace BiometriaOdciskuPalca
                         if ((int)((j - (bitmap.Width + 1) / 2) + 0.5) == (int)((-a * (i - (bitmap.Width) / 2) + 0.5)))
                         {//
                             bitmap.SetPixel(j, i, Color.Yellow);
-                           // bitmap2.SetPixel(j, i, Color.Black);
+                        
 
                         }
-                        //else bitmap.SetPixel(j, i, Color.White);
+                       
                     }
                 }
             }
@@ -324,14 +243,13 @@ namespace BiometriaOdciskuPalca
                         if ((int)((j - (bitmap.Width + 1) / 2) + 0.5) == (int)((-a * (i - (bitmap.Width) / 2) + 0.5)))
                         {
                             bitmap.SetPixel(i, j, Color.Yellow);
-                           // bitmap2.SetPixel(i, j, Color.Black);
                         }
-                        //else bitmap.SetPixel(i, j, Color.White);
+                       
                     }
                 }
             }
 
-         //   bitmap = bitmap2;//WERJSJA2
+       
         }//zmienia bitmapę na jeden kwadracik z ustalonum kierunkiem
 
         public double restrictAngle(double an)
@@ -339,9 +257,8 @@ namespace BiometriaOdciskuPalca
             if (an > DegreeToRadian(180)) an -= DegreeToRadian(180);
             if(an>DegreeToRadian(45)&&an<DegreeToRadian(90))
             { Console.Write(RadianToDegree(an));
-               // an = DegreeToRadian(135) - an;
                 Console.WriteLine(" " + RadianToDegree(an));
-              //  an = 0;
+          
             }
            
             return an;
@@ -490,32 +407,7 @@ namespace BiometriaOdciskuPalca
             otoczenie[2,2]= kwadracik.GetPixel(2, 2).R;
 
             return getWektorP(otoczenie);
-            /*double deltaX = 0;
-            double deltaY = 0;
-            if ((otoczenie.Length == maskV.Length) && (maskV.Length == maskH.Length))
-            {
-                for (int i = 0; i < Math.Sqrt(otoczenie.Length); i++)
-                {
-                    for (int j = 0; j < Math.Sqrt(otoczenie.Length); j++)
-                    {
-                        deltaX += otoczenie[i, j] * maskH[i, j];
-                        deltaY += otoczenie[i, j] * maskV[i, j];
-                    }
-                }
-            }
-
-            double Q =/* (180 / Math.PI) **/ /*Math.Atan(deltaY / deltaX);
-
-            Q = RadianToDegree(Q);
-            Q += 90;
-            if ( Q< 0) Q += 360;
-            if (Q > 180) Q -= 180;
-            Q = DegreeToRadian(Q);
-            //Q += 22.5;
-            double r = Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2);
-            Wektor d = new Wektor(r * Math.Cos( Q), r * Math.Sin(Q));
-               Console.WriteLine("Kąt: "+wektorToAngle( d)+" i moc: " +r);
-            return d;*/
+           
 
         }
     
@@ -534,10 +426,10 @@ namespace BiometriaOdciskuPalca
             Bitmap alone = new Bitmap(1, 2);
             int i = random.Next(bitmap.Width-1);
             int j = random.Next(bitmap.Height);
-           // alone.SetPixel(0, 0, bitmap.GetPixel(i, j));
+        
             alone.SetPixel(0, 0, Color.White);
 
-            //alone.SetPixel(0, 1, bitmap.GetPixel(i+1, j));
+          
             alone.SetPixel(0, 1,Color.Black);
 
             return alone;
@@ -564,9 +456,7 @@ namespace BiometriaOdciskuPalca
             double absolute135 = Math.Abs(delta135);
             if (absoluteX > absoluteY && absoluteX > absolute45 && absoluteX > absolute135)
             {
-                //if (absoluteX == deltaX)
-                // return DegreeToRadian(0);
-                //  else return DegreeToRadian(0);
+            
                 if (absoluteX == deltaX)
                     return DegreeToRadian(90);
                 else return DegreeToRadian(0);
@@ -575,9 +465,8 @@ namespace BiometriaOdciskuPalca
 
             else if (absoluteY > absoluteX && absoluteY > absolute45 && absoluteY > absolute135)
             {
-                // if (absoluteY == deltaY)
-                //return DegreeToRadian(90);
-                //else return DegreeToRadian(90);
+             
+
                 if (absoluteY == deltaY)
                     return DegreeToRadian(0);
                 else return DegreeToRadian(90);
@@ -585,19 +474,18 @@ namespace BiometriaOdciskuPalca
 
             else if (absolute135 > absoluteX && absolute135 > absolute45 && absolute135 > absoluteY)
             {
-                //if (absolute135 == delta135)
-                //   return DegreeToRadian(135);
-                // else return DegreeToRadian(45);
+               
+
                 if (absolute135 == delta135)
                     return DegreeToRadian(45);
                 else return DegreeToRadian(45);
             }
 
-            else //if (absolute45 > deltaX && absolute45 > delta135 && absolute45 > deltaY)
+            else 
+
             {
-                // if (absolute45 == delta45)
-                //  return DegreeToRadian(45);
-                //  else return DegreeToRadian(135);
+              
+
                 if (absolute45 == delta45)
                     return DegreeToRadian(135);
                 else return DegreeToRadian(135);
@@ -628,15 +516,15 @@ namespace BiometriaOdciskuPalca
 
              for (int i = 0; i < 4; i++)
               {
-            //bitmap = Filtrator.gaborFilter(bitmap, 0.1f, 4, 3, 0.01f, (float)(this.angle));
-            HistogramEqualization he = new HistogramEqualization();//DZIAŁA
+          
 
+            HistogramEqualization he = new HistogramEqualization();
 
              bitmap = he.Apply(bitmap);
-            //this.bitmap = Filtrator.GaborFilter(bitmap,(float)this.angle);
-                    
+
             }
-                //ImageWindow iw = new ImageWindow(ImageSupporter.Bitmap2BitmapImage(tmp));
+              
+
 
         }
 

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BiometriaOdciskuPalca
-{
+{   //klasa przechowująca zbiór parametrów dla filtru Gabora
     class SetValuesForGabor
     {
         public float gamma { get; set; }
