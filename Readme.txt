@@ -1,0 +1,1 @@
+To jest projekt zrobiony w ramach mojej pracy in¿ynierskiej, wszelkie prawa autorskie zgodnie ze standardowymi prawami prac in¿ynierskich ;)
